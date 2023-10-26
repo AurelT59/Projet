@@ -5,14 +5,9 @@
 require_once('../init_pdo.php');
 
 // URL du JSON
-$url = 'https://world.openfoodfacts.org/api/v2/product/5053990155354.json';
+$code_barre = "3228857000166";
+$url = 'https://world.openfoodfacts.org/api/v2/product/' . $code_barre . '.json';
 
-/*TEST
-$sql = "SELECT * FROM nutriments";
-$request = $pdo->prepare($sql);
-$request->execute();
-$res = $request->fetchAll(PDO::FETCH_OBJ);
-print_r($res);*/
 
 
 $json_data = file_get_contents($url);
@@ -26,32 +21,75 @@ if ($data === null) {
     die('Échec du décodage du JSON');
 }
 
+//Permet de vérifier si la valeur existe dans le json transmis par OpenFoodFacts
+function exist($key, $val)
+{
+    if (array_key_exists($key, $val)) {
+        return $val[$key];
+    } else {
+        return null;
+    }
+}
+
+//----------------------------------------------------------------------------------------------------
+
 //Table aliments
 $code = $data['code'];
-$nom_produit = $data['product']['product_name'];
-$quantite = $data['product']['product_quantity'];
-$portion = $data['product']['serving_quantity'];
-$marque = $data['product']['brands'];
-$energie_kcal = $data['product']['nutriments']['energy-kcal_value'];
-$nutriscore = end($data['product']['nutriscore'])['grade'];
-$categories = (string)$data['product']['categories'];
+$nom_produit = addslashes(exist('product_name', $data['product']));
+$quantite = exist('product_quantity', $data['product']);
+$portion = exist('serving_quantity', $data['product']);
+$marque = exist('brands', $data['product']);
+$energy = exist('energy', $data['product']['nutriments']);
+$energy_unit = exist('energy_unit', $data['product']['nutriments']);
+$nutriscore = exist('grade', end($data['product']['nutriscore']));
+$categories = addslashes(exist('categories', $data['product']));
 
 //Insertion de l'aliment dans la BDD
 $sql = "INSERT INTO `aliments` (`CODE`, `PRODUIT`, 
-`QUANTITE`, `PORTION`, `MARQUE`, `ENERGY_KCAL_VALUE`, `NUTRISCORE_GRADE`, `CATEGORIES`) VALUES ('" . $code . "','" .
-    $nom_produit . "','" . $quantite . "','" . $portion . "','" . $marque . "','" . $energie_kcal . "','" . $nutriscore . "','" . $categories . "')";
+`QUANTITE`, `PORTION`, `MARQUE`, `ENERGY`, `ENERGY_UNIT`, `NUTRISCORE_GRADE`, `CATEGORIES`) VALUES ('" . $code . "','" .
+    $nom_produit . "','" . $quantite . "','" . $portion . "','" . $marque . "','" . $energy . "','" . $energy_unit . "','" . $nutriscore . "','" . $categories . "')";
+print_r($sql);
 $request = $pdo->prepare($sql);
 $success = $request->execute();
-print_r($success);
+
+
+//----------------------------------------------------------------------------------------------------
 
 //Table composition
 $tab = $data['product']['ingredients'];
-$tab_ingredients_compo = [];
+
+//Gestion si l'ingrédient existe déjà ou non
 for ($i = 0; $i < count($tab); $i++) {
-    array_push($tab_ingredients_compo, [$tab[$i]['text'], $tab[$i]['percent_estimate']]);
+    $sql = "SELECT ID_INGREDIENT FROM `ingredients` WHERE NOM = '" . addslashes($tab[$i]['text']) . "'";
+    $request = $pdo->prepare($sql);
+    $request->execute();
+    $tab_id = $request->fetchAll(PDO::FETCH_OBJ);
+
+    //Problème : j'utilise le nom pour le trouver, 
+    //et ce n'est pas unique (si il y a plusieurs fois le même nom, alors je sélectionne le premier)
+    if (count($tab_id) == 0) {
+        $sql = "INSERT INTO `ingredients` (`NOM`) VALUES ('" . addslashes($tab[$i]['text']) . "')";
+        $request = $pdo->prepare($sql);
+        $request->execute();
+
+
+        $sql = "SELECT ID_INGREDIENT FROM `ingredients` WHERE NOM = '" . addslashes($tab[$i]['text']) . "'";
+        $request = $pdo->prepare($sql);
+        $request->execute();
+        $tab_id = $request->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    $id = $tab_id[0]->ID_INGREDIENT;
+
+    //Insertion dans la table composition dans la BDD
+    $sql = "INSERT INTO `composition` (`CODE`, `ID_INGREDIENT`, `POURCENTAGE`) 
+    VALUES ('" . $code . "', '" . $id . "', '" . $tab[$i]['percent_estimate'] . "')";
+    $request = $pdo->prepare($sql);
+    $success = $request->execute();
 }
 
-print_r($tab_ingredients_compo);
+
+//----------------------------------------------------------------------------------------------------
 
 
 //Table nutriments
@@ -74,6 +112,8 @@ for ($i = 0; $i < count($tab_nutriments); $i++) {
 }
 */
 
+//----------------------------------------------------------------------------------------------------
+
 //Permet de récupérer la table des nutriments
 $sql = "SELECT * FROM nutriments";
 $request = $pdo->prepare($sql);
@@ -82,14 +122,17 @@ $tab_nutriments = $request->fetchAll(PDO::FETCH_OBJ);
 
 //Table composition nutritive
 $tab = $data['product']['nutriments'];
-$tab_nutriments_compo = [];
 for ($i = 0; $i < count($tab_nutriments); $i++) {
     $id_nutriment = $tab_nutriments[$i]->ID_NUTRIMENT;
     $nom_en = $tab_nutriments[$i]->NOM_EN;
     if (isset($tab[$nom_en])) {
-        array_push($tab_nutriments_compo, [$id_nutriment, $tab[$nom_en], $tab[$nom_en . '_serving'], $tab[$nom_en . '_unit']]);
+        $sql = "INSERT INTO `composition_nutritive` (`CODE`, `ID_NUTRIMENT`, 
+        `VALEUR_100`, `VALEUR_PORTION`, `UNITE`) VALUES ('" . $code . "', '" . $id_nutriment . "',
+         '" . $tab[$nom_en] . "', '" . exist($nom_en . '_serving', $tab) . "', '" . exist($nom_en . '_unit', $tab) . "')";
+        $request = $pdo->prepare($sql);
+        $success = $request->execute();
     }
 }
 
 
-print_r($tab_nutriments_compo);
+//----------------------------------------------------------------------------------------------------
