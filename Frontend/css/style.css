@@ -1,3 +1,5 @@
+/* COULEURS : #7ED957 #FF971D */
+
 /* GÉNÉRAL */
 
 #logo_healtheat {
@@ -10,11 +12,15 @@
     margin-right: 20px;
 }
 
-/* JOURNAL */
-
 h1 {
     font-size: 20px;
 }
+
+.mb-3 {
+    width: 200px;
+}
+
+/* JOURNAL */
 
 #box_form_conso {
     display: flex;
