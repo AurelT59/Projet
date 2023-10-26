@@ -1,0 +1,33 @@
+/* GÉNÉRAL */
+
+#logo_healtheat {
+    width: 85px;
+}
+
+.nav-link {
+    font-size: 25px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* JOURNAL */
+
+h1 {
+    font-size: 20px;
+}
+
+#box_form_conso {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+#box_table_journal {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+/* PROFIL */
+
+/* ALIMENTS */

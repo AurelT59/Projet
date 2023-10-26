@@ -31,8 +31,6 @@
 
     ?>
 
-    <!-- CONTENU PROPRE À LA PAGE -->
-
     <!-- PIED DE PAGE -->
     <?php require_once('footer.php') ?>
 
