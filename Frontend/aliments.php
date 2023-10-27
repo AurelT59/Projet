@@ -6,6 +6,16 @@
         <div class="mb-3">
             <label class="form-label">Nom</label>
             <input type="text" class="form-control" id="inputAliment">
+            <label class="form-label">Quantite</label>
+            <input type="text" class="form-control" id="inputQuantite">
+            <label class="form-label">Portion</label>
+            <input type="text" class="form-control" id="inputPortion">
+            <label class="form-label">Marque</label>
+            <input type="text" class="form-control" id="inputMarque">
+            <label class="form-label">Energie</label>
+            <input type="text" class="form-control" id="inputEnergie">
+            <label class="form-label">Unité de l'energie</label>
+            <input type="text" class="form-control" id="inputUnite">
         </div>
         <button type="submit" class="btn btn-primary body-button">Valider</button>
     </form>

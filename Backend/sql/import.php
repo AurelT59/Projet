@@ -25,7 +25,7 @@ if ($data === null) {
 function exist($key, $val)
 {
     if (array_key_exists($key, $val)) {
-        return "'".addslashes($val[$key])."'";
+        return "'" . addslashes($val[$key]) . "'";
     } else {
         return "NULL";
     }
@@ -127,7 +127,7 @@ for ($i = 0; $i < count($tab_nutriments); $i++) {
     if (isset($tab[$nom_en])) {
         $sql = "INSERT INTO `composition_nutritive` (`CODE`, `ID_NUTRIMENT`, 
         `VALEUR_100`, `VALEUR_PORTION`, `UNITE`) VALUES ('" . $code . "', '" . $id_nutriment . "',
-         " . exist($nom_en,$tab) . ", " . exist($nom_en . '_serving', $tab) . ", " . exist($nom_en . '_unit', $tab) . ")";
+         " . exist($nom_en, $tab) . ", " . exist($nom_en . '_serving', $tab) . ", " . exist($nom_en . '_unit', $tab) . ")";
         $request = $pdo->prepare($sql);
         $success = $request->execute();
     }
@@ -138,7 +138,7 @@ for ($i = 0; $i < count($tab_nutriments); $i++) {
 
 
 //Table catégories
-$tab = explode(',',$categories);
+$tab = explode(',', $categories);
 
 //Gestion si la catégorie existe déjà ou non
 for ($i = 0; $i < count($tab); $i++) {
@@ -170,3 +170,7 @@ for ($i = 0; $i < count($tab); $i++) {
     $request = $pdo->prepare($sql);
     $success = $request->execute();
 }
+
+
+//Fermeture de la connexion
+$pdo = null;
