@@ -1,3 +1,12 @@
+function gestion_null($val, $str) {
+    if ($val != null) {
+        return $val + $str
+    }
+    else {
+        return ""
+    }
+}
+
 $(document).ready(function () {
     //Initialisation de la table des aliments
     let table = new DataTable('#table_aliments', {
@@ -38,6 +47,30 @@ $(document).ready(function () {
         }
         ]
     });
+
+    //Initialisation du tableau
+    $.ajax({
+        url: 'http://localhost/Projet/Projet/Backend/aliments.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                table.row.add({
+                    "Code": data[i].CODE,
+                    "Nom": data[i].PRODUIT,
+                    "Quantite": gestion_null(data[i].QUANTITE, " g"),
+                    "Portion": gestion_null(data[i].PORTION, " g"),
+                    "Marque": data[i].MARQUE,
+                    "Energie": data[i].ENERGY + " " + data[i].ENERGY_UNIT,
+                    "Nutriscore": data[i].NUTRISCORE_GRADE,
+                }).draw();
+            }
+        },
+        error: function (error) {
+            console.error('Erreur lors de la récupération des données : ', error);
+        }
+    })
 
 });
 
