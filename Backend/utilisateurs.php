@@ -1,12 +1,5 @@
 <?php
 
-// JOIN composition ON aliments.code = composition.code
-// JOIN ingredients ON composition.id_ingredient = ingredients.id_ingredient
-// JOIN labels ON aliments.code = labels.code
-// JOIN categories ON labels.id_categories = categories.id_categories
-// JOIN composition_nutritive ON aliments.code = composition_nutritive.code
-// JOIN nutriments ON composition_nutritive.id_nutriment = nutriments.id_nutriment
-
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
@@ -17,7 +10,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = "";
 
-        $request = $pdo->prepare("SELECT * FROM aliments");
+        $request = $pdo->prepare("SELECT * FROM utilisateurs");
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
