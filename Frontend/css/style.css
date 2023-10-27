@@ -102,3 +102,17 @@ h1 {
 
 
 /* ALIMENTS */
+
+.input-taille {
+    width: 200px;
+    margin: 10px;
+}
+
+.encadre {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    max-height: 400px;
+    overflow: auto;
+}
