@@ -28,10 +28,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare(
-            "INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `energy`, `energy_unit`, `nutriscore_grade`)
-            VALUES ('" . $data['code'] . "','" . $data['produit'] . "','" . $data['quantite'] . "','" . $data['portion'] . "','" . $data['marque'] . "','" . $data['energy'] . "','" . $data['energy_unit'] . "','" . $data['nutriscore_grade'] . "')"
-        );
+        //         $result = $pdo->exec( "INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `energy`, `energy_unit`, `nutriscore_grade`)
+        // VALUES ('" . $data['code'] . "','" . $data['produit'] . "','" . $data['quantite'] . "','" . $data['portion'] . "','" . $data['marque'] . "','" . $data['energy'] . "','" . $data['energy_unit'] . "','" . $data['nutriscore_grade'] . "'););
+
+        // $result = $pdo->exec( 
+
+        $request = $pdo->prepare("
+           
+            INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
+            VALUES ('" . $data['code'] . "','" . $data['id_ingredient'] . "','" . $data['pourcentage'] . "');
+            INSERT INTO `labels` (`code`, `id_categories`)
+            VALUES ('" . $data['code'] . "','" . $data['id_categories'] . "');
+            INSERT INTO `composition_nutritive` (`code`, `id_nutriments`, `valeur_100`, `valeur_portion`, `unite`)
+            VALUES ('" . $data['code'] . "','" . $data['id_nutriments'] . "','" . $data['valeur_100'] . "','" . $data['valeur_portion'] . "','" . $data['unite'] . "');
+        ");
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
@@ -79,7 +89,7 @@ function checkAndResponse($request, $result, $data)
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             echo json_encode($result);
         } else {
-            echo json_encode(array('id' => $data['id']));
+            echo json_encode(array('code' => $data['code']));
         }
     } else {
         // Erreur de la requête SQL, renvoyer un statut 500 - Internal Server Error
