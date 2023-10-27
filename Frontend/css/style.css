@@ -11,6 +11,7 @@
 
 #logo_healtheat {
     width: 105px;
+    height: 105px;
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 30px;
@@ -27,7 +28,7 @@
     margin-top: 3px;
     display: flex;
     flex-direction: column;
-    margin-left: 550px;
+    right: 0px;
 }
 
 #disconnect-button {
