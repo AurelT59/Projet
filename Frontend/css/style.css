@@ -2,8 +2,19 @@
 
 /* GÉNÉRAL */
 
+/* header et menu */
+
+#header {
+    display: flex;
+    background-color: #7ED957;
+}
+
 #logo_healtheat {
-    width: 85px;
+    width: 105px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 .nav-link {
@@ -12,6 +23,22 @@
     margin-right: 20px;
 }
 
+#connected {
+    margin-top: 3px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 550px;
+}
+
+#disconnect-button {
+    margin-top: 0px;
+    height: 40px;
+    background-color: gray;
+    border-color: black;
+    border-width: 2px;
+}
+
+/* body */
 h1 {
     font-size: 20px;
 }
@@ -20,10 +47,27 @@ h1 {
     width: 200px;
 }
 
+.body-button {
+    background-color: #FF971D;
+    border-color: black;
+    border-width: 2px;
+}
+
+.box {
+    padding: 10px;
+    display: flex inline-block;
+    border: 2px solid rgb(6, 6, 6);
+    flex-direction: column;
+    margin: 20px;
+    border-radius: 5px;
+}
+
 /* JOURNAL */
 
 #box_form_conso {
-    display: flex;
+    padding: 10px;
+    display: flex inline-block;
+    border: 2px solid rgb(6, 6, 6);
     flex-direction: column;
     margin: 20px;
 }
@@ -34,6 +78,26 @@ h1 {
     margin: 20px;
 }
 
+#inputDateConso {
+    width: 200px;
+}
+
+
 /* PROFIL */
+
+#box_form_profil {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+#inputDdn {
+    width: 200px;
+}
+
+#labelDdn {
+    white-space: nowrap;
+}
+
 
 /* ALIMENTS */

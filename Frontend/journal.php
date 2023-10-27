@@ -1,8 +1,6 @@
-<p>Bienvenue sur votre journal</p>
-
 <!-- FORMULAIRE POUR RENTRER UNE CONSOMMATION -->
 
-<div id="box_form_conso">
+<div class="box" id="box_form_conso">
     <h1>Nouvelle entrée dans le journal</h1>
     <form>
         <div class="mb-3">
@@ -20,13 +18,13 @@
                 <option value="3">Pizza</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Valider</button>
+        <button type="submit" class="btn btn-primary body-button">Valider</button>
     </form>
 </div>
 
 <!-- LISTE DES CONSOMMATIONS PRÉCÉDENTES -->
 
-<div id="box_table_journal">
+<div class="box" id="box_table_journal">
     <h1>Consulter le journal</h1>
     <table class="table" id="table_journal">
         <thead>
@@ -41,23 +39,7 @@
     </table>
 </div>
 
-<script>
-    let table = new DataTable('#table_journal', {
-        columnDefs: [{
-                targets: 0,
-                data: 'date'
-            },
-            {
-                targets: 1,
-                data: 'aliment'
-            },
-            {
-                targets: 2,
-                data: null,
-                render: function(data, type, row) {
-                    return '<button id="edit" onclick="onEditSubmit();">Éditer</button><button id="delete" onclick="onDeleteSubmit();">Supprimer</button>';
-                }
-            }
-        ]
-    });
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+
+<script src="js/script_journal.js"></script>

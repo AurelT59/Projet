@@ -18,7 +18,7 @@
 
     require_once('header.php');
 
-    $currentPageId = 'journal';
+    $currentPageId = 'accueil';
     if (isset($_GET['page'])) {
         $currentPageId = $_GET['page'];
     }
