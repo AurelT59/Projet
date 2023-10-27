@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 27 oct. 2023 à 10:04
+-- Généré le : ven. 27 oct. 2023 à 12:19
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -253,7 +253,17 @@ CREATE TABLE IF NOT EXISTS `pratique_sportive` (
   `ID_SPORTIF` int NOT NULL AUTO_INCREMENT,
   `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_SPORTIF`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `pratique_sportive`
+--
+
+INSERT INTO `pratique_sportive` (`ID_SPORTIF`, `NOM`) VALUES
+(1, 'Nulle'),
+(2, 'Ponctuelle'),
+(3, 'Régulière'),
+(4, 'Fréquente');
 
 -- --------------------------------------------------------
 
@@ -281,7 +291,15 @@ CREATE TABLE IF NOT EXISTS `sexe` (
   `ID_SEXE` int NOT NULL AUTO_INCREMENT,
   `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_SEXE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `sexe`
+--
+
+INSERT INTO `sexe` (`ID_SEXE`, `NOM`) VALUES
+(1, 'Femme'),
+(2, 'Homme');
 
 -- --------------------------------------------------------
 
