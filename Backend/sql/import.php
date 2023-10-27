@@ -25,9 +25,9 @@ if ($data === null) {
 function exist($key, $val)
 {
     if (array_key_exists($key, $val)) {
-        return $val[$key];
+        return "'".addslashes($val[$key])."'";
     } else {
-        return null;
+        return "NULL";
     }
 }
 
@@ -35,20 +35,19 @@ function exist($key, $val)
 
 //Table aliments
 $code = $data['code'];
-$nom_produit = addslashes(exist('product_name', $data['product']));
+$nom_produit = exist('product_name', $data['product']);
 $quantite = exist('product_quantity', $data['product']);
 $portion = exist('serving_quantity', $data['product']);
 $marque = exist('brands', $data['product']);
 $energy = exist('energy', $data['product']['nutriments']);
 $energy_unit = exist('energy_unit', $data['product']['nutriments']);
 $nutriscore = exist('grade', end($data['product']['nutriscore']));
-$categories = addslashes(exist('categories', $data['product']));
+$categories = $data['product']['categories'];
 
 //Insertion de l'aliment dans la BDD
 $sql = "INSERT INTO `aliments` (`CODE`, `PRODUIT`, 
-`QUANTITE`, `PORTION`, `MARQUE`, `ENERGY`, `ENERGY_UNIT`, `NUTRISCORE_GRADE`, `CATEGORIES`) VALUES ('" . $code . "','" .
-    $nom_produit . "','" . $quantite . "','" . $portion . "','" . $marque . "','" . $energy . "','" . $energy_unit . "','" . $nutriscore . "','" . $categories . "')";
-print_r($sql);
+`QUANTITE`, `PORTION`, `MARQUE`, `ENERGY`, `ENERGY_UNIT`, `NUTRISCORE_GRADE`) VALUES ('" . $code . "'," .
+    $nom_produit . "," . $quantite . "," . $portion . "," . $marque . "," . $energy . "," . $energy_unit . "," . $nutriscore . ")";
 $request = $pdo->prepare($sql);
 $success = $request->execute();
 
@@ -128,7 +127,7 @@ for ($i = 0; $i < count($tab_nutriments); $i++) {
     if (isset($tab[$nom_en])) {
         $sql = "INSERT INTO `composition_nutritive` (`CODE`, `ID_NUTRIMENT`, 
         `VALEUR_100`, `VALEUR_PORTION`, `UNITE`) VALUES ('" . $code . "', '" . $id_nutriment . "',
-         '" . $tab[$nom_en] . "', '" . exist($nom_en . '_serving', $tab) . "', '" . exist($nom_en . '_unit', $tab) . "')";
+         " . exist($nom_en,$tab) . ", " . exist($nom_en . '_serving', $tab) . ", " . exist($nom_en . '_unit', $tab) . ")";
         $request = $pdo->prepare($sql);
         $success = $request->execute();
     }
@@ -136,3 +135,38 @@ for ($i = 0; $i < count($tab_nutriments); $i++) {
 
 
 //----------------------------------------------------------------------------------------------------
+
+
+//Table catégories
+$tab = explode(',',$categories);
+
+//Gestion si la catégorie existe déjà ou non
+for ($i = 0; $i < count($tab); $i++) {
+    $sql = "SELECT ID_CATEGORIES FROM `categories` WHERE NOM = '" . addslashes($tab[$i]) . "'";
+    $request = $pdo->prepare($sql);
+    $request->execute();
+    $tab_id = $request->fetchAll(PDO::FETCH_OBJ);
+
+    //Problème : j'utilise le nom pour le trouver, 
+    //et ce n'est pas unique (si il y a plusieurs fois le même nom, alors je sélectionne le premier)
+    if (count($tab_id) == 0) {
+        $sql = "INSERT INTO `categories` (`NOM`) VALUES ('" . addslashes($tab[$i]) . "')";
+        $request = $pdo->prepare($sql);
+        $request->execute();
+        print_r($sql);
+
+
+        $sql = "SELECT ID_CATEGORIES FROM `categories` WHERE NOM = '" . addslashes($tab[$i]) . "'";
+        $request = $pdo->prepare($sql);
+        $request->execute();
+        $tab_id = $request->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    $id = $tab_id[0]->ID_CATEGORIES;
+
+    //Insertion dans la table labels dans la BDD
+    $sql = "INSERT INTO `labels` (`CODE`, `ID_CATEGORIES`) 
+    VALUES ('" . $code . "', '" . $id . "')";
+    $request = $pdo->prepare($sql);
+    $success = $request->execute();
+}
