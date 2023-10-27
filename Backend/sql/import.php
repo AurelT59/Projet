@@ -5,7 +5,7 @@
 require_once('../init_pdo.php');
 
 // URL du JSON
-$code_barre = "3228857000166";
+$code_barre = "3038359003356";
 $url = 'https://world.openfoodfacts.org/api/v2/product/' . $code_barre . '.json';
 
 
