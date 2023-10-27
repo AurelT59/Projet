@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 26 oct. 2023 à 10:21
+-- Généré le : ven. 27 oct. 2023 à 10:04
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `projet`
+-- Base de données : `database`
 --
 
 -- --------------------------------------------------------
@@ -36,19 +36,45 @@ CREATE TABLE IF NOT EXISTS `aliments` (
   `MARQUE` varchar(256) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ENERGY` int DEFAULT NULL,
   `ENERGY_UNIT` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `NUTRISCORE_GRADE` varchar(256) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `CATEGORIES` varchar(256) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`CODE`)
+  `NUTRISCORE_GRADE` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`CODE`),
+  KEY `INDEX_PRODUIT` (`PRODUIT`(250))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `aliments`
 --
 
-INSERT INTO `aliments` (`CODE`, `PRODUIT`, `QUANTITE`, `PORTION`, `MARQUE`, `ENERGY`, `ENERGY_UNIT`, `NUTRISCORE_GRADE`, `CATEGORIES`) VALUES
-('3095756193011', 'Blanc de Poulet - Doré au Four', 160, 40, 'Fleury Michon', 416, 'kJ', 'b', 'Viandes et dérivés, Charcuteries, Charcuteries cuites, Blancs de volaille en tranches, Blancs de poulet en tranches, Blancs de poulet doré au four'),
-('3228857000166', 'Pain 100% mie complet', 500, 0, 'Harrys', 1053, 'kJ', 'c', 'Aliments et boissons à base de végétaux, Aliments d\'origine végétale, Céréales et pommes de terre, Pains, Pains de mie, Pains de mie sans croûte, Pains complets, Pains de mie complet'),
-('3608580784524', 'dessert fruitier pommes nature', 1600, 100, 'Andros', 310, 'kcal', 'a', 'Aliments et boissons à base de végétaux, Aliments d\'origine végétale, Desserts, Aliments à base de fruits et de légumes, Fruits et produits dérivés, Compotes, Compotes de pomme, Compotes pommes nature');
+INSERT INTO `aliments` (`CODE`, `PRODUIT`, `QUANTITE`, `PORTION`, `MARQUE`, `ENERGY`, `ENERGY_UNIT`, `NUTRISCORE_GRADE`) VALUES
+('3228857000166', 'Pain 100% mie complet', 500, NULL, 'Harrys', 1053, 'kJ', 'c');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE IF NOT EXISTS `categories` (
+  `ID_CATEGORIES` int NOT NULL AUTO_INCREMENT,
+  `NOM` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`ID_CATEGORIES`),
+  KEY `INDEX_NOM_CATEGORIES` (`NOM`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `categories`
+--
+
+INSERT INTO `categories` (`ID_CATEGORIES`, `NOM`) VALUES
+(18, ' Aliments d\'origine végétale'),
+(19, ' Céréales et pommes de terre'),
+(20, ' Pains'),
+(23, ' Pains complets'),
+(21, ' Pains de mie'),
+(24, ' Pains de mie complet'),
+(22, ' Pains de mie sans croûte'),
+(17, 'Aliments et boissons à base de végétaux');
 
 -- --------------------------------------------------------
 
@@ -70,30 +96,18 @@ CREATE TABLE IF NOT EXISTS `composition` (
 --
 
 INSERT INTO `composition` (`CODE`, `ID_INGREDIENT`, `POURCENTAGE`) VALUES
-('3095756193011', 9, 3),
-('3095756193011', 10, 0),
-('3095756193011', 11, 94),
-('3095756193011', 12, 1),
-('3095756193011', 13, 1),
-('3095756193011', 14, 0),
-('3095756193011', 15, 0),
-('3095756193011', 16, 0),
-('3095756193011', 17, 0),
-('3228857000166', 9, 3),
-('3228857000166', 19, 6),
-('3228857000166', 20, 37),
-('3228857000166', 21, 21),
-('3228857000166', 22, 18),
-('3228857000166', 23, 12),
-('3228857000166', 24, 1),
-('3228857000166', 25, 1),
-('3228857000166', 26, 0),
-('3228857000166', 27, 0),
-('3228857000166', 28, 0),
-('3228857000166', 29, 0),
-('3608580784524', 17, 2),
-('3608580784524', 18, 93),
-('3608580784524', 19, 5);
+('3228857000166', 1, 37),
+('3228857000166', 2, 21),
+('3228857000166', 3, 18),
+('3228857000166', 4, 12),
+('3228857000166', 5, 6),
+('3228857000166', 6, 3),
+('3228857000166', 7, 1),
+('3228857000166', 8, 1),
+('3228857000166', 9, 0),
+('3228857000166', 10, 0),
+('3228857000166', 11, 0),
+('3228857000166', 12, 0);
 
 -- --------------------------------------------------------
 
@@ -107,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `composition_nutritive` (
   `ID_NUTRIMENT` int NOT NULL,
   `VALEUR_100` float DEFAULT NULL,
   `VALEUR_PORTION` float DEFAULT NULL,
-  `UNITE` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `UNITE` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`CODE`,`ID_NUTRIMENT`),
   KEY `ID_NUTRIMENT` (`ID_NUTRIMENT`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -117,21 +131,11 @@ CREATE TABLE IF NOT EXISTS `composition_nutritive` (
 --
 
 INSERT INTO `composition_nutritive` (`CODE`, `ID_NUTRIMENT`, `VALEUR_100`, `VALEUR_PORTION`, `UNITE`) VALUES
-('3095756193011', 3, 0.5, 0.2, 'g'),
-('3095756193011', 5, 1.6, 0.64, 'g'),
-('3095756193011', 6, 0, 0, 'g'),
-('3095756193011', 8, 21, 8.4, 'g'),
-('3095756193011', 9, 1.8, 0.72, 'g'),
-('3228857000166', 3, 39.7, 0, 'g'),
-('3228857000166', 5, 4.3, 0, 'g'),
-('3228857000166', 6, 7.1, 0, 'g'),
-('3228857000166', 8, 7.2, 0, 'g'),
-('3228857000166', 9, 1.1, 0, 'g'),
-('3608580784524', 3, 17, 17, 'g'),
-('3608580784524', 5, 0.1, 0.1, 'g'),
-('3608580784524', 6, 1.3, 1.3, 'g'),
-('3608580784524', 8, 0.3, 0.3, 'g'),
-('3608580784524', 9, 0, 0, 'g');
+('3228857000166', 2, 39.7, NULL, 'g'),
+('3228857000166', 4, 4.3, NULL, 'g'),
+('3228857000166', 5, 7.1, NULL, 'g'),
+('3228857000166', 7, 7.2, NULL, 'g'),
+('3228857000166', 8, 1.1, NULL, 'g');
 
 -- --------------------------------------------------------
 
@@ -142,44 +146,27 @@ INSERT INTO `composition_nutritive` (`CODE`, `ID_NUTRIMENT`, `VALEUR_100`, `VALE
 DROP TABLE IF EXISTS `ingredients`;
 CREATE TABLE IF NOT EXISTS `ingredients` (
   `ID_INGREDIENT` int NOT NULL AUTO_INCREMENT,
-  `NOM` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_INGREDIENT`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `ingredients`
 --
 
 INSERT INTO `ingredients` (`ID_INGREDIENT`, `NOM`) VALUES
-(1, 'Pommes de terre'),
-(2, 'huiles végétales'),
-(3, 'farine de riz'),
-(4, 'amidon de BLÉ'),
-(5, 'farine de maïs'),
-(6, 'assaisonnement crème acidulée et oignon'),
-(7, 'émulsifiant'),
-(8, 'maltodextrine'),
-(9, 'sel'),
-(10, 'colorant'),
-(11, 'Filet de poulet'),
-(12, 'bouillons'),
-(13, 'concentrés de carotte'),
-(14, '_céleri_'),
-(15, 'dextrose de maïs'),
-(16, 'ferments'),
-(17, 'antioxydant'),
-(18, 'pommes'),
-(19, 'sucre'),
-(20, 'Farine complète de blé'),
-(21, 'eau'),
-(22, 'farine de blé'),
-(23, 'huile de colza'),
-(24, 'arôme'),
-(25, 'gluten de blé'),
-(26, 'farine de seigle maltée'),
-(27, 'levure'),
-(28, 'vinaigre'),
-(29, 'extrait d\'acérola');
+(1, 'Farine complète de blé'),
+(2, 'eau'),
+(3, 'farine de blé'),
+(4, 'huile de colza'),
+(5, 'sucre'),
+(6, 'sel'),
+(7, 'arôme'),
+(8, 'gluten de blé'),
+(9, 'farine de seigle maltée'),
+(10, 'levure'),
+(11, 'vinaigre'),
+(12, 'extrait d\'acérola');
 
 -- --------------------------------------------------------
 
@@ -189,15 +176,43 @@ INSERT INTO `ingredients` (`ID_INGREDIENT`, `NOM`) VALUES
 
 DROP TABLE IF EXISTS `journal`;
 CREATE TABLE IF NOT EXISTS `journal` (
-  `ID_JOURNAL` int NOT NULL,
+  `ID_JOURNAL` int NOT NULL AUTO_INCREMENT,
   `CODE` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `IDENTIFIANT` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `QUANTITE` int DEFAULT NULL,
   `DATE` date DEFAULT NULL,
   PRIMARY KEY (`ID_JOURNAL`),
-  KEY `CODE` (`CODE`),
-  KEY `IDENTIFIANT` (`IDENTIFIANT`)
+  KEY `IDENTIFIANT` (`IDENTIFIANT`),
+  KEY `CODE` (`CODE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `labels`
+--
+
+DROP TABLE IF EXISTS `labels`;
+CREATE TABLE IF NOT EXISTS `labels` (
+  `CODE` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `ID_CATEGORIES` int NOT NULL,
+  PRIMARY KEY (`CODE`,`ID_CATEGORIES`),
+  KEY `ID_CATEGORIES` (`ID_CATEGORIES`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `labels`
+--
+
+INSERT INTO `labels` (`CODE`, `ID_CATEGORIES`) VALUES
+('3228857000166', 17),
+('3228857000166', 18),
+('3228857000166', 19),
+('3228857000166', 20),
+('3228857000166', 21),
+('3228857000166', 22),
+('3228857000166', 23),
+('3228857000166', 24);
 
 -- --------------------------------------------------------
 
@@ -209,23 +224,23 @@ DROP TABLE IF EXISTS `nutriments`;
 CREATE TABLE IF NOT EXISTS `nutriments` (
   `ID_NUTRIMENT` int NOT NULL AUTO_INCREMENT,
   `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `NOM_EN` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
+  `NOM_EN` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_NUTRIMENT`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `nutriments`
 --
 
 INSERT INTO `nutriments` (`ID_NUTRIMENT`, `NOM`, `NOM_EN`) VALUES
-(2, 'Calcium', 'calcium'),
-(3, 'Glucides', 'carbohydrates'),
-(4, 'Cholestérol', 'cholesterol'),
-(5, 'Matières grasses', 'fat'),
-(6, 'Fibres', 'fiber'),
-(7, 'Fer', 'iron'),
-(8, 'Protéines', 'proteins'),
-(9, 'Sel', 'salt');
+(1, 'Calcium', 'calcium'),
+(2, 'Glucides', 'carbohydrates'),
+(3, 'Cholestérol', 'cholesterol'),
+(4, 'Matières grasses', 'fat'),
+(5, 'Fibres', 'fiber'),
+(6, 'Fer', 'iron'),
+(7, 'Protéines', 'proteins'),
+(8, 'Sel', 'salt');
 
 -- --------------------------------------------------------
 
@@ -235,7 +250,7 @@ INSERT INTO `nutriments` (`ID_NUTRIMENT`, `NOM`, `NOM_EN`) VALUES
 
 DROP TABLE IF EXISTS `pratique_sportive`;
 CREATE TABLE IF NOT EXISTS `pratique_sportive` (
-  `ID_SPORTIF` int NOT NULL,
+  `ID_SPORTIF` int NOT NULL AUTO_INCREMENT,
   `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_SPORTIF`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -263,7 +278,7 @@ CREATE TABLE IF NOT EXISTS `recommendations` (
 
 DROP TABLE IF EXISTS `sexe`;
 CREATE TABLE IF NOT EXISTS `sexe` (
-  `ID_SEXE` int NOT NULL,
+  `ID_SEXE` int NOT NULL AUTO_INCREMENT,
   `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_SEXE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -284,6 +299,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `AGE` int DEFAULT NULL,
   PRIMARY KEY (`IDENTIFIANT`),
+  KEY `INDEX_NOM_PRENOM` (`PRENOM`,`NOM`),
   KEY `ID_SEXE` (`ID_SEXE`),
   KEY `ID_SPORTIF` (`ID_SPORTIF`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -297,35 +313,42 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 --
 ALTER TABLE `composition`
   ADD CONSTRAINT `composition_ibfk_1` FOREIGN KEY (`CODE`) REFERENCES `aliments` (`CODE`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `composition_ibfk_2` FOREIGN KEY (`ID_INGREDIENT`) REFERENCES `ingredients` (`ID_INGREDIENT`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `composition_ibfk_2` FOREIGN KEY (`ID_INGREDIENT`) REFERENCES `ingredients` (`ID_INGREDIENT`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `composition_nutritive`
 --
 ALTER TABLE `composition_nutritive`
   ADD CONSTRAINT `composition_nutritive_ibfk_1` FOREIGN KEY (`CODE`) REFERENCES `aliments` (`CODE`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `composition_nutritive_ibfk_2` FOREIGN KEY (`ID_NUTRIMENT`) REFERENCES `nutriments` (`ID_NUTRIMENT`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `composition_nutritive_ibfk_2` FOREIGN KEY (`ID_NUTRIMENT`) REFERENCES `nutriments` (`ID_NUTRIMENT`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `journal`
 --
 ALTER TABLE `journal`
-  ADD CONSTRAINT `journal_ibfk_1` FOREIGN KEY (`CODE`) REFERENCES `aliments` (`CODE`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `journal_ibfk_2` FOREIGN KEY (`IDENTIFIANT`) REFERENCES `utilisateurs` (`IDENTIFIANT`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `journal_ibfk_1` FOREIGN KEY (`IDENTIFIANT`) REFERENCES `utilisateurs` (`IDENTIFIANT`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `journal_ibfk_2` FOREIGN KEY (`CODE`) REFERENCES `aliments` (`CODE`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `labels`
+--
+ALTER TABLE `labels`
+  ADD CONSTRAINT `labels_ibfk_1` FOREIGN KEY (`CODE`) REFERENCES `aliments` (`CODE`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `labels_ibfk_2` FOREIGN KEY (`ID_CATEGORIES`) REFERENCES `categories` (`ID_CATEGORIES`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `recommendations`
 --
 ALTER TABLE `recommendations`
   ADD CONSTRAINT `recommendations_ibfk_1` FOREIGN KEY (`IDENTIFIANT`) REFERENCES `utilisateurs` (`IDENTIFIANT`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `recommendations_ibfk_2` FOREIGN KEY (`ID_NUTRIMENT`) REFERENCES `nutriments` (`ID_NUTRIMENT`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `recommendations_ibfk_2` FOREIGN KEY (`ID_NUTRIMENT`) REFERENCES `nutriments` (`ID_NUTRIMENT`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  ADD CONSTRAINT `utilisateurs_ibfk_1` FOREIGN KEY (`ID_SEXE`) REFERENCES `sexe` (`ID_SEXE`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `utilisateurs_ibfk_2` FOREIGN KEY (`ID_SPORTIF`) REFERENCES `pratique_sportive` (`ID_SPORTIF`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `utilisateurs_ibfk_1` FOREIGN KEY (`ID_SEXE`) REFERENCES `sexe` (`ID_SEXE`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `utilisateurs_ibfk_2` FOREIGN KEY (`ID_SPORTIF`) REFERENCES `pratique_sportive` (`ID_SPORTIF`) ON DELETE RESTRICT ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
