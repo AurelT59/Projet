@@ -1,0 +1,2 @@
+Calculs pour les recommendations nutritives par jour : https://www.toutelanutrition.com/wikifit/nutrition/alimentation/calculer-ses-macros -> faire déclencheur SQL
+Il faut que énergie soit dans les nutriments, et la valeur et l'unité dans composition_nutritive
