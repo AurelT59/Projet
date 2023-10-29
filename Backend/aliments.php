@@ -28,21 +28,41 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        //         $result = $pdo->exec( "INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `energy`, `energy_unit`, `nutriscore_grade`)
-        // VALUES ('" . $data['code'] . "','" . $data['produit'] . "','" . $data['quantite'] . "','" . $data['portion'] . "','" . $data['marque'] . "','" . $data['energy'] . "','" . $data['energy_unit'] . "','" . $data['nutriscore_grade'] . "'););
+        $data_aliments = $data[0];
+        $data_composition = $data[1];
+        $data_labels = $data[2];
+        $data_composition_nutritive = $data[3];
 
-        // $result = $pdo->exec( 
+        $result = $pdo->exec("INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `energy`, `energy_unit`, `nutriscore_grade`)
+                              VALUES ('" . $data_aliments['code'] . "','" . $data_aliments['produit'] . "','" . $data_aliments['quantite'] . "','" . $data_aliments['portion'] . "','" . $data_aliments['marque'] . "','" . $data_aliments['energy'] . "','" . $data_aliments['energy_unit'] . "','" . $data_aliments['nutriscore_grade'] . "')");
 
-        $request = $pdo->prepare("
-           
-            INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
-            VALUES ('" . $data['code'] . "','" . $data['id_ingredient'] . "','" . $data['pourcentage'] . "');
-            INSERT INTO `labels` (`code`, `id_categories`)
-            VALUES ('" . $data['code'] . "','" . $data['id_categories'] . "');
-            INSERT INTO `composition_nutritive` (`code`, `id_nutriments`, `valeur_100`, `valeur_portion`, `unite`)
-            VALUES ('" . $data['code'] . "','" . $data['id_nutriments'] . "','" . $data['valeur_100'] . "','" . $data['valeur_portion'] . "','" . $data['unite'] . "');
-        ");
-        $request->execute();
+        foreach ($data_composition as $ingredient) {
+            $result = $pdo->exec("INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
+                                  VALUES ('" . $data_aliments['code'] . "','" . $ingredient['id_ingredient'] . "','" . $ingredient['pourcentage'] . "')");
+        }
+
+        foreach ($data_labels as $categorie) {
+            $result = $pdo->exec("INSERT INTO `labels` (`code`, `id_categories`)
+                                  VALUES ('" . $data_aliments['code'] . "','" . $categorie['id_categories'] . "')");
+        }
+
+        foreach ($data_composition_nutritive as $nutriment) {
+            $result = $pdo->exec("INSERT INTO `composition_nutritive` (`code`, `id_nutriments`, `valeur_100`, `valeur_portion`, `unite`)
+                                 VALUES ('" . $data_aliments['code'] . "','" . $nutriment['id_nutriments'] . "','" . $nutriment['valeur_100'] . "','" . $nutriment['valeur_portion'] . "','" . $nutriment['unite'] . "')");
+        }
+
+        // $request = $pdo->prepare("
+        //     INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `energy`, `energy_unit`, `nutriscore_grade`)
+        //     VALUES ('" . $data['code'] . "','" . $data['produit'] . "','" . $data['quantite'] . "','" . $data['portion'] . "','" . $data['marque'] . "','" . $data['energy'] . "','" . $data['energy_unit'] . "','" . $data['nutriscore_grade'] . "');
+        //     INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
+        //     VALUES ('" . $data['code'] . "','" . $data['id_ingredient'] . "','" . $data['pourcentage'] . "');
+        //     INSERT INTO `labels` (`code`, `id_categories`)
+        //     VALUES ('" . $data['code'] . "','" . $data['id_categories'] . "');
+        //     INSERT INTO `composition_nutritive` (`code`, `id_nutriments`, `valeur_100`, `valeur_portion`, `unite`)
+        //     VALUES ('" . $data['code'] . "','" . $data['id_nutriments'] . "','" . $data['valeur_100'] . "','" . $data['valeur_portion'] . "','" . $data['unite'] . "');
+        // ");
+        // $request->execute();
+
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
         checkAndResponse($request, $result, $data);
@@ -52,8 +72,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("UPDATE users SET name = '" . $data['name'] . "', email = '" . $data['mail'] . "' WHERE id = " . $data['id']);
-        $request->execute();
+        // $request = $pdo->prepare("UPDATE users SET name = '" . $data['name'] . "', email = '" . $data['mail'] . "' WHERE id = " . $data['id']);
+        // $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
         checkAndResponse($request, $result, $data);
@@ -62,7 +82,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'DELETE':
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("DELETE FROM `users` WHERE `id` = " . $data['id']);
+        $request = $pdo->prepare("DELETE FROM `aliments` WHERE `code` = " . $data['code']);
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
