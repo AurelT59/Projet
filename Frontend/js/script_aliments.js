@@ -32,14 +32,10 @@ $(document).ready(function () {
         },
         {
             targets: 5,
-            data: 'Energie'
-        },
-        {
-            targets: 6,
             data: 'Nutriscore'
         },
         {
-            targets: 7,
+            targets: 6,
             data: null,
             render: function (data, type, row) {
                 return '<button id="edit" onclick="onEditSubmit();">Éditer</button><button id="delete" onclick="onDeleteSubmit();">Supprimer</button>';
@@ -62,7 +58,6 @@ $(document).ready(function () {
                     "Quantite": gestion_null(data[i].QUANTITE, " g"),
                     "Portion": gestion_null(data[i].PORTION, " g"),
                     "Marque": data[i].MARQUE,
-                    "Energie": data[i].ENERGY + " " + data[i].ENERGY_UNIT,
                     "Nutriscore": data[i].NUTRISCORE_GRADE,
                 }).draw();
             }

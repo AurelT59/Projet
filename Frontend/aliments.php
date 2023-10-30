@@ -10,16 +10,18 @@
                 <input type="text" class="form-control" id="inputQuantite">
                 <div class="form-label">Portion</div>
                 <input type="text" class="form-control" id="inputPortion">
-                <div class="form-label">Marque</div>
-                <input type="text" class="form-control" id="inputMarque">
             </div>
             <div class="col-6">
-                <label class="form-label">Energie</label>
-                <input type="text" class="form-control" id="inputEnergie">
-                <label class="form-label">Unité de l'energie</label>
-                <input type="text" class="form-control" id="inputUnite">
+            <div class="form-label">Marque</div>
+                <input type="text" class="form-control" id="inputMarque">
                 <label class="form-label">Nutriscore</label>
                 <input type="text" class="form-control" id="inputNutriscore">
+                <label class="form-label">Catégories</label>
+                <select class="form-control" id="inputCatégories" multiple>
+                    <option value="1">Légume</option>
+                    <option value="2">Fruit</option>
+                    <option value="3">Viande</option>
+                </select>
             </div>
         </div>
         <div class="encadre">
@@ -76,7 +78,6 @@
                 <th scope="col">Quantité</th>
                 <th scope="col">Portion</th>
                 <th scope="col">Marque</th>
-                <th scope="col">Energie</th>
                 <th scope="col">Nutriscore</th>
                 <th scope="col">CRUD</th>
             </tr>
