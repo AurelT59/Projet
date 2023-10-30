@@ -8,9 +8,9 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        $data = "";
+        $data = $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("SELECT * FROM utilisateurs");
+        $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE 'code' = ");
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
@@ -22,8 +22,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $data = json_decode(file_get_contents("php://input"), true);
 
         $request = $pdo->prepare(
-            "INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `energy`, `energy_unit`, `nutriscore_grade`)
-            VALUES ('" . $data['code'] . "','" . $data['produit'] . "','" . $data['quantite'] . "','" . $data['portion'] . "','" . $data['marque'] . "','" . $data['energy'] . "','" . $data['energy_unit'] . "','" . $data['nutriscore_grade'] . "')"
+            "INSERT INTO `utilisateurs` (`identifiant`, `id_sportif`, `id_sexe`, `mot_de_passe`, `prenom`, `nom`, `age`)
+            VALUES ('" . $data['identifiant'] . "','" . $data['id_sportif'] . "','" . $data['id_sexe'] . "','" . $data['mot_de_passe'] . "','" . $data['prenom'] . "','" . $data['nom'] . "','" . $data['age'] . "')"
         );
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
@@ -35,7 +35,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("UPDATE users SET name = '" . $data['name'] . "', email = '" . $data['mail'] . "' WHERE id = " . $data['id']);
+        $request = $pdo->prepare("UPDATE utilisateurs SET id_sportif = '" . $data['id_sportif'] . "id_sexe = '" . $data['id_sexe'] . "mot_de_passe = '" . $data['mot_de_passe'] . "prenom = '" . $data['prenom'] . "nom = '" . $data['nom'] . "age = '" . $data['age'] . "' WHERE identifiant = " . $data['identifiant']);
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
@@ -45,7 +45,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'DELETE':
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("DELETE FROM `users` WHERE `id` = " . $data['id']);
+        $request = $pdo->prepare("DELETE FROM `utilisateurs` WHERE `identifiant` = " . $data['identifiant']);
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
@@ -72,7 +72,7 @@ function checkAndResponse($request, $result, $data)
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             echo json_encode($result);
         } else {
-            echo json_encode(array('id' => $data['id']));
+            echo json_encode(array('identifiant' => $data['identifiant']));
         }
     } else {
         // Erreur de la requête SQL, renvoyer un statut 500 - Internal Server Error

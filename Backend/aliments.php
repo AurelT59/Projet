@@ -31,33 +31,49 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $data_composition = $data['composition'];
         $data_labels = $data['labels'];
         $data_composition_nutritive = $data['composition_nutritive'];
+        $data_ingredients = $data['ingredients'];
+        $data_categoriess = $data['categories'];
+        $data_nutriments = $data['nutriments'];
 
         $request_1 = $pdo->exec("INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `energy`, `energy_unit`, `nutriscore_grade`)
                               VALUES ('" . $data['code'] . "','" . $data['produit'] . "','" . $data['quantite'] . "','" . $data['portion'] . "','" . $data['marque'] . "','" . $data['energy'] . "','" . $data['energy_unit'] . "','" . $data['nutriscore_grade'] . "')");
 
-        foreach ($data_composition as $ingredient) {
+        foreach ($data_composition as $composition) {
             $request_2 = $pdo->exec("INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
-                                  VALUES ('" . $data['code'] . "','" . $ingredient['id_ingredient'] . "','" . $ingredient['pourcentage'] . "')");
+                                  VALUES ('" . $data['code'] . "','" . $composition['id_ingredient'] . "','" . $composition['pourcentage'] . "')");
         }
 
-        foreach ($data_labels as $categorie) {
+        foreach ($data_labels as $label) {
             $request_3 = $pdo->exec("INSERT INTO `labels` (`code`, `id_categories`)
-                                  VALUES ('" . $data['code'] . "','" . $categorie['id_categories'] . "')");
+                                  VALUES ('" . $data['code'] . "','" . $label['id_categories'] . "')");
         }
 
-        foreach ($data_composition_nutritive as $nutriment) {
+        foreach ($data_composition_nutritive as $composition_nutritive) {
             $request_4 = $pdo->exec("INSERT INTO `composition_nutritive` (`code`, `id_nutriment`, `valeur_100`, `valeur_portion`, `unite`)
-                                 VALUES ('" . $data['code'] . "','" . $nutriment['id_nutriment'] . "','" . $nutriment['valeur_100'] . "','" . $nutriment['valeur_portion'] . "','" . $nutriment['unite'] . "')");
+                                 VALUES ('" . $data['code'] . "','" . $composition_nutritive['id_nutriment'] . "','" . $composition_nutritive['valeur_100'] . "','" . $composition_nutritive['valeur_portion'] . "','" . $composition_nutritive['unite'] . "')");
         }
 
-        $request = true;
+        // foreach ($data_ingredient as $ingredient) {
+
+        //     $check_request_1 = $pdo->prepare("SELECT * FROM aliments WHERE 'nom' = " . $ingredient['nom']);
+        //     $check_request_1->execute();
+        //     $check_result_1 = $check_request_1->fetchAll(PDO::FETCH_OBJ);
+
+        //     if $result
+
+        //     $request_5 = $pdo->exec("INSERT INTO `ingredient` (`nom`)
+        //                          VALUES ('" . $data['code'] . "','" . $ingredient['id_nutriment'] . "','" . $nutriment['valeur_100'] . "','" . $nutriment['valeur_portion'] . "','" . $nutriment['unite'] . "')");
+        // }
+
+
+        $total_request = true;
         if ($request_1 == false || $request_2 == false || $request_3 == false || $request_4 == false) {
-            $request = false;
+            $total_request = false;
         }
 
         $result = "";
 
-        checkAndResponse($request, $result, $data);
+        checkAndResponse($total_request, $result, $data);
         break;
 
     case 'PUT':
@@ -92,7 +108,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 function checkAndResponse($request, $result, $data)
 {
 
-    if (empty($result) & $_SERVER['REQUEST_METHOD'] != 'POST') {
+    if ($result == null & $_SERVER['REQUEST_METHOD'] != 'POST') {
         // Aucune donnée trouvée, renvoyer un statut 404 - Not Found
         http_response_code(404);
         echo json_encode(array('message' => "Aucun aliment trouvé."));
