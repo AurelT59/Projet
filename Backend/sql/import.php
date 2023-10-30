@@ -5,7 +5,7 @@
 require_once('../init_pdo.php');
 
 // URL du JSON
-$code_barre = "3038359003356";
+$code_barre = "3166352968591";
 $url = 'https://world.openfoodfacts.org/api/v2/product/' . $code_barre . '.json';
 
 
@@ -39,15 +39,13 @@ $nom_produit = exist('product_name', $data['product']);
 $quantite = exist('product_quantity', $data['product']);
 $portion = exist('serving_quantity', $data['product']);
 $marque = exist('brands', $data['product']);
-$energy = exist('energy', $data['product']['nutriments']);
-$energy_unit = exist('energy_unit', $data['product']['nutriments']);
 $nutriscore = exist('grade', end($data['product']['nutriscore']));
 $categories = $data['product']['categories'];
 
 //Insertion de l'aliment dans la BDD
 $sql = "INSERT INTO `aliments` (`CODE`, `PRODUIT`, 
-`QUANTITE`, `PORTION`, `MARQUE`, `ENERGY`, `ENERGY_UNIT`, `NUTRISCORE_GRADE`) VALUES ('" . $code . "'," .
-    $nom_produit . "," . $quantite . "," . $portion . "," . $marque . "," . $energy . "," . $energy_unit . "," . $nutriscore . ")";
+`QUANTITE`, `PORTION`, `MARQUE`, `NUTRISCORE_GRADE`) VALUES ('" . $code . "'," .
+    $nom_produit . "," . $quantite . "," . $portion . "," . $marque . "," . $nutriscore . ")";
 $request = $pdo->prepare($sql);
 $success = $request->execute();
 
@@ -98,7 +96,7 @@ for ($i = 0; $i < count($tab); $i++) {
 $tab_nutriments = [
     ['Calcium', 'calcium'], ['Glucides', 'carbohydrates'],
     ['Cholestérol', 'cholesterol'], ['Matières grasses', 'fat'], ['Fibres', 'fiber'],
-    ['Fer', 'iron'], ['Protéines', 'proteins'], ['Sel', 'salt']
+    ['Fer', 'iron'], ['Protéines', 'proteins'], ['Sel', 'salt'],['Energie', 'energy']
 ];
 
 
