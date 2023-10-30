@@ -1,6 +1,50 @@
 Calculs pour les recommendations nutritives par jour : https://www.toutelanutrition.com/wikifit/nutrition/alimentation/calculer-ses-macros -> faire déclencheur SQL
 Il faut que énergie soit dans les nutriments, et la valeur et l'unité dans composition_nutritive
 
+Déclencheur SQL :
+BEGIN
+    DECLARE new_quantite DECIMAL(10, 2);
+    DECLARE new_reco DECIMAL(10, 2);
+    
+    IF NEW.ID_SEXE = 2 THEN
+        SET new_quantite = NEW.POIDS * 10 + NEW.TAILLE * 6.25 + NEW.AGE * 5 + 5;
+    ELSEIF NEW.ID_SEXE = 1 THEN
+        SET new_quantite = NEW.POIDS * 10 + NEW.TAILLE * 6.25 + NEW.AGE * 5 - 161;
+    ELSE
+        SET new_quantite = 0;
+    END IF;
+    
+    IF NEW.ID_SPORTIF = 1 THEN
+        SET new_reco = new_quantite * 1.2;
+    ELSEIF NEW.ID_SPORTIF = 2 THEN
+        SET new_reco = new_quantite * 1.55;
+    ELSEIF NEW.ID_SPORTIF = 3 THEN
+        SET new_reco = new_quantite * 1.725;
+    ELSE
+        SET new_reco = new_quantite;
+    END IF;
+
+DELIMITER //
+CREATE TRIGGER calcul_calcium
+AFTER INSERT ON utilisateurs
+FOR EACH ROW
+BEGIN
+    DECLARE new_quantite DECIMAL(10, 2);
+    
+    IF NEW.ID_SEXE = 1 THEN
+        SET new_quantite = 0.95;
+    ELSEIF NEW.ID_SEXE = 2 THEN
+        SET new_quantite = 1;
+    ELSE
+        SET new_quantite = 0;
+    END IF;
+
+    INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
+    VALUES (NEW.IDENTIFIANT, 1, new_quantite);
+END;
+//
+DELIMITER ;
+
 requêtes http : 
 
 POST :
