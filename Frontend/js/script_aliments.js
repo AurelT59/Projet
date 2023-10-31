@@ -67,6 +67,28 @@ $(document).ready(function () {
         }
     })
 
+    const selectableItems = document.querySelectorAll('.selectable');
+    let selectedItems = [];
+
+    function toggleSelection(item) {
+        if (selectedItems.includes(item)) {
+            // Désélectionner l'élément
+            selectedItems = selectedItems.filter(selectedItem => selectedItem !== item);
+            item.selected = false;
+        } else {
+            // Sélectionner l'élément
+            selectedItems.push(item);
+            item.selected = true;
+        }
+    }
+
+    selectableItems.forEach(item => {
+        item.addEventListener('click', () => {
+            toggleSelection(item);
+        });
+    });
+
+
 });
 
 

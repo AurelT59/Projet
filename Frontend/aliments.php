@@ -12,15 +12,15 @@
                 <input type="text" class="form-control" id="inputPortion">
             </div>
             <div class="col-6">
-            <div class="form-label">Marque</div>
+                <div class="form-label">Marque</div>
                 <input type="text" class="form-control" id="inputMarque">
                 <label class="form-label">Nutriscore</label>
                 <input type="text" class="form-control" id="inputNutriscore">
                 <label class="form-label">Catégories</label>
-                <select class="form-control" id="inputCatégories" multiple>
-                    <option value="1">Légume</option>
-                    <option value="2">Fruit</option>
-                    <option value="3">Viande</option>
+                <select class="form-control" id="inputCategories" multiple>
+                    <option class="selectable" value="1">Légume</option>
+                    <option class="selectable" value="2">Fruit</option>
+                    <option class="selectable" value="3">Viande</option>
                 </select>
             </div>
         </div>
