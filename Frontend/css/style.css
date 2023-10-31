@@ -116,3 +116,20 @@ h1 {
     max-height: 400px;
     overflow: auto;
 }
+
+/*LOGIN*/
+
+.centre {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#cadre {
+    border: 5px solid #FF971D;
+    border-radius: 10px;
+    background-color: #7ED957;
+    padding: 20px;
+    text-align: center;
+}

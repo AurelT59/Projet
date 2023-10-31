@@ -16,14 +16,34 @@
                 <input type="text" class="form-control" id="inputMarque">
                 <label class="form-label">Nutriscore</label>
                 <input type="text" class="form-control" id="inputNutriscore">
-                <label class="form-label">Catégories</label>
-                <select class="form-control" id="inputCategories" multiple>
-                    <option class="selectable" value="1">Légume</option>
-                    <option class="selectable" value="2">Fruit</option>
-                    <option class="selectable" value="3">Viande</option>
-                </select>
             </div>
         </div>
+        <label class="form-label">Catégories</label>
+        <div id="inputCategories" class="encadre">
+            <div class="row">
+                <div class="col-6">
+                    <input type="checkbox" value="option1"> Option 1
+                    <br>
+                    <input type="checkbox" value="option2"> Option 2
+                    <br>
+                    <input type="checkbox" value="option3"> Option 3
+                    <br>
+                    <input type="checkbox" value="option4"> Option 4
+                    <br>
+                </div>
+                <div class="col-6">
+                    <input type="checkbox" value="option1"> Option 1
+                    <br>
+                    <input type="checkbox" value="option2"> Option 2
+                    <br>
+                    <input type="checkbox" value="option3"> Option 3
+                    <br>
+                    <input type="checkbox" value="option4"> Option 4
+                    <br>
+                </div>
+            </div>
+        </div>
+        <label class="form-label">Ingédients</label>
         <div class="encadre">
             <table id="table">
                 <tr>
@@ -40,11 +60,16 @@
             </table>
             <input type="button" class="btn btn-primary" id="inputAjoutIng" onclick="ajouterLigne()" value="Ajouter une ligne">
         </div>
+        <label class="form-label">Nutriments</label>
         <div class="encadre">
             <table id="tableNutriment">
                 <tr>
                     <td>
-                        <input type="text" class="form-control input-taille" placeholder="Nutriment" id="inputNutriment1">
+                        <select class="form-select input-taille" placeholder="Nutriment" id="inputNutriment1">
+                            <option>Calcium</option>
+                            <option>Protéines</option>
+                            <option>Glucides</option>
+                        </select>
                     </td>
                     <td>
                         <input type="text" class="form-control input-taille" placeholder="Quantité pour 100g" id="inputQuantite_1001">
@@ -88,5 +113,6 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
 <script src="js/script_aliments.js"></script>

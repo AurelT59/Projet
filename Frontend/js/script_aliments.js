@@ -66,30 +66,11 @@ $(document).ready(function () {
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
-
-    const selectableItems = document.querySelectorAll('.selectable');
-    let selectedItems = [];
-
-    function toggleSelection(item) {
-        if (selectedItems.includes(item)) {
-            // Désélectionner l'élément
-            selectedItems = selectedItems.filter(selectedItem => selectedItem !== item);
-            item.selected = false;
-        } else {
-            // Sélectionner l'élément
-            selectedItems.push(item);
-            item.selected = true;
-        }
-    }
-
-    selectableItems.forEach(item => {
-        item.addEventListener('click', () => {
-            toggleSelection(item);
-        });
-    });
-
-
 });
+
+
+
+
 
 
 //Gestion de l'interface ajouter/supprimer pour les ingrédients
@@ -140,7 +121,11 @@ function ajouterLigneNutriment() {
     const cell5 = newRow.insertCell(4);
 
     cell1.innerHTML = `
-    <input type="text" class="form-control input-taille" placeholder="Nutriment" id="inputNutriment${ligneCount}">
+    <select class="form-select input-taille" placeholder="Nutriment" id="inputNutriment${ligneCount}">
+                            <option>Calcium</option>
+                            <option>Protéines</option>
+                            <option>Glucides</option>
+                        </select>
 `;
     cell2.innerHTML = `
     <input type="text" class="form-control input-taille" placeholder="Quantité pour 100g" id="inputQuantite_100${ligneCount}">
