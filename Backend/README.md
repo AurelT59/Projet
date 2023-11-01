@@ -47,6 +47,8 @@ DELIMITER ;
 
 requêtes http : 
 
+ALIMENTS
+
 POST :
 
 - exemple body : 

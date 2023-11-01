@@ -31,9 +31,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $data_composition = $data['composition'];
         $data_labels = $data['labels'];
         $data_composition_nutritive = $data['composition_nutritive'];
-        $data_ingredients = $data['ingredients'];
-        $data_categoriess = $data['categories'];
-        $data_nutriments = $data['nutriments'];
+        // $data_ingredients = $data['ingredients'];
+        // $data_categoriess = $data['categories'];
 
         $request_1 = $pdo->exec("INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `energy`, `energy_unit`, `nutriscore_grade`)
                               VALUES ('" . $data['code'] . "','" . $data['produit'] . "','" . $data['quantite'] . "','" . $data['portion'] . "','" . $data['marque'] . "','" . $data['energy'] . "','" . $data['energy_unit'] . "','" . $data['nutriscore_grade'] . "')");
@@ -82,7 +81,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         // $request = $pdo->prepare("UPDATE users SET name = '" . $data['name'] . "', email = '" . $data['mail'] . "' WHERE id = " . $data['id']);
         // $request->execute();
-        $result = $request->fetchAll(PDO::FETCH_OBJ);
+
+        $request_1 = $pdo->exec("UPDATE aliments SET produit = '" . $data['produit'] . "', quantite = '" . $data['quantite'] . "', portion = '" . $data['portion'] . "', marque = '" . $data['marque'] . "', energy = '" . $data['energy'] . "', energy_unit = '" . $data['energy_unit'] . "', nutriscore_grade = '" . $data['nutriscore_grade'] . "' WHERE code = " . $data['code']);
+
+        foreach ($data_composition as $composition) {
+            $request_2 = $pdo->exec("UPDATE composition SET pourcentage = '" . $composition['pourcentage'] . "' WHERE code = '" . $data['code'] . "' AND id_ingredient = '" . $composition['id_ingredient']);
+        }
+
+        foreach ($data_labels as $label) {
+            $request_3 = $pdo->exec("UPDATE labels SET code = '" . $data['code'] . "', id_categories = '" . $labels['id_categories'] . "'");
+        }
+
+        foreach ($data_composition_nutritive as $composition_nutritive) {
+            $request_4 = $pdo->exec("UPDATE composition_nutritive SET code = '" . $data['code'] . "', id_nutriment = '" . $composition_nutritive['id_nutriment'] . "', valeur_100 = '" . $composition_nutritive['valeur_100'] . "', valeur_portion = '" . $composition_nutritive['valeur_portion'] . "', unite = '" . $composition_nutritive['unite'] . "'");
+        }
+
+        $result = "";
 
         checkAndResponse($request, $result, $data);
         break;
