@@ -8,9 +8,9 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        $data = $_GET['identifiant'];
+        $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE IDENTIFIANT = '" . $data . "'");
+        $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE IDENTIFIANT = '" . $data['identifiant'] . "'");
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
@@ -22,8 +22,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $data = json_decode(file_get_contents("php://input"), true);
 
         $request = $pdo->prepare(
-            "INSERT INTO `utilisateurs` (`identifiant`, `id_sportif`, `id_sexe`, `mot_de_passe`, `prenom`, `nom`, `age`, 'poids', 'taille')
-            VALUES ('" . $data['identifiant'] . "','" . $data['id_sportif'] . "','" . $data['id_sexe'] . "','" . $data['mot_de_passe'] . "','" . $data['prenom'] . "','" . $data['nom'] . "','" . $data['age'] . "','" . $data['poids'] . "','" . $data['taille'] . "')"
+            "INSERT INTO `utilisateurs` (`identifiant`, `id_sportif`, `id_sexe`, `mot_de_passe`, `prenom`, `nom`, `age`, `poids`, `taille`)
+            VALUES ('" . $data['identifiant'] . "'," . $data['id_sportif'] . "," . $data['id_sexe'] . ",'" . $data['mot_de_passe'] . "','" . $data['prenom'] . "','" . $data['nom'] . "'," . $data['age'] . "," . $data['poids'] . "," . $data['taille'] . ")"
         );
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
@@ -35,7 +35,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("UPDATE utilisateurs SET id_sportif = '" . $data['id_sportif'] . "', id_sexe = '" . $data['id_sexe'] . "', mot_de_passe = '" . $data['mot_de_passe'] . "', prenom = '" . $data['prenom'] . "', nom = '" . $data['nom'] . "', age = '" . $data['age'] . "', poids = '" . $data['poids'] . "', taille = '" . $data['taille'] . "' WHERE identifiant = " . $data['identifiant']);
+        $request = $pdo->prepare("UPDATE utilisateurs SET identifiant =  '" . $data['identifiant_nouveau'] . "', id_sportif = " . $data['id_sportif'] . ", id_sexe = " . $data['id_sexe'] . ", mot_de_passe = '" . $data['mot_de_passe'] . "', prenom = '" . $data['prenom'] . "', nom = '" . $data['nom'] . "', age = " . $data['age'] . ", poids = " . $data['poids'] . ", taille = " . $data['taille'] . " WHERE identifiant = '" . $data['identifiant_actuel'] . "'");
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
@@ -45,7 +45,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'DELETE':
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("DELETE FROM `utilisateurs` WHERE `identifiant` = " . $data['identifiant']);
+        $request = $pdo->prepare("DELETE FROM `utilisateurs` WHERE `identifiant` = '" . $data['identifiant'] . "'");
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 

@@ -150,7 +150,8 @@ PUT :
 
 DELETE : 
 
-utilisateurs :
+
+-> UTILISATEURS <-
 
 GET :
 
@@ -175,3 +176,61 @@ GET :
         "TAILLE": "180"
     }
 ]
+
+POST :
+
+- exemple body :
+
+{
+    "identifiant": "aurelt",
+    "id_sportif": 2,
+    "id_sexe": 1,
+    "mot_de_passe": "lol",
+    "prenom": "Aurel",
+    "nom": "Ter",
+    "age": 21,
+    "poids": 60,
+    "taille": 180
+}
+
+-exemple return :
+
+{
+    "identifiant": "aurelt"
+}
+
+PUT :
+
+- exemple body :
+
+{
+    "identifiant": "aurelt",
+    "id_sportif": 2,
+    "id_sexe": 1,
+    "mot_de_passe": "nouveau_mot_de_passe",
+    "prenom": "Aurel",
+    "nom": "Ter",
+    "age": 21,
+    "poids": 60,
+    "taille": 180
+}
+
+-exemple return :
+
+{
+    "identifiant": "aurelt"
+}
+
+DELETE :
+
+- exemple body :
+
+{
+    "identifiant": "aurelt"
+}
+
+-exemple return :
+
+{
+    "identifiant": "aurelt"
+}
