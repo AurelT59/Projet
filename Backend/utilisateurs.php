@@ -8,9 +8,9 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        $data = $data = json_decode(file_get_contents("php://input"), true);
+        $data = $_GET['identifiant'];
 
-        $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE identifiant = '" . $data['identifiant'] . "'");
+        $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE IDENTIFIANT = '" . $data . "'");
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 

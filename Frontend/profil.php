@@ -39,3 +39,5 @@
         <button type="submit" class="btn btn-primary body-button">Valider</button>
     </form>
 </div>
+
+<script src="js/config.js"></script>

@@ -34,8 +34,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         // $data_ingredients = $data['ingredients'];
         // $data_categoriess = $data['categories'];
 
-        $request_1 = $pdo->exec("INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `energy`, `energy_unit`, `nutriscore_grade`)
-                              VALUES ('" . $data['code'] . "','" . $data['produit'] . "','" . $data['quantite'] . "','" . $data['portion'] . "','" . $data['marque'] . "','" . $data['energy'] . "','" . $data['energy_unit'] . "','" . $data['nutriscore_grade'] . "')");
+        $request_1 = $pdo->exec("INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `nutriscore_grade`)
+                              VALUES ('" . $data['code'] . "','" . $data['produit'] . "','" . $data['quantite'] . "','" . $data['portion'] . "','" . $data['marque'] . "','" . $data['nutriscore_grade'] . "')");
 
         foreach ($data_composition as $composition) {
             $request_2 = $pdo->exec("INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
@@ -82,7 +82,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         // $request = $pdo->prepare("UPDATE users SET name = '" . $data['name'] . "', email = '" . $data['mail'] . "' WHERE id = " . $data['id']);
         // $request->execute();
 
-        $request_1 = $pdo->exec("UPDATE aliments SET produit = '" . $data['produit'] . "', quantite = '" . $data['quantite'] . "', portion = '" . $data['portion'] . "', marque = '" . $data['marque'] . "', energy = '" . $data['energy'] . "', energy_unit = '" . $data['energy_unit'] . "', nutriscore_grade = '" . $data['nutriscore_grade'] . "' WHERE code = " . $data['code']);
+        $request_1 = $pdo->exec("UPDATE aliments SET produit = '" . $data['produit'] . "', quantite = '" . $data['quantite'] . "', portion = '" . $data['portion'] . "', marque = '" . $data['marque'] . "', nutriscore_grade = '" . $data['nutriscore_grade'] . "' WHERE code = " . $data['code']);
 
         foreach ($data_composition as $composition) {
             $request_2 = $pdo->exec("UPDATE composition SET pourcentage = '" . $composition['pourcentage'] . "' WHERE code = '" . $data['code'] . "' AND id_ingredient = '" . $composition['id_ingredient']);

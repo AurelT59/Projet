@@ -46,7 +46,7 @@ $(document).ready(function () {
 
     //Initialisation du tableau
     $.ajax({
-        url: 'http://localhost/Projet/Projet/Backend/aliments.php',
+        url: URL_START + 'Backend/aliments.php',
         method: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -63,17 +63,102 @@ $(document).ready(function () {
             }
         },
         error: function (error) {
+            throwAlert('Erreur lors de la récupération des données : ', error);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
+
+
+
+    //Ajout d'un aliment
+    //------------------------------------------------------------------------------------------------
+    $('#btnValider').on("click", function (e) {
+        let code = $("#inputCode").val();
+        let nom = $("#inputAliment").val();
+        let quantite = $("#inputQuantite").val();
+        let portion = $("#inputPortion").val();
+        let marque = $("#inputMarque").val();
+        let nutriscore_grade = $("#inputNutriscore").val();
+
+        var formData = {
+            code: code,
+            produit: nom,
+            quantite: quantite,
+            portion: portion,
+            marque: marque,
+            nutriscore_grade: nutriscore_grade,
+            composition: [
+                {
+                    "id_ingredient": 48,
+                    "pourcentage": 75
+                },
+                {
+                    "id_ingredient": 49,
+                    "pourcentage": 25
+                }
+            ],
+            labels: [
+                {
+                    "id_categories": 27
+                }
+            ],
+            composition_nutritive: [
+                {
+                    "id_nutriment": 4,
+                    "valeur_100": 100,
+                    "valeur_portion": 250,
+                    "unite": "g"
+                }
+            ]
+        }
+
+        $.ajax({
+            url: URL_START + 'Backend/aliments.php',
+            method: 'POST',
+            data: JSON.stringify(formData),
+            dataType: 'json',
+            success: function (data) {
+                table.row.add({
+                    "Code": data.code,
+                    "Nom": formData.produit,
+                    "Quantite": gestion_null(formData.quantite, " g"),
+                    "Portion": gestion_null(formData.portion, " g"),
+                    "Marque": formData.marque,
+                    "Nutriscore": formData.nutriscore_grade
+                }).draw();
+            },
+            error: function (error) {
+                throwAlert('Erreur lors de l\'ajout des données : ' + error);
+                console.error('Erreur lors de l\'ajout des données : ', error);
+            }
+        })
+    })
+    //------------------------------------------------------------------------------------------------
 });
 
 
 
 
+//Fonction pour lancer une erreur
+function throwAlert(text) {
+    var alertElement = document.getElementById("myAlert");
+    var msgError = document.getElementById("msgError");
+
+    alertElement.style.display = "block";
+    msgError.innerHTML = text;
+    alertElement.classList.add("show");
+
+    setTimeout(function () {
+        alertElement.style.display = "none";
+        alertElement.classList.remove("show");
+    }, 5000);
+}
+
+
 
 
 //Gestion de l'interface ajouter/supprimer pour les ingrédients
+//------------------------------------------------------------------------------------------------
 let ligneCount = 1;
 
 function ajouterLigne() {
@@ -102,10 +187,12 @@ function supprimerLigne(button) {
     const row = button.parentNode.parentNode;
     row.parentNode.removeChild(row);
 }
+//------------------------------------------------------------------------------------------------
 
 
 
 //Gestion de l'interface ajouter/supprimer pour les nutriments
+//------------------------------------------------------------------------------------------------
 let ligneCountNutriment = 1;
 
 function ajouterLigneNutriment() {
@@ -146,3 +233,4 @@ function supprimerLigneNutriment(button) {
     const row = button.parentNode.parentNode;
     row.parentNode.removeChild(row);
 }
+//------------------------------------------------------------------------------------------------
