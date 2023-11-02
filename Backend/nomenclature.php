@@ -8,23 +8,44 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        $data = "";
+        $data = json_decode(file_get_contents("php://input"), true);
 
-        $request_ingredients = $pdo->prepare("SELECT * FROM ingredients WHERE 'code' = " . $data['code']);
+        $request_ingredients = $pdo->prepare("SELECT * 
+                                              FROM ingredients 
+                                              JOIN composition ON ingredients.id_ingredient = composition.id_ingredient 
+                                              WHERE composition.code = " . $data['code']);
         $request_ingredients->execute();
-        $result_ingredients = $request->fetchAll(PDO::FETCH_OBJ);
+        $result_ingredients = $request_ingredients->fetchAll(PDO::FETCH_OBJ);
 
-        $request_categories = $pdo->prepare("SELECT * FROM categories WHERE 'code' = " . $data['code']);
+        $request_categories = $pdo->prepare("SELECT * 
+                                             FROM categories 
+                                             JOIN labels ON categories.id_categories = labels.id_categories
+                                             WHERE labels.code = " . $data['code']);
         $request_categories->execute();
-        $result_categories = $request->fetchAll(PDO::FETCH_OBJ);
+        $result_categories = $request_categories->fetchAll(PDO::FETCH_OBJ);
 
-        $request_nutriments = $pdo->prepare("SELECT * FROM nutriments WHERE 'code' = " . $data['code']);
+        $request_nutriments = $pdo->prepare("SELECT * 
+                                             FROM nutriments 
+                                             JOIN composition_nutritive ON nutriments.id_nutriment = composition_nutritive.id_nutriment
+                                             WHERE composition_nutritive.code = " . $data['code']);
         $request_nutriments->execute();
-        $result_nutriments = $request->fetchAll(PDO::FETCH_OBJ);
+        $result_nutriments = $request_nutriments->fetchAll(PDO::FETCH_OBJ);
 
-        $result_nomenclature = $result_ingredients + $result_categories + $result_nutriments;
+        $total_request = true;
+        if ($request_ingredients == false || $request_categories == false || $request_nutriments == false) {
+            $total_request = false;
+        }
 
-        checkAndResponse($request, $result_nomenclature, $data);
+        $result_nomenclature = [
+            'ingredients' => $result_ingredients,
+            'categories' => $result_categories,
+            'nutriments' => $result_nutriments
+        ];
+
+        http_response_code(200);
+        echo json_encode($result_nomenclature);
+
+        // checkAndResponse($total_request, $result_nomenclature, $data);
         break;
     default:
         http_response_code(405);

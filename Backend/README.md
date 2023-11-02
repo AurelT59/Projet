@@ -150,6 +150,9 @@ PUT :
 
 DELETE : 
 
+- exemple body :
+- exemple return :
+
 
 -> UTILISATEURS <-
 
@@ -234,4 +237,192 @@ DELETE :
 
 {
     "identifiant": "aurelt"
+}
+
+
+-> NOMENCLATURE <-
+
+GET:
+
+- exemple body :
+
+{
+    "code": 3032220061100
+}
+
+-exemple return :
+
+{
+    "ingredients": [
+        {
+            "ID_INGREDIENT": "2",
+            "NOM": "eau",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "2"
+        },
+        {
+            "ID_INGREDIENT": "6",
+            "NOM": "sel",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "0"
+        },
+        {
+            "ID_INGREDIENT": "7",
+            "NOM": "arôme",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "0"
+        },
+        {
+            "ID_INGREDIENT": "25",
+            "NOM": "colorant",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "0"
+        },
+        {
+            "ID_INGREDIENT": "27",
+            "NOM": "correcteur d'acidité",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "0"
+        },
+        {
+            "ID_INGREDIENT": "31",
+            "NOM": "LAIT écrémé reconstitué",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "50"
+        },
+        {
+            "ID_INGREDIENT": "32",
+            "NOM": "fromages",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "46"
+        },
+        {
+            "ID_INGREDIENT": "33",
+            "NOM": "beurre",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "1"
+        },
+        {
+            "ID_INGREDIENT": "34",
+            "NOM": "lactosérum",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "1"
+        },
+        {
+            "ID_INGREDIENT": "35",
+            "NOM": "protéines de LAIT",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "0"
+        },
+        {
+            "ID_INGREDIENT": "36",
+            "NOM": "sel de fonte",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "0"
+        },
+        {
+            "ID_INGREDIENT": "37",
+            "NOM": "épaississant",
+            "CODE": "3032220061100",
+            "POURCENTAGE": "0"
+        }
+    ],
+    "categories": [
+        {
+            "ID_CATEGORIES": "35",
+            "NOM": "Produits laitiers",
+            "CODE": "3032220061100"
+        },
+        {
+            "ID_CATEGORIES": "36",
+            "NOM": " Produits fermentés",
+            "CODE": "3032220061100"
+        },
+        {
+            "ID_CATEGORIES": "37",
+            "NOM": " Produits laitiers fermentés",
+            "CODE": "3032220061100"
+        },
+        {
+            "ID_CATEGORIES": "38",
+            "NOM": " Fromages",
+            "CODE": "3032220061100"
+        },
+        {
+            "ID_CATEGORIES": "39",
+            "NOM": " Fromages de vache",
+            "CODE": "3032220061100"
+        },
+        {
+            "ID_CATEGORIES": "40",
+            "NOM": " Frais",
+            "CODE": "3032220061100"
+        },
+        {
+            "ID_CATEGORIES": "41",
+            "NOM": " Fromages en tranches",
+            "CODE": "3032220061100"
+        },
+        {
+            "ID_CATEGORIES": "42",
+            "NOM": " Fromages fondus",
+            "CODE": "3032220061100"
+        }
+    ],
+    "nutriments": [
+        {
+            "ID_NUTRIMENT": "1",
+            "NOM": "Calcium",
+            "NOM_EN": "calcium",
+            "CODE": "3032220061100",
+            "VALEUR_100": "0.45",
+            "VALEUR_PORTION": "0.135",
+            "UNITE": "mg"
+        },
+        {
+            "ID_NUTRIMENT": "2",
+            "NOM": "Glucides",
+            "NOM_EN": "carbohydrates",
+            "CODE": "3032220061100",
+            "VALEUR_100": "4.5",
+            "VALEUR_PORTION": "1.35",
+            "UNITE": "g"
+        },
+        {
+            "ID_NUTRIMENT": "4",
+            "NOM": "Matières grasses",
+            "NOM_EN": "fat",
+            "CODE": "3032220061100",
+            "VALEUR_100": "17",
+            "VALEUR_PORTION": "5.1",
+            "UNITE": "g"
+        },
+        {
+            "ID_NUTRIMENT": "7",
+            "NOM": "Protéines",
+            "NOM_EN": "proteins",
+            "CODE": "3032220061100",
+            "VALEUR_100": "13.5",
+            "VALEUR_PORTION": "4.05",
+            "UNITE": "g"
+        },
+        {
+            "ID_NUTRIMENT": "8",
+            "NOM": "Sel",
+            "NOM_EN": "salt",
+            "CODE": "3032220061100",
+            "VALEUR_100": "2.4",
+            "VALEUR_PORTION": "0.72",
+            "UNITE": "g"
+        },
+        {
+            "ID_NUTRIMENT": "9",
+            "NOM": "Énergie",
+            "NOM_EN": "energy",
+            "CODE": "3032220061100",
+            "VALEUR_100": "961",
+            "VALEUR_PORTION": "288",
+            "UNITE": "kJ"
+        }
+    ]
 }
