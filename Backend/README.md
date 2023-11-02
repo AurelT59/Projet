@@ -45,9 +45,59 @@ END;
 //
 DELIMITER ;
 
+
 requêtes http : 
 
-ALIMENTS
+-> ALIMENTS <-
+
+GET :
+
+- body : empty
+
+- exemple return :
+
+[
+    {
+        "CODE": "3038359003356",
+        "PRODUIT": "banzaï noodle saveur poulet",
+        "QUANTITE": "60",
+        "PORTION": "340",
+        "MARQUE": "Lustucru,Panzani",
+        "ENERGY": null,
+        "ENERGY_UNIT": null,
+        "NUTRISCORE_GRADE": "c"
+    },
+    {
+        "CODE": "3181232138345",
+        "PRODUIT": "Original burger CHEESE",
+        "QUANTITE": "145",
+        "PORTION": "145",
+        "MARQUE": "Charal",
+        "ENERGY": "1204",
+        "ENERGY_UNIT": "kJ",
+        "NUTRISCORE_GRADE": "d"
+    },
+    {
+        "CODE": "3228857000166",
+        "PRODUIT": "Pain 100% mie complet",
+        "QUANTITE": "500",
+        "PORTION": null,
+        "MARQUE": "Harrys",
+        "ENERGY": "1053",
+        "ENERGY_UNIT": "kJ",
+        "NUTRISCORE_GRADE": "c"
+    },
+    {
+        "CODE": "3242272261650",
+        "PRODUIT": "XtremBox - Radiatori  Bœuf Sauce au poivre",
+        "QUANTITE": "400",
+        "PORTION": "400",
+        "MARQUE": "Sodebo, pasta xtrem",
+        "ENERGY": "698",
+        "ENERGY_UNIT": "kJ",
+        "NUTRISCORE_GRADE": "c"
+    }
+]
 
 POST :
 
@@ -93,3 +143,35 @@ POST :
     "code": 0;
 }
 
+PUT :
+
+- exemple body :
+- exemple return :
+
+DELETE : 
+
+utilisateurs :
+
+GET :
+
+- exemple body :
+
+{
+    "identifiant" : "test"
+}
+
+- exemple return :
+
+[
+    {
+        "IDENTIFIANT": "test",
+        "ID_SPORTIF": "2",
+        "ID_SEXE": "1",
+        "MOT_DE_PASSE": "xsx",
+        "PRENOM": "sqcsq",
+        "NOM": "sqcqsc",
+        "AGE": "21",
+        "POIDS": "90",
+        "TAILLE": "180"
+    }
+]

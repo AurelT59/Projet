@@ -8,7 +8,9 @@ require_once('../init_pdo.php');
 $code_barre = "3166352968591";
 $url = 'https://world.openfoodfacts.org/api/v2/product/' . $code_barre . '.json';
 
-
+// 3038359003356 nouilles
+// 3181232138345 burger
+// 3242272261650 sodebox
 
 $json_data = file_get_contents($url);
 

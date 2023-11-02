@@ -10,7 +10,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE 'code' = ");
+        $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE identifiant = '" . $data['identifiant'] . "'");
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
@@ -22,8 +22,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $data = json_decode(file_get_contents("php://input"), true);
 
         $request = $pdo->prepare(
-            "INSERT INTO `utilisateurs` (`identifiant`, `id_sportif`, `id_sexe`, `mot_de_passe`, `prenom`, `nom`, `age`)
-            VALUES ('" . $data['identifiant'] . "','" . $data['id_sportif'] . "','" . $data['id_sexe'] . "','" . $data['mot_de_passe'] . "','" . $data['prenom'] . "','" . $data['nom'] . "','" . $data['age'] . "')"
+            "INSERT INTO `utilisateurs` (`identifiant`, `id_sportif`, `id_sexe`, `mot_de_passe`, `prenom`, `nom`, `age`, 'poids', 'taille')
+            VALUES ('" . $data['identifiant'] . "','" . $data['id_sportif'] . "','" . $data['id_sexe'] . "','" . $data['mot_de_passe'] . "','" . $data['prenom'] . "','" . $data['nom'] . "','" . $data['age'] . "','" . $data['poids'] . "','" . $data['taille'] . "')"
         );
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
@@ -35,7 +35,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("UPDATE utilisateurs SET id_sportif = '" . $data['id_sportif'] . "id_sexe = '" . $data['id_sexe'] . "mot_de_passe = '" . $data['mot_de_passe'] . "prenom = '" . $data['prenom'] . "nom = '" . $data['nom'] . "age = '" . $data['age'] . "' WHERE identifiant = " . $data['identifiant']);
+        $request = $pdo->prepare("UPDATE utilisateurs SET id_sportif = '" . $data['id_sportif'] . "', id_sexe = '" . $data['id_sexe'] . "', mot_de_passe = '" . $data['mot_de_passe'] . "', prenom = '" . $data['prenom'] . "', nom = '" . $data['nom'] . "', age = '" . $data['age'] . "', poids = '" . $data['poids'] . "', taille = '" . $data['taille'] . "' WHERE identifiant = " . $data['identifiant']);
         $request->execute();
         $result = $request->fetchAll(PDO::FETCH_OBJ);
 
@@ -65,7 +65,7 @@ function checkAndResponse($request, $result, $data)
     if (empty($result) & $_SERVER['REQUEST_METHOD'] != 'POST') {
         // Aucune donnée trouvée, renvoyer un statut 404 - Not Found
         http_response_code(404);
-        echo json_encode(array('message' => "Aucun aliment trouvé."));
+        echo json_encode(array('message' => "Aucun utilisateur trouvé."));
     } else if ($request) {
         // Les données ont été récupérées avec succès, renvoyer un statut 200 - OK
         http_response_code(200);
