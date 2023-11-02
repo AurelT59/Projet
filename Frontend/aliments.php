@@ -4,14 +4,16 @@
     <form>
         <div class="row">
             <div class="col-6">
+                <label class="form-label">Code Barre</label>
+                <input type="text" class="form-control" id="inputCode">
                 <label class="form-label">Nom</label>
                 <input type="text" class="form-control" id="inputAliment">
                 <div class="form-label">Quantite</div>
                 <input type="text" class="form-control" id="inputQuantite">
-                <div class="form-label">Portion</div>
-                <input type="text" class="form-control" id="inputPortion">
             </div>
             <div class="col-6">
+                <div class="form-label">Portion</div>
+                <input type="text" class="form-control" id="inputPortion">
                 <div class="form-label">Marque</div>
                 <input type="text" class="form-control" id="inputMarque">
                 <label class="form-label">Nutriscore</label>
@@ -87,7 +89,7 @@
             </table>
             <input type="button" class="btn btn-primary" id="inputAjoutNut" onclick="ajouterLigneNutriment()" value="Ajouter une ligne">
         </div>
-        <button type="submit" class="btn btn-success body-button">Valider</button>
+        <button type="button" id="btnValider" class="btn btn-success body-button">Valider</button>
     </form>
 </div>
 
@@ -112,7 +114,14 @@
     </table>
 </div>
 
+
+<div class="alert alert-danger alert-dismissible fade" id="myAlert" role="alert">
+    <span id="msgError">Une erreur est survenue.</span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="js/config.js"></script>
 <script src="js/script_aliments.js"></script>
