@@ -204,7 +204,8 @@ PUT :
 - exemple body :
 
 {
-    "identifiant": "aurelt",
+    "identifiant_actuel": "aurelt",
+    "identifiant_nouveau": "aurelt",
     "id_sportif": 2,
     "id_sexe": 1,
     "mot_de_passe": "nouveau_mot_de_passe",
