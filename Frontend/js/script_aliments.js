@@ -69,14 +69,17 @@ $(document).ready(function () {
     })
 
     //Initialisation des nomenclatures
-    var contenu_select_nutriments;
 
     $.ajax({
         url: URL_START + 'Backend/nomenclature.php',
         method: 'GET',
         dataType: 'json',
+        async: false,
         success: function (data) {
             console.log(data);
+
+            var contenu_select_nutriments = "";
+            var contenu_select_ingredients = "";
 
             //Gestion des nutriments
             let tab_nutriments = data.nutriments;
@@ -85,14 +88,19 @@ $(document).ready(function () {
             }
             $("#inputNutriment1").html(contenu_select_nutriments);
 
+            //Gestion des ingrédients
+            let tab_ingredients = data.ingredients;
+            for (let i = 0; i < tab_ingredients.length; i++) {
+                contenu_select_ingredients+="<option value='"+tab_ingredients[i].NOM+"'></option>";
+            }
+            $("#options1").html(contenu_select_ingredients);
+
         },
         error: function (error) {
             throwAlert('Erreur lors de la récupération des données : ', error);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
-
-
 
     //Ajout d'un aliment
     //------------------------------------------------------------------------------------------------
@@ -196,7 +204,10 @@ function ajouterLigne() {
     const cell3 = newRow.insertCell(2);
 
     cell1.innerHTML = `
-        <input type="text" class="form-control input-taille" placeholder="Ingrédient" id="inputIngredient${ligneCount}">
+        <input type="text" class="form-control input-taille" placeholder="Ingrédient" id="inputIngredient${ligneCount}" list="options${ligneCount}">
+        <datalist id="options${ligneCount}">
+        `+$("#options1").html()+`
+                        </datalist>
 `;
     cell2.innerHTML = `
         <input type="text" class="form-control input-taille" placeholder="Pourcentage" id="inputPourcentage${ligneCount}">
@@ -233,7 +244,7 @@ function ajouterLigneNutriment() {
 
     cell1.innerHTML = `
     <select class="form-select input-taille input-nutriment" placeholder="Nutriment" id="inputNutriment${ligneCount}">
-    `+contenu_select_nutriments+`
+    `+$("#inputNutriment1").html()+`
                         </select>
 `;
     cell2.innerHTML = `

@@ -122,7 +122,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 function checkAndResponse($request, $result, $data)
 {
 
-    if (($result == null & $_SERVER['REQUEST_METHOD'] = 'GET') | ($request == false & $_SERVER['REQUEST_METHOD'] != 'POST')) {
+    if (($result == null && $_SERVER['REQUEST_METHOD'] == 'GET') | ($request == false && $_SERVER['REQUEST_METHOD'] != 'POST')) {
         // Aucune donnée trouvée, renvoyer un statut 404 - Not Found
         http_response_code(404);
         echo json_encode(array('message' => "Aucun aliment trouvé."));

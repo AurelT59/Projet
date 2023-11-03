@@ -45,12 +45,14 @@
                 </div>
             </div>
         </div>
-        <label class="form-label">Ingédients</label>
+        <label class="form-label">Ingrédients</label>
         <div class="encadre">
             <table id="table">
                 <tr>
                     <td>
-                        <input type="text" class="form-control input-taille" placeholder="Ingrédient" id="inputIngredient1">
+                        <input type="text" class="form-control input-taille" placeholder="Ingrédient" id="inputIngredient1" list="options1">
+                        <datalist id="options1">
+                        </datalist>
                     </td>
                     <td>
                         <input type="text" class="form-control input-taille" placeholder="Pourcentage" id="inputPourcentage1">
