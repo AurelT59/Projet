@@ -117,7 +117,7 @@ h1 {
     overflow: auto;
 }
 
-/*LOGIN*/
+/*CONNEXION*/
 
 .centre {
     display: flex;
@@ -126,10 +126,18 @@ h1 {
     height: 100vh;
 }
 
-#cadre {
+.cadre {
     border: 5px solid #FF971D;
     border-radius: 10px;
     background-color: #7ED957;
     padding: 20px;
     text-align: center;
+}
+
+/*CREATION_COMPTE*/
+
+.centreCrea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

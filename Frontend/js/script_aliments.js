@@ -68,6 +68,30 @@ $(document).ready(function () {
         }
     })
 
+    //Initialisation des nomenclatures
+    $.ajax({
+        url: URL_START + 'Backend/aliments.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                table.row.add({
+                    "Code": data[i].CODE,
+                    "Nom": data[i].PRODUIT,
+                    "Quantite": gestion_null(data[i].QUANTITE, " g"),
+                    "Portion": gestion_null(data[i].PORTION, " g"),
+                    "Marque": data[i].MARQUE,
+                    "Nutriscore": data[i].NUTRISCORE_GRADE,
+                }).draw();
+            }
+        },
+        error: function (error) {
+            throwAlert('Erreur lors de la récupération des données : ', error);
+            console.error('Erreur lors de la récupération des données : ', error);
+        }
+    })
+
 
 
     //Ajout d'un aliment
