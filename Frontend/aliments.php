@@ -67,10 +67,7 @@
             <table id="tableNutriment">
                 <tr>
                     <td>
-                        <select class="form-select input-taille" placeholder="Nutriment" id="inputNutriment1">
-                            <option>Calcium</option>
-                            <option>Protéines</option>
-                            <option>Glucides</option>
+                        <select class="form-select input-taille input-nutriment" placeholder="Nutriment" id="inputNutriment1">
                         </select>
                     </td>
                     <td>

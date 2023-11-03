@@ -8,25 +8,17 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        $data = json_decode(file_get_contents("php://input"), true);
-
         $request_ingredients = $pdo->prepare("SELECT * 
-                                              FROM ingredients 
-                                              JOIN composition ON ingredients.id_ingredient = composition.id_ingredient 
-                                              WHERE composition.code = " . $data['code']);
+                                              FROM ingredients");
         $request_ingredients->execute();
 
 
         $request_categories = $pdo->prepare("SELECT * 
-                                             FROM categories 
-                                             JOIN labels ON categories.id_categories = labels.id_categories
-                                             WHERE labels.code = " . $data['code']);
+                                             FROM categories");
         $request_categories->execute();
 
         $request_nutriments = $pdo->prepare("SELECT * 
-                                             FROM nutriments 
-                                             JOIN composition_nutritive ON nutriments.id_nutriment = composition_nutritive.id_nutriment
-                                             WHERE composition_nutritive.code = " . $data['code']);
+                                             FROM nutriments");
         $request_nutriments->execute();
 
         if ($request_ingredients == false || $request_categories == false || $request_nutriments == false) {

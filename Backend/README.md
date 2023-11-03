@@ -244,57 +244,37 @@ DELETE :
 
 GET:
 
-- exemple body :
-
-{
-    "code": 3032220061100
-}
-
 -exemple return :
 
 {
     "ingredients": [
         {
             "ID_INGREDIENT": "2",
-            "NOM": "eau",
-            "CODE": "3032220061100",
-            "POURCENTAGE": "2"
+            "NOM": "eau"
         },
         {
             "ID_INGREDIENT": "6",
-            "NOM": "sel",
-            "CODE": "3032220061100",
-            "POURCENTAGE": "0"
+            "NOM": "sel"
         },
         {
             "ID_INGREDIENT": "7",
-            "NOM": "arôme",
-            "CODE": "3032220061100",
-            "POURCENTAGE": "0"
+            "NOM": "arôme"
         },
         {
             "ID_INGREDIENT": "25",
-            "NOM": "colorant",
-            "CODE": "3032220061100",
-            "POURCENTAGE": "0"
+            "NOM": "colorant"
         },
         {
             "ID_INGREDIENT": "27",
-            "NOM": "correcteur d'acidité",
-            "CODE": "3032220061100",
-            "POURCENTAGE": "0"
+            "NOM": "correcteur d'acidité"
         },
         {
             "ID_INGREDIENT": "31",
-            "NOM": "LAIT écrémé reconstitué",
-            "CODE": "3032220061100",
-            "POURCENTAGE": "50"
+            "NOM": "LAIT écrémé reconstitué"
         },
         {
             "ID_INGREDIENT": "32",
-            "NOM": "fromages",
-            "CODE": "3032220061100",
-            "POURCENTAGE": "46"
+            "NOM": "fromages"
         },
         {
             "ID_INGREDIENT": "33",

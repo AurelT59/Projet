@@ -69,22 +69,22 @@ $(document).ready(function () {
     })
 
     //Initialisation des nomenclatures
+    var contenu_select_nutriments;
+
     $.ajax({
-        url: URL_START + 'Backend/aliments.php',
+        url: URL_START + 'Backend/nomenclature.php',
         method: 'GET',
         dataType: 'json',
         success: function (data) {
             console.log(data);
-            for (let i = 0; i < data.length; i++) {
-                table.row.add({
-                    "Code": data[i].CODE,
-                    "Nom": data[i].PRODUIT,
-                    "Quantite": gestion_null(data[i].QUANTITE, " g"),
-                    "Portion": gestion_null(data[i].PORTION, " g"),
-                    "Marque": data[i].MARQUE,
-                    "Nutriscore": data[i].NUTRISCORE_GRADE,
-                }).draw();
+
+            //Gestion des nutriments
+            let tab_nutriments = data.nutriments;
+            for (let i = 0; i < tab_nutriments.length; i++) {
+                contenu_select_nutriments+="<option value="+tab_nutriments[i].ID_NUTRIMENT+">"+tab_nutriments[i].NOM+"</option>";
             }
+            $("#inputNutriment1").html(contenu_select_nutriments);
+
         },
         error: function (error) {
             throwAlert('Erreur lors de la récupération des données : ', error);
@@ -232,10 +232,8 @@ function ajouterLigneNutriment() {
     const cell5 = newRow.insertCell(4);
 
     cell1.innerHTML = `
-    <select class="form-select input-taille" placeholder="Nutriment" id="inputNutriment${ligneCount}">
-                            <option>Calcium</option>
-                            <option>Protéines</option>
-                            <option>Glucides</option>
+    <select class="form-select input-taille input-nutriment" placeholder="Nutriment" id="inputNutriment${ligneCount}">
+    `+contenu_select_nutriments+`
                         </select>
 `;
     cell2.innerHTML = `
