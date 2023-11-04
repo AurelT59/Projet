@@ -32,7 +32,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $result_categories = $request_categories->fetchAll(PDO::FETCH_OBJ);
             $result_nutriments = $request_nutriments->fetchAll(PDO::FETCH_OBJ);
 
-            if (empty($result_ingredients) & empty($result_categories) & empty($result_nutriments)) {
+            if (empty($result_ingredients) && empty($result_categories) && empty($result_nutriments)) {
 
                 // Aucune donnée trouvée, renvoyer un statut 404 - Not Found
                 http_response_code(404);
