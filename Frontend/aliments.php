@@ -22,28 +22,6 @@
         </div>
         <label class="form-label">Catégories</label>
         <div id="inputCategories" class="encadre">
-            <div class="row">
-                <div class="col-6">
-                    <input type="checkbox" value="option1"> Option 1
-                    <br>
-                    <input type="checkbox" value="option2"> Option 2
-                    <br>
-                    <input type="checkbox" value="option3"> Option 3
-                    <br>
-                    <input type="checkbox" value="option4"> Option 4
-                    <br>
-                </div>
-                <div class="col-6">
-                    <input type="checkbox" value="option1"> Option 1
-                    <br>
-                    <input type="checkbox" value="option2"> Option 2
-                    <br>
-                    <input type="checkbox" value="option3"> Option 3
-                    <br>
-                    <input type="checkbox" value="option4"> Option 4
-                    <br>
-                </div>
-            </div>
         </div>
         <label class="form-label">Ingrédients</label>
         <div class="encadre">

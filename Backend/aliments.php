@@ -15,14 +15,18 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        $data = "";
+        if (isset($_GET['code'])) {
+            //FAIRE UN GET POUR UN CODE
+        } else {
+            $data = "";
 
-        $request = $pdo->prepare("SELECT * FROM aliments");
-        $request->execute();
-        $result = $request->fetchAll(PDO::FETCH_OBJ);
+            $request = $pdo->prepare("SELECT * FROM aliments");
+            $request->execute();
+            $result = $request->fetchAll(PDO::FETCH_OBJ);
 
-        checkAndResponse($request, $result, $data);
-        break;
+            checkAndResponse($request, $result, $data);
+            break;
+        }
 
     case 'POST':
 
