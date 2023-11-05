@@ -1,3 +1,12 @@
+<?php
+require_once('config.php');
+if (isset($_COOKIE['session'])) {
+    $valeurDuCookie = json_decode($_COOKIE['session']);
+} else {
+    header("Location: " . $URL_START . "Frontend/connexion.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 
 <html>
@@ -37,6 +46,8 @@
 
     <!-- PIED DE PAGE -->
     <?php require_once('footer.php') ?>
+    <script src="js/config.js"></script>
+    <script src="js/script_index.js"></script>
 
 </body>
 

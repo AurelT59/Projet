@@ -2,6 +2,7 @@
 
 function renderMenuToHTML($currentPageId)
 {
+    global $valeurDuCookie;
     $menu = array(
         'accueil' => array('Accueil'),
         'journal' => array('Journal'),
@@ -17,9 +18,9 @@ function renderMenuToHTML($currentPageId)
 
     echo '
         <div id="header">
-            <img class="navbar-brand" id="logo_healtheat" src="imgs/logo_healtheat.png">   
+            <img class="navbar-brand" id="logo_healtheat" src="imgs/logo_healtheat.png">  
+            <div class="container-fluid" > 
             <nav class="navbar navbar-expand-lg" id="menu">
-                <div class="container-fluid" >
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
     ';
@@ -35,12 +36,12 @@ function renderMenuToHTML($currentPageId)
     echo '
                         </div>
                     </div>
-                </div>
-            </nav>
-            <div id="connected">
-                <p>Utilisateur connecté : <br> Username</p>
+                    <div id="connected" class="d-flex justify-content-end">
+                <p>Utilisateur connecté : <br> <span id="iduser">' . $valeurDuCookie->IDENTIFIANT . '</span></p>
                 <button type="button" class="btn btn-primary" id="disconnect-button">Déconnexion</button>
             </div>
+                </div>
+            </nav>
         </div>
     ';
 }

@@ -40,6 +40,9 @@
                     <td>
                         <div class="form-label">Informations personnelles</div>
                     </td>
+                    <td>
+                        <div class="error" id="erreurMdp" style="display: none">Les mots de passe ne sont pas les mêmes</div>
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -60,7 +63,7 @@
                         <div class="form-label">Sexe</div>
                     </td>
                     <td>
-                        <input type="text" class="form-control input-taille" id="inputMdp">
+                        <select type="text" class="form-select input-taille" id="inputSexe"></select>
                     </td>
                     <td>
                         <div class="form-label">Age</div>
@@ -88,7 +91,7 @@
                         <div class="form-label">Pratique sportive</div>
                     </td>
                     <td>
-                        <input type="text" class="form-control input-taille" id="inputMdp">
+                        <select type="text" class="form-select input-taille" id="inputSport"></select>
                     </td>
                 </tr>
                 <tr>
@@ -110,6 +113,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="js/config.js"></script>
-    <script src="js/script_login.js"></script>
+    <script src="js/script_creation_compte.js"></script>
 
 </body>

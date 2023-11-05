@@ -74,7 +74,7 @@ $(document).ready(function () {
         url: URL_START + 'Backend/nomenclature.php',
         method: 'GET',
         dataType: 'json',
-        async: false,
+        //async: false,
         success: function (data) {
             console.log(data);
 
@@ -226,6 +226,18 @@ $(document).ready(function () {
             })
         }
         else {
+            let firstColumnData = table.column(0).data().toArray();
+            let row = table.row(0);
+            let numRows = table.rows().toArray()[0];
+
+            for (let i = 0; i < firstColumnData.length; i++) {
+                let value = firstColumnData[i];
+                if (value == code) {
+                    row = table.row(numRows[i]);
+                    break;
+                }
+            }
+
             $.ajax({
                 url: URL_START + 'Backend/aliments.php',
                 method: 'PUT',
@@ -233,15 +245,14 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (data) {
                     console.log(data);
-                    /*
-                    table.row.add({
+                    row.data({
                         "Code": data.code,
                         "Nom": formData.produit,
                         "Quantite": gestion_null(formData.quantite, " g"),
                         "Portion": gestion_null(formData.portion, " g"),
                         "Marque": formData.marque,
                         "Nutriscore": formData.nutriscore_grade
-                    }).draw();*/
+                    }).draw();
                 },
                 error: function (error) {
                     throwAlert('Erreur lors de l\'ajout des données : ' + error);
