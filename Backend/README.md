@@ -99,6 +99,167 @@ GET :
     }
 ]
 
+GET + code:
+
+-exemple $_GET :
+
+?code=3032220061100
+
+-exemple return :
+
+{
+    "aliment": [
+        {
+            "CODE": "3032220061100",
+            "PRODUIT": "PRESIDENT BURGER CHEDDAR EMMENTAL 12 TRANCHES 200g",
+            "QUANTITE": "200",
+            "PORTION": "30",
+            "MARQUE": "Pr\u00e9sident,Lactalis",
+            "NUTRISCORE_GRADE": "e"
+        }
+    ],
+    "ingredients": [
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "2",
+            "POURCENTAGE": "2"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "6",
+            "POURCENTAGE": "0"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "7",
+            "POURCENTAGE": "0"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "25",
+            "POURCENTAGE": "0"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "27",
+            "POURCENTAGE": "0"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "31",
+            "POURCENTAGE": "50"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "32",
+            "POURCENTAGE": "46"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "33",
+            "POURCENTAGE": "1"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "34",
+            "POURCENTAGE": "1"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "35",
+            "POURCENTAGE": "0"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "36",
+            "POURCENTAGE": "0"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_INGREDIENT": "37",
+            "POURCENTAGE": "0"
+        }
+    ],
+    "categories": [
+        {
+            "CODE": "3032220061100",
+            "ID_NUTRIMENT": "1",
+            "VALEUR_100": "0.45",
+            "VALEUR_PORTION": "0.135",
+            "UNITE": "mg"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_NUTRIMENT": "2",
+            "VALEUR_100": "4.5",
+            "VALEUR_PORTION": "1.35",
+            "UNITE": "g"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_NUTRIMENT": "4",
+            "VALEUR_100": "17",
+            "VALEUR_PORTION": "5.1",
+            "UNITE": "g"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_NUTRIMENT": "7",
+            "VALEUR_100": "13.5",
+            "VALEUR_PORTION": "4.05",
+            "UNITE": "g"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_NUTRIMENT": "8",
+            "VALEUR_100": "2.4",
+            "VALEUR_PORTION": "0.72",
+            "UNITE": "g"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_NUTRIMENT": "9",
+            "VALEUR_100": "961",
+            "VALEUR_PORTION": "288",
+            "UNITE": "kJ"
+        }
+    ],
+    "nutriments": [
+        {
+            "CODE": "3032220061100",
+            "ID_CATEGORIES": "35"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_CATEGORIES": "36"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_CATEGORIES": "37"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_CATEGORIES": "38"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_CATEGORIES": "39"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_CATEGORIES": "40"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_CATEGORIES": "41"
+        },
+        {
+            "CODE": "3032220061100",
+            "ID_CATEGORIES": "42"
+        }
+    ]
+}
+
 POST :
 
 - exemple body : 

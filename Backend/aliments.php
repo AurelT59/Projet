@@ -15,14 +15,50 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        $data = "";
+        if (isset($_GET['code'])) {
+            $data = "";
 
-        $request = $pdo->prepare("SELECT * FROM aliments");
-        $request->execute();
-        $result = $request->fetchAll(PDO::FETCH_OBJ);
+            $request_1 = $pdo->prepare("SELECT * FROM aliments WHERE code ='" . $_GET['code'] . "'");
+            $request_1->execute();
+            $result_1 = $request_1->fetchAll(PDO::FETCH_OBJ);
 
-        checkAndResponse($request, $result, $data);
-        break;
+            $request_2 = $pdo->prepare("SELECT * FROM composition WHERE code ='" . $_GET['code'] . "'");
+            $request_2->execute();
+            $result_2 = $request_2->fetchAll(PDO::FETCH_OBJ);
+
+            $request_3 = $pdo->prepare("SELECT * FROM composition_nutritive WHERE code ='" . $_GET['code'] . "'");
+            $request_3->execute();
+            $result_3 = $request_3->fetchAll(PDO::FETCH_OBJ);
+
+            $request_4 = $pdo->prepare("SELECT * FROM labels WHERE code ='" . $_GET['code'] . "'");
+            $request_4->execute();
+            $result_4 = $request_4->fetchAll(PDO::FETCH_OBJ);
+
+
+            $total_request = true;
+            if ($request_1 == false || $request_2 == false || $request_3 == false || $request_4 == false) {
+                $total_request = false;
+            }
+
+            $result = [
+                'aliment' => $result_1,
+                'ingredients' => $result_2,
+                'categories' => $result_4,
+                'nutriments' => $result_3
+            ];
+
+            checkAndResponse($total_request, $result, $data);
+            break;
+        } else {
+            $data = "";
+
+            $request = $pdo->prepare("SELECT * FROM aliments");
+            $request->execute();
+            $result = $request->fetchAll(PDO::FETCH_OBJ);
+
+            checkAndResponse($request, $result, $data);
+            break;
+        }
 
     case 'POST':
 
@@ -79,26 +115,47 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = json_decode(file_get_contents("php://input"), true);
 
+        $data_composition = $data['composition'];
+        $data_labels = $data['labels'];
+        $data_composition_nutritive = $data['composition_nutritive'];
+
         // $request = $pdo->prepare("UPDATE users SET name = '" . $data['name'] . "', email = '" . $data['mail'] . "' WHERE id = " . $data['id']);
         // $request->execute();
 
         $request_1 = $pdo->exec("UPDATE aliments SET produit = '" . $data['produit'] . "', quantite = '" . $data['quantite'] . "', portion = '" . $data['portion'] . "', marque = '" . $data['marque'] . "', nutriscore_grade = '" . $data['nutriscore_grade'] . "' WHERE code = " . $data['code']);
 
-        foreach ($data_composition as $composition) {
-            $request_2 = $pdo->exec("UPDATE composition SET pourcentage = '" . $composition['pourcentage'] . "' WHERE code = '" . $data['code'] . "' AND id_ingredient = '" . $composition['id_ingredient']);
+        $request_2_bis = $pdo->exec("DELETE FROM `composition` WHERE `code` = " . $data['code']);
+        if ($request_2_bis) {
+            foreach ($data_composition as $composition) {
+                $request_2 = $pdo->exec("INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
+                                  VALUES ('" . $data['code'] . "','" . $composition['id_ingredient'] . "','" . $composition['pourcentage'] . "')");
+            }
         }
 
-        foreach ($data_labels as $label) {
-            $request_3 = $pdo->exec("UPDATE labels SET code = '" . $data['code'] . "', id_categories = '" . $labels['id_categories'] . "'");
+        $request_3_bis = $pdo->exec("DELETE FROM `labels` WHERE `code` = " . $data['code']);
+        if ($request_3_bis) {
+            foreach ($data_labels as $label) {
+                $request_3 = $pdo->exec("INSERT INTO `labels` (`code`, `id_categories`)
+                                  VALUES ('" . $data['code'] . "','" . $label['id_categories'] . "')");
+            }
         }
 
-        foreach ($data_composition_nutritive as $composition_nutritive) {
-            $request_4 = $pdo->exec("UPDATE composition_nutritive SET code = '" . $data['code'] . "', id_nutriment = '" . $composition_nutritive['id_nutriment'] . "', valeur_100 = '" . $composition_nutritive['valeur_100'] . "', valeur_portion = '" . $composition_nutritive['valeur_portion'] . "', unite = '" . $composition_nutritive['unite'] . "'");
+        $request_4_bis = $pdo->exec("DELETE FROM `composition_nutritive` WHERE `code` = " . $data['code']);
+        if ($request_4_bis) {
+            foreach ($data_composition_nutritive as $composition_nutritive) {
+                $request_4 = $pdo->exec("INSERT INTO `composition_nutritive` (`code`, `id_nutriment`, `valeur_100`, `valeur_portion`, `unite`)
+                                 VALUES ('" . $data['code'] . "','" . $composition_nutritive['id_nutriment'] . "','" . $composition_nutritive['valeur_100'] . "','" . $composition_nutritive['valeur_portion'] . "','" . $composition_nutritive['unite'] . "')");
+            }
+        }
+
+        $total_request = true;
+        if ($request_2 == false || $request_3 == false || $request_4 == false) {
+            $total_request = false;
         }
 
         $result = "";
 
-        checkAndResponse($request, $result, $data);
+        checkAndResponse($total_request, $result, $data);
         break;
 
     case 'DELETE':
