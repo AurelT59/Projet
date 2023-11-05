@@ -1,6 +1,7 @@
 <!-- FORMULAIRE POUR RENSEIGNER UN NOUVEL ALIMENT -->
 <div class="box" id="box_form_conso">
-    <h1>Ajout d'un nouvel aliment au catalogue</h1>
+    <h1 id="titre">Ajout d'un nouvel aliment au catalogue</h1>
+    <span id="buttonReturn"></span>
     <form>
         <div class="row">
             <div class="col-6">
@@ -24,6 +25,8 @@
         <div id="inputCategories" class="encadre">
         </div>
         <label class="form-label">Ingrédients</label>
+        <datalist id="options0">
+        </datalist>
         <div class="encadre">
             <table id="table">
                 <tr>
@@ -36,13 +39,15 @@
                         <input type="text" class="form-control input-taille" placeholder="Pourcentage" id="inputPourcentage1">
                     </td>
                     <td>
-                        <button class="btn btn-danger" onclick="supprimerLigne(this)">Supprimer</button>
+                        <button class="btn btn-danger btnSuppr" id="Suppr1" onclick="supprimerLigne(this)">Supprimer</button>
                     </td>
                 </tr>
             </table>
-            <input type="button" class="btn btn-primary" id="inputAjoutIng" onclick="ajouterLigne()" value="Ajouter une ligne">
+            <input type="button" class="btn btn-primary" id="inputAjoutIng" onclick="ajouterLigne('','')" value="Ajouter une ligne">
         </div>
         <label class="form-label">Nutriments</label>
+        <select style="display:none" id="inputNutriment0">
+        </select>
         <div class="encadre">
             <table id="tableNutriment">
                 <tr>
@@ -60,15 +65,17 @@
                         <input type="text" class="form-control input-taille" placeholder="Unité des quantités" id="inputQuantite_unite1">
                     </td>
                     <td>
-                        <button class="btn btn-danger" onclick="supprimerLigne(this)">Supprimer</button>
+                        <button class="btn btn-danger btnSupprNut" onclick="supprimerLigne(this)">Supprimer</button>
                     </td>
                 </tr>
             </table>
-            <input type="button" class="btn btn-primary" id="inputAjoutNut" onclick="ajouterLigneNutriment()" value="Ajouter une ligne">
+            <input type="button" class="btn btn-primary" id="inputAjoutNut" onclick="ajouterLigneNutriment('','','','')" value="Ajouter une ligne">
         </div>
         <button type="button" id="btnValider" class="btn btn-success body-button">Valider</button>
     </form>
 </div>
+
+
 
 <!-- LISTE DES ALIMENTS DÉJÀ DANS LA BDD -->
 
