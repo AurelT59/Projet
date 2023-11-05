@@ -2,6 +2,7 @@
 
 function renderMenuToHTML($currentPageId)
 {
+    global $valeurDuCookie;
     $menu = array(
         'accueil' => array('Accueil'),
         'journal' => array('Journal'),
@@ -38,7 +39,7 @@ function renderMenuToHTML($currentPageId)
                 </div>
             </nav>
             <div id="connected">
-                <p>Utilisateur connecté : <br> Username</p>
+                <p>Utilisateur connecté : <br> <span id="iduser">' . $valeurDuCookie->IDENTIFIANT . '</span></p>
                 <button type="button" class="btn btn-primary" id="disconnect-button">Déconnexion</button>
             </div>
         </div>

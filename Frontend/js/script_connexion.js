@@ -4,18 +4,11 @@ $('#btnValider').on("click", function (e) {
     let mdpSaisi = $("#inputMdp").val();
 
     $.ajax({
-        url: URL_START + 'Backend/utilisateurs.php?identifiant=' + identifiant,
+        url: URL_START + 'Backend/utilisateurs.php?identifiant=' + identifiant + '&mdpSaisi=' + mdpSaisi,
         method: 'GET',
-        dataType: 'json',
         success: function (data) {
             console.log(data);
-            if (password_verify($mdpSaisi, data.MOT_DE_PASSE)) {
-                // Le mot de passe est correct
-                console.log('Le mot de passe est correct');
-            } else {
-                // Le mot de passe est incorrect
-                console.log('Le mot de passe est incorrect');
-            }
+            window.location.href = URL_START + 'Frontend/index.php?page=accueil';
         },
         error: function (error) {
             console.error('Erreur lors de la récupération des données : ', error);
