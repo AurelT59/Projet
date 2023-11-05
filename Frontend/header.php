@@ -42,6 +42,6 @@ function renderMenuToHTML($currentPageId)
             </div>
                 </div>
             </nav>
-        </div>test
+        </div>
     ';
 }
