@@ -176,7 +176,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
 
 // gestion de la réponse à la requête
-function checkAndResponse($request, $data)
+function checkAndResponse($request, $result, $data)
 {
     if (is_bool($request)) {
 
@@ -184,10 +184,10 @@ function checkAndResponse($request, $data)
         http_response_code(500);
         echo json_encode(array('message' => "Echec de la requête SQL : Erreur interne au serveur."));
     } else {
-
+        /*
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $result = $request->fetchAll(PDO::FETCH_OBJ);
-        }
+        }*/
 
         if ((empty($result) && $_SERVER['REQUEST_METHOD'] == 'GET') || ($request == 0)) {
 

@@ -8,9 +8,9 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        $data = json_decode(file_get_contents("php://input"), true);
+        $data = "";
 
-        $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE IDENTIFIANT = '" . $data['identifiant'] . "'");
+        $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "'");
         $request->execute();
 
         checkAndResponse($request, $data);
@@ -22,7 +22,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $request = $pdo->exec(
             "INSERT INTO `utilisateurs` (`identifiant`, `id_sportif`, `id_sexe`, `mot_de_passe`, `prenom`, `nom`, `age`, `poids`, `taille`)
-            VALUES ('" . $data['identifiant'] . "'," . $data['id_sportif'] . "," . $data['id_sexe'] . ",'" . $data['mot_de_passe'] . "','" . $data['prenom'] . "','" . $data['nom'] . "'," . $data['age'] . "," . $data['poids'] . "," . $data['taille'] . ")"
+            VALUES ('" . $data['identifiant'] . "'," . $data['id_sportif'] . "," . $data['id_sexe'] . ",'" . password_hash($data['mot_de_passe'], PASSWORD_BCRYPT) . "','" . $data['prenom'] . "','" . $data['nom'] . "'," . $data['age'] . "," . $data['poids'] . "," . $data['taille'] . ")"
         );
 
 
@@ -34,8 +34,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->exec("UPDATE utilisateurs SET identifiant =  '" . $data['identifiant_nouveau'] . "', id_sportif = " . $data['id_sportif'] . ", id_sexe = " . $data['id_sexe'] . ", mot_de_passe = '" . $data['mot_de_passe'] . "', prenom = '" . $data['prenom'] . "', nom = '" . $data['nom'] . "', age = " . $data['age'] . ", poids = " . $data['poids'] . ", taille = " . $data['taille'] . " WHERE identifiant = '" . $data['identifiant_actuel'] . "'");
-
+        if (empty($data['mot_de_passe'])) {
+            $request = $pdo->exec("UPDATE utilisateurs SET identifiant =  '" . $data['identifiant_nouveau'] . "', id_sportif = " . $data['id_sportif'] . ", id_sexe = " . $data['id_sexe'] . ", prenom = '" . $data['prenom'] . "', nom = '" . $data['nom'] . "', age = " . $data['age'] . ", poids = " . $data['poids'] . ", taille = " . $data['taille'] . " WHERE identifiant = '" . $data['identifiant_actuel'] . "'");
+        } else {
+            $request = $pdo->exec("UPDATE utilisateurs SET identifiant =  '" . $data['identifiant_nouveau'] . "', id_sportif = " . $data['id_sportif'] . ", id_sexe = " . $data['id_sexe'] . ", mot_de_passe = '" . password_hash($data['mot_de_passe'], PASSWORD_BCRYPT) . "', prenom = '" . $data['prenom'] . "', nom = '" . $data['nom'] . "', age = " . $data['age'] . ", poids = " . $data['poids'] . ", taille = " . $data['taille'] . " WHERE identifiant = '" . $data['identifiant_actuel'] . "'");
+        }
         checkAndResponse($request, $data);
         break;
 
@@ -66,6 +69,20 @@ function checkAndResponse($request, $data)
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $result = $request->fetchAll(PDO::FETCH_OBJ);
+            $mdpSaisi = $_GET['mdpSaisi'];
+            if (!(empty($result))) {
+                if (password_verify($mdpSaisi, $result[0]->MOT_DE_PASSE)) {
+                    unset($result[0]->MOT_DE_PASSE);
+                    // Le mot de passe est correct
+                    setcookie("session", json_encode($result[0]), time() + 3600, "/");
+                } else {
+                    unset($result[0]->MOT_DE_PASSE);
+                    // Le mot de passe est incorrect
+                    $result = [
+                        'mdpValide' => false
+                    ];
+                }
+            }
         }
 
         if ((empty($result) && $_SERVER['REQUEST_METHOD'] == 'GET') || ($request == 0)) {
