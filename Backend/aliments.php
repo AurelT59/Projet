@@ -35,9 +35,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $result_4 = $request_4->fetchAll(PDO::FETCH_OBJ);
 
 
-            $total_request = true;
             if ($request_1 == false || $request_2 == false || $request_3 == false || $request_4 == false) {
                 $total_request = false;
+            } else {
+                $total_request = 1;
             }
 
             $result = [
@@ -101,9 +102,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
         // }
 
 
-        $total_request = true;
+
         if ($request_1 == false || $request_2 == false || $request_3 == false || $request_4 == false) {
             $total_request = false;
+        } else {
+            $total_request = 1;
         }
 
         $result = "";
@@ -148,9 +151,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
             }
         }
 
-        $total_request = true;
+
         if ($request_2 == false || $request_3 == false || $request_4 == false) {
             $total_request = false;
+        } else {
+            $total_request = 1;
         }
 
         $result = "";
