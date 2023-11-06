@@ -163,7 +163,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $request = $pdo->prepare("DELETE FROM `aliments` WHERE `code` = " . $data['code']);
         $request->execute();
-        $result = $request->fetchAll(PDO::FETCH_OBJ);
+        $result = "";
 
         checkAndResponse($request, $result, $data);
         break;
