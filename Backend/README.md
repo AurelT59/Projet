@@ -567,3 +567,42 @@ GET:
         }
     ]
 }
+
+journal :
+
+POST :
+-body: {
+    "code": 3038359003356,
+    "identifiant": "lil",
+    "quantite": 1,
+    "date": "2022-10-12"
+}
+
+GET:
+-url:
+http://localhost/Projet/Projet/Backend/journal.php?identifiant=
+OU
+http://localhost/Projet/Projet/Backend/journal.php?id_journal=
+-return: [
+    {
+        "ID_JOURNAL": "5",
+        "CODE": "3038359003356",
+        "IDENTIFIANT": "lil",
+        "QUANTITE": "1",
+        "DATE": "2022-10-12",
+        "produit": "banzaï noodle saveur poulet"
+    }
+]
+
+PUT:
+-body: {
+    "id_journal": 7,
+    "code": 3038359003356,
+    "quantite": 2,
+    "date": "2022-10-11"
+}
+
+DELETE:
+-body: {
+    "id_journal": 7
+}
