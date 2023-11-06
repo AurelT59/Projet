@@ -203,9 +203,9 @@ function checkAndResponse($request, $data)
                 echo json_encode($result);
             } else {
                 if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-                    echo json_encode(array('identifiant' => $data['identifiant_nouveau']));
+                    echo json_encode(array('code' => $data['code']));
                 } else {
-                    echo json_encode(array('identifiant' => $data['identifiant']));
+                    echo json_encode(array('code' => $data['code']));
                 }
             }
         }
