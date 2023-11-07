@@ -41,7 +41,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         } else if (isset($_GET['identifiant'])) {
             $data = "";
 
-            $request = $pdo->prepare("SELECT journal.*, aliments.produit, FROM journal 
+            $request = $pdo->prepare("SELECT journal.*, aliments.produit FROM journal 
             JOIN aliments ON aliments.CODE=journal.code 
             WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "'");
             $request->execute();

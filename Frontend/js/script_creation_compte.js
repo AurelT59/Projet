@@ -80,7 +80,12 @@ $('#btnValider').on("click", function (e) {
                 window.location.href = URL_START + 'Frontend/index.php?page=accueil';
             },
             error: function (error) {
-                console.error('Erreur lors de l\'ajout des données : ', error);
+                if (error.status == 500) {
+                    console.error('L\'identifiant existe déjà');
+                }
+                else {
+                    console.error('Erreur lors de l\'ajout des données utilisateurs : ', error);
+                }
             }
         })
     }
