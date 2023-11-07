@@ -80,7 +80,10 @@ $('#btnValider').on("click", function (e) {
                 window.location.href = URL_START + 'Frontend/index.php?page=accueil';
             },
             error: function (error) {
-                if (error.status == 500) {
+                if (error.status == 501) {
+                    $("#erreurMdp").html("L'identifiant existe déjà")
+                    $("#erreurMdp").css("display", "block")
+                    $("#inputLogin").css("border-color", "red")
                     console.error('L\'identifiant existe déjà');
                 }
                 else {
@@ -90,6 +93,7 @@ $('#btnValider').on("click", function (e) {
         })
     }
     else {
+        $("#erreurMdp").html("Les mots de passe ne sont pas les mêmes")
         $("#erreurMdp").css("display", "block")
         $("#inputMdp").css("border-color", "red")
         $("#inputMdp2").css("border-color", "red")

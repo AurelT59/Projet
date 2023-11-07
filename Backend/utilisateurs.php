@@ -19,27 +19,41 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
 
         $data = json_decode(file_get_contents("php://input"), true);
-
-        $request = $pdo->exec(
-            "INSERT INTO `utilisateurs` (`identifiant`, `id_sportif`, `id_sexe`, `mot_de_passe`, `prenom`, `nom`, `age`, `poids`, `taille`)
+        try {
+            $request = $pdo->exec(
+                "INSERT INTO `utilisateurs` (`identifiant`, `id_sportif`, `id_sexe`, `mot_de_passe`, `prenom`, `nom`, `age`, `poids`, `taille`)
             VALUES ('" . $data['identifiant'] . "'," . $data['id_sportif'] . "," . $data['id_sexe'] . ",'" . password_hash($data['mot_de_passe'], PASSWORD_BCRYPT) . "','" . $data['prenom'] . "','" . $data['nom'] . "'," . $data['age'] . "," . $data['poids'] . "," . $data['taille'] . ")"
-        );
+            );
+            checkAndResponse($request, $data);
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                // L'identifiant existe déjà, renvoyer un statut 501 - Not Implemented
+                http_response_code(501);
+            }
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+        }
 
-
-
-        checkAndResponse($request, $data);
         break;
 
     case 'PUT':
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        if (empty($data['mot_de_passe'])) {
-            $request = $pdo->exec("UPDATE utilisateurs SET identifiant =  '" . $data['identifiant_nouveau'] . "', id_sportif = " . $data['id_sportif'] . ", id_sexe = " . $data['id_sexe'] . ", prenom = '" . $data['prenom'] . "', nom = '" . $data['nom'] . "', age = " . $data['age'] . ", poids = " . $data['poids'] . ", taille = " . $data['taille'] . " WHERE identifiant = '" . $data['identifiant_actuel'] . "'");
-        } else {
-            $request = $pdo->exec("UPDATE utilisateurs SET identifiant =  '" . $data['identifiant_nouveau'] . "', id_sportif = " . $data['id_sportif'] . ", id_sexe = " . $data['id_sexe'] . ", mot_de_passe = '" . password_hash($data['mot_de_passe'], PASSWORD_BCRYPT) . "', prenom = '" . $data['prenom'] . "', nom = '" . $data['nom'] . "', age = " . $data['age'] . ", poids = " . $data['poids'] . ", taille = " . $data['taille'] . " WHERE identifiant = '" . $data['identifiant_actuel'] . "'");
+        try {
+            if (empty($data['mot_de_passe'])) {
+                $request = $pdo->exec("UPDATE utilisateurs SET identifiant =  '" . $data['identifiant_nouveau'] . "', id_sportif = " . $data['id_sportif'] . ", id_sexe = " . $data['id_sexe'] . ", prenom = '" . $data['prenom'] . "', nom = '" . $data['nom'] . "', age = " . $data['age'] . ", poids = " . $data['poids'] . ", taille = " . $data['taille'] . " WHERE identifiant = '" . $data['identifiant_actuel'] . "'");
+            } else {
+                $request = $pdo->exec("UPDATE utilisateurs SET identifiant =  '" . $data['identifiant_nouveau'] . "', id_sportif = " . $data['id_sportif'] . ", id_sexe = " . $data['id_sexe'] . ", mot_de_passe = '" . password_hash($data['mot_de_passe'], PASSWORD_BCRYPT) . "', prenom = '" . $data['prenom'] . "', nom = '" . $data['nom'] . "', age = " . $data['age'] . ", poids = " . $data['poids'] . ", taille = " . $data['taille'] . " WHERE identifiant = '" . $data['identifiant_actuel'] . "'");
+            }
+            checkAndResponse($request, $data);
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                // L'identifiant existe déjà, renvoyer un statut 501 - Not Implemented
+                http_response_code(501);
+            }
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
         }
-        checkAndResponse($request, $data);
+
         break;
 
     case 'DELETE':

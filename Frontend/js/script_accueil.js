@@ -1,6 +1,6 @@
 //Fonction de création du graphe
 //----------------------------------------------------------------------------------------------
-function create_graph(donnees, nutriment, val_recommendation) {
+function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, unite) {
 
     //Fonction pour déterminer le maximum en y
     function trouverValeurMax(donnees, nutriment, val_recommendation) {
@@ -20,12 +20,12 @@ function create_graph(donnees, nutriment, val_recommendation) {
     }
 
     // Declare the chart dimensions and margins.
-    const width = 640;
+    const width = 740;
     const height = 400;
     const marginTop = 20;
-    const marginRight = 20;
-    const marginBottom = 30;
-    const marginLeft = 40;
+    const marginRight = 200;
+    const marginBottom = 60;
+    const marginLeft = 60;
 
     // Calculer la date actuelle
     const dateActuelle = new Date();
@@ -112,6 +112,35 @@ function create_graph(donnees, nutriment, val_recommendation) {
         .attr("y2", y(val_recommendation)) // Coordonnée y de la ligne (correspondant à la valeur 50)
         .attr("stroke", "red") // Couleur de la ligne (par exemple, rouge)
         .attr("stroke-width", 2); // Épaisseur de la ligne
+
+
+
+
+
+    //Gestion des légendes 
+    //Axe x
+    svg.append("text")
+        .attr("x", (width - marginRight + marginLeft) / 2)
+        .attr("y", height - 20)
+        .style("text-anchor", "middle")
+        .text("Jours");
+
+
+    //Axe y
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", 15)
+        .style("text-anchor", "middle")
+        .text(nom_nutriment + "(" + unite + ")");
+
+    //Ligne de recommendations
+    svg.append("text")
+        .attr("x", width - marginRight + 10)
+        .attr("y", y(val_recommendation))
+        .style("text-anchor", "start")
+        .text("Recommendation par jour");
+
 }
 
 //----------------------------------------------------------------------------------------------
@@ -228,7 +257,7 @@ $.ajax({
                                 }
                             }
 
-                            create_graph(resultats, nutriment, val_recommendation);
+                            create_graph(resultats, nutriment, val_recommendation, "nutriment", "unite");
                         }
 
 
