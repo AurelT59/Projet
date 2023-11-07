@@ -74,7 +74,6 @@ $(document).ready(function () {
         url: URL_START + 'Backend/nomenclature.php',
         method: 'GET',
         dataType: 'json',
-        //async: false,
         success: function (data) {
             console.log(data);
 

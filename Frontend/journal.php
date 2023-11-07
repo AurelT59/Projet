@@ -2,24 +2,24 @@
 
 <div class="box" id="box_form_conso">
     <h1>Nouvelle entrée dans le journal</h1>
-    <form>
-        <div class="mb-3">
-            <label for="inputDateConso" class="col-sm-2 col-form-label">Date</label>
-            <div class="col-sm-3">
-                <input type="date" class="form-control" id="inputDateConso">
-            </div>
+
+    <div class="mb-3">
+        <label for="inputDateConso" class="col-sm-2 col-form-label">Date</label>
+        <div class="col-sm-3">
+            <input type="date" class="form-control" id="inputDate">
         </div>
-        <div class="mb-3">
-            <label class="form-label">Aliment consommé</label>
-            <select class="form-select">
-                <option selected>Choose from the list</option>
-                <option value="1">Kebab</option>
-                <option value="2">Burger</option>
-                <option value="3">Pizza</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary body-button">Valider</button>
-    </form>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Aliment consommé</label>
+        <select id="selectAliment" class="form-select">
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Quantité (nombre de portions)</label>
+        <input type="number" class="form-control" id="inputQuantite">
+    </div>
+    <button type="button" id="btnValider" class="btn btn-success body-button">Valider</button>
+
 </div>
 
 <!-- LISTE DES CONSOMMATIONS PRÉCÉDENTES -->
@@ -31,6 +31,7 @@
             <tr>
                 <th scope="col">Date</th>
                 <th scope="col">Aliment</th>
+                <th scope="col">Quantité</th>
                 <th scope="col">CRUD</th>
             </tr>
         </thead>

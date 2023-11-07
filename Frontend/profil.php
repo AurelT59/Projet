@@ -25,11 +25,11 @@
         <input type="number" class="form-control" id="inputAge" value=<?php echo $valeurDuCookie->AGE ?>>
     </div>
     <div class="mb-3">
-        <label class="form-label">Taille</label>
+        <label class="form-label">Taille (cm)</label>
         <input type="number" class="form-control" id="inputTaille" value=<?php echo $valeurDuCookie->TAILLE ?>>
     </div>
     <div class="mb-3">
-        <label class="form-label">Poids</label>
+        <label class="form-label">Poids (kg)</label>
         <input type="number" class="form-control" id="inputPoids" value=<?php echo $valeurDuCookie->POIDS ?>>
     </div>
     <div class="mb-3">
