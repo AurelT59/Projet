@@ -8,21 +8,55 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        if (isset($_GET['identifiant'])) {
+        if (isset($_GET['date1']) && isset($_GET['date2']) && (isset($_GET['identifiant']))) {
             $data = "";
 
-            $request = $pdo->prepare("SELECT journal.*, aliments.produit FROM journal JOIN aliments ON aliments.CODE=journal.code WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "'");
+            $request = $pdo->prepare("SELECT journal.*, aliments.produit FROM journal 
+            JOIN aliments ON aliments.CODE=journal.code 
+            WHERE journal.IDENTIFIANT = '" . $_GET['identifiant'] . "' 
+            AND journal.DATE >= '" . $_GET['date1'] . "' 
+            AND journal.DATE <= '" . $_GET['date2'] . "'");
             $request->execute();
+            $tab_journal = $request->fetchAll(PDO::FETCH_OBJ);
 
-            checkAndResponse($request, $data);
+            $result = array();
+
+            for ($i = 0; $i < count($tab_journal); $i++) {
+                $code = $tab_journal[$i]->CODE;
+                $request_bis = $pdo->prepare("SELECT composition_nutritive.*,nutriments.NOM FROM composition_nutritive 
+            JOIN nutriments ON nutriments.ID_NUTRIMENT=composition_nutritive.ID_NUTRIMENT 
+            WHERE CODE = '" . $code . "'");
+                $request_bis->execute();
+                $elem = $request_bis->fetchAll(PDO::FETCH_OBJ);
+                array_push($result, [
+                    'journal' => $tab_journal[$i],
+                    'nutriments' => $elem
+                ]);
+            }
+
+            //print_r($result);
+
+            checkAndResponse($request, $data, $result);
+            break;
+        } else if (isset($_GET['identifiant'])) {
+            $data = "";
+
+            $request = $pdo->prepare("SELECT journal.*, aliments.produit, FROM journal 
+            JOIN aliments ON aliments.CODE=journal.code 
+            WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "'");
+            $request->execute();
+            $result = $request->fetchAll(PDO::FETCH_OBJ);
+
+            checkAndResponse($request, $data, $result);
             break;
         } else if (isset($_GET['id_journal'])) {
             $data = "";
 
             $request = $pdo->prepare("SELECT journal.*, aliments.produit FROM journal JOIN aliments ON aliments.CODE=journal.code WHERE ID_JOURNAL = '" . $_GET['id_journal'] . "'");
             $request->execute();
+            $result = $request->fetchAll(PDO::FETCH_OBJ);
 
-            checkAndResponse($request, $data);
+            checkAndResponse($request, $data, $result);
             break;
         }
 
@@ -63,7 +97,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
 
 // gestion de la réponse à la requête
-function checkAndResponse($request, $data)
+function checkAndResponse($request, $data, $result = array())
 {
     if (is_bool($request)) {
 
@@ -71,11 +105,6 @@ function checkAndResponse($request, $data)
         http_response_code(500);
         echo json_encode(array('message' => "Echec de la requête SQL : Erreur interne au serveur."));
     } else {
-
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $result = $request->fetchAll(PDO::FETCH_OBJ);
-        }
-
         if ((empty($result) && $_SERVER['REQUEST_METHOD'] == 'GET') || ($request == 0)) {
 
             // Aucune donnée trouvée, renvoyer un statut 404 - Not Found
