@@ -29,6 +29,7 @@
     <table class="table" id="table_journal">
         <thead>
             <tr>
+                <th scope="col">ID</th>
                 <th scope="col">Date</th>
                 <th scope="col">Aliment</th>
                 <th scope="col">Quantité</th>

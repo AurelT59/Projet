@@ -27,9 +27,11 @@ $(document).ready(function () {
         ]
     });
 
+    var valeurDuCookie = JSON.parse(getCookieValue("session"));
+
     //Initialisation du tableau
     $.ajax({
-        url: URL_START + 'Backend/journal.php',
+        url: URL_START + 'Backend/journal.php?identifiant=' + valeurDuCookie.IDENTIFIANT,
         method: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -38,19 +40,18 @@ $(document).ready(function () {
                 table.row.add({
                     "id_journal": data[i].ID_JOURNAL,
                     "date": data[i].DATE,
-                    "aliment": data[i].ALIMENT,
+                    "aliment": data[i].produit,
                     "quantite": data[i].QUANTITE,
                 }).draw();
             }
         },
         error: function (error) {
-            throwAlert('Erreur lors de la récupération des données : ', error);
+            // throwAlert('Erreur lors de la récupération des données : ', error);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
 
     //Initialisation des nomenclatures
-
     $.ajax({
         url: URL_START + 'Backend/aliments.php',
         method: 'GET',
@@ -60,10 +61,21 @@ $(document).ready(function () {
 
             var contenu_select_aliment = "<option selected>Option</option>";
 
-            //Gestion des nutriments
+            //Options d'aliments
             for (let i = 0; i < data.length; i++) {
-                contenu_select_aliments += "<option value=" + data[i].CODE + ">" + data[i].PRODUIT + "</option>";
+                contenu_select_aliment += "<option value=" + data[i].CODE + ">" + data[i].PRODUIT + "</option>";
             }
+            $("#selectAliment").html(contenu_select_aliment);
+
+            // //ALiments dans le journal
+            // for (let i = 0; i < data.length; i++) {
+            //     for (let j = 0; i < table.length; j++) {
+            //         if (data[i].CODE == table.cell(j, 2).data()) {
+            //             table.cell(j, 2).data(data[i].PRODUIT).draw();
+            //         }
+            //     }
+            // }
+
             $("#selectAliment").html(contenu_select_aliment);
 
         },
@@ -73,22 +85,28 @@ $(document).ready(function () {
         }
     })
 
-    //Ajout et modification d'un aliment
+    //Ajout et modification d'une entrée
     //------------------------------------------------------------------------------------------------
     $('#btnValider').on("click", function (e) {
+
+        let row = table.row(e.target.closest('tr'));
+        let id_journal = row.data()[0];
         let date = $("#inputDate").val();
-        let aliment = $("#selectAliment").val();
+        let code = $("#selectAliment").val();
         let quantite = $("#inputQuantite").val();
 
         var formData = {
             id_journal: id_journal,
+            identifiant: valeurDuCookie.IDENTIFIANT,
             date: date,
-            aliment: aliment,
+            code: code,
             quantite: quantite,
         }
+
         console.log(formData);
 
         if (!($('#btnValider').hasClass("modif"))) {
+
             $.ajax({
                 url: URL_START + 'Backend/journal.php',
                 method: 'POST',
@@ -97,13 +115,13 @@ $(document).ready(function () {
                 success: function (data) {
                     table.row.add({
                         "date": formData.date,
-                        "aliment": formData.aliment,
+                        "aliment": formData.code,
                         "quantite": formData.quantite,
                         "id_journal": formData.id_journal
                     }).draw();
                 },
                 error: function (error) {
-                    throwAlert('Erreur lors de l\'ajout des données : ' + error);
+                    // throwAlert('Erreur lors de l\'ajout des données : ' + error);
                     console.error('Erreur lors de l\'ajout des données : ', error);
                 }
             })
@@ -136,7 +154,7 @@ $(document).ready(function () {
                     }).draw();
                 },
                 error: function (error) {
-                    throwAlert('Erreur lors de l\'ajout des données : ' + error);
+                    // throwAlert('Erreur lors de l\'ajout des données : ' + error);
                     console.error('Erreur lors de l\'ajout des données : ', error);
                 }
             })
@@ -144,12 +162,12 @@ $(document).ready(function () {
     })
     //------------------------------------------------------------------------------------------------
 
-    //Suppression d'un aliment
+    //Suppression d'une entrée
     //------------------------------------------------------------------------------------------------
     table.on('click', '#delete', function (e) {
         let row = table.row(e.target.closest('tr'));
         var formData = {
-            code: table.cell(row, 0).data(),
+            id_journal: table.cell(row, 0).data(),
         }
 
         $.ajax({
@@ -161,73 +179,39 @@ $(document).ready(function () {
                 row.remove().draw();
             },
             error: function (error) {
-                throwAlert('Erreur lors de la suppression des données : ' + error);
+                // throwAlert('Erreur lors de la suppression des données : ' + error);
                 console.error('Erreur lors de la suppression des données : ', error);
             }
         })
     });
     //------------------------------------------------------------------------------------------------
 
-    //Informations sur la modification d'un aliment
+    //Informations sur la modification d'un entrée du journal
     //------------------------------------------------------------------------------------------------
     table.on('click', '#edit', function (e) {
         retourAjout();
         let row = table.row(e.target.closest('tr'));
+        let id_journal = row.data()[0];
 
         $.ajax({
-            url: URL_START + 'Backend/aliments.php?code=' + table.cell(row, 0).data(),
+            url: URL_START + 'Backend/journal.php?id_journal=' + id_journal,
             method: 'GET',
             dataType: 'json',
             success: function (data) {
                 console.log(data);
 
-                $('#titre').html("Modification de l'aliment");
+                $('#titre').html("Modification de l'entrée");
                 $('#buttonReturn').html('<button class="btn btn-success" id="btnRAjout" onclick="retourAjout()">Retour à l\'ajout</button>');
                 $('#btnValider').addClass("modif");
 
-                //Infos générales de l'aliment
-                let data_aliment = data.aliment[0];
-
-                $("#inputCode").val(data_aliment.CODE);
-                $("#inputAliment").val(data_aliment.PRODUIT);
-                $("#inputQuantite").val(data_aliment.QUANTITE);
-                $("#inputPortion").val(data_aliment.PORTION);
-                $("#inputMarque").val(data_aliment.MARQUE);
-                $("#inputNutriscore").val(data_aliment.NUTRISCORE_GRADE);
-
-                //Pour les catégories
-                let data_categories = data.categories;
-
-                var divInputCategories = document.getElementById('inputCategories');
-                var checkboxes = divInputCategories.querySelectorAll('input[type="checkbox"]');
-
-                for (var i = 0; i < checkboxes.length; i++) {
-                    for (var j = 0; j < data_categories.length; j++) {
-                        if (checkboxes[i].value == data_categories[j].ID_CATEGORIES) {
-                            checkboxes[i].checked = true;
-                        }
-                    }
-                }
-
-                //Pour les ingrédients
-                let data_ingredients = data.ingredients;
-
-                supprimerLigne(document.querySelectorAll('.btnSuppr')[0]);
-                for (var i = 0; i < data_ingredients.length; i++) {
-                    ajouterLigne(data_ingredients[i].ID_INGREDIENT, data_ingredients[i].POURCENTAGE);
-                }
-
-                //Pour les nutriments
-                let data_nutriments = data.nutriments;
-
-                supprimerLigneNutriment(document.querySelectorAll('.btnSupprNut')[0]);
-                for (var i = 0; i < data_nutriments.length; i++) {
-                    ajouterLigneNutriment(data_nutriments[i].ID_NUTRIMENT, data_nutriments[i].VALEUR_100, data_nutriments[i].VALEUR_PORTION, data_nutriments[i].UNITE);
-                }
+                //Infos générales de l'entrée
+                $("#inputDate").val(data.DATE);
+                $("#selectAliment").val(data.PRODUIT);
+                $("#inputQuantite").val(data.QUANTITE);
 
             },
             error: function (error) {
-                throwAlert('Erreur lors de la récupération des données : ' + error);
+                // throwAlert('Erreur lors de la récupération des données : ' + error);
                 console.error('Erreur lors de la récupération des données : ', error);
             }
         })
@@ -235,3 +219,43 @@ $(document).ready(function () {
     //------------------------------------------------------------------------------------------------
 });
 
+//Fonction pour lancer une erreur
+function throwAlert(text) {
+    var alertElement = document.getElementById("myAlert");
+    var msgError = document.getElementById("msgError");
+
+    alertElement.style.display = "block";
+    msgError.innerHTML = text;
+    alertElement.classList.add("show");
+
+    setTimeout(function () {
+        alertElement.style.display = "none";
+        alertElement.classList.remove("show");
+    }, 5000);
+}
+
+function getCookieValue(cookieName) {
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+
+        if (cookie.indexOf(cookieName + "=") === 0) {
+            return decodeURIComponent(cookie.substring(cookieName.length + 1, cookie.length));
+        }
+    }
+
+    return null;
+}
+
+//Fonction pour revenir à l'ajout en mode modification
+function retourAjout() {
+    $('#titre').html("Ajout d'une nouvelle entrée au journal");
+    $('#buttonReturn').html('');
+    $('#btnValider').removeClass("modif");
+
+    //Reset infos générales aliment
+    $("#selectAliment").val("");
+    $("#inputQuantite").val("");
+    $("#inputDate").val("");
+}
