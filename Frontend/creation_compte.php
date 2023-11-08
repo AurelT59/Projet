@@ -41,7 +41,7 @@
                         <div class="form-label">Informations personnelles</div>
                     </td>
                     <td>
-                        <div class="error" id="erreurMdp" style="display: none">Les mots de passe ne sont pas les mêmes</div>
+                        <div class="error" id="erreurMdp" style="display: none"></div>
                     </td>
                 </tr>
                 <tr>

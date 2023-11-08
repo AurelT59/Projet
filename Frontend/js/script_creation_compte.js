@@ -80,11 +80,20 @@ $('#btnValider').on("click", function (e) {
                 window.location.href = URL_START + 'Frontend/index.php?page=accueil';
             },
             error: function (error) {
-                console.error('Erreur lors de l\'ajout des données : ', error);
+                if (error.status == 501) {
+                    $("#erreurMdp").html("L'identifiant existe déjà")
+                    $("#erreurMdp").css("display", "block")
+                    $("#inputLogin").css("border-color", "red")
+                    console.error('L\'identifiant existe déjà');
+                }
+                else {
+                    console.error('Erreur lors de l\'ajout des données utilisateurs : ', error);
+                }
             }
         })
     }
     else {
+        $("#erreurMdp").html("Les mots de passe ne sont pas les mêmes")
         $("#erreurMdp").css("display", "block")
         $("#inputMdp").css("border-color", "red")
         $("#inputMdp2").css("border-color", "red")
