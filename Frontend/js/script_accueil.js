@@ -1,14 +1,6 @@
-// Calculer la date actuelle
-const dateActuelle = new Date();
-
-// Calculer la date 1 semaine avant la date actuelle
-const dateUneSemaineAvant = new Date(dateActuelle);
-dateUneSemaineAvant.setDate(dateActuelle.getDate() - 8);
-
-
 //Fonction de création du graphe
 //----------------------------------------------------------------------------------------------
-function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, unite) {
+function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, unite, debut, fin) {
 
     //Fonction pour déterminer le maximum en y
     function trouverValeurMax(donnees, nutriment, val_recommendation) {
@@ -37,7 +29,7 @@ function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, uni
 
     // Declare the x (horizontal position) scale.
     const x = d3.scaleUtc()
-        .domain([dateUneSemaineAvant, dateActuelle])
+        .domain([debut, fin])
         .range([marginLeft, width - marginRight]);
 
     // Declare the y (vertical position) scale.
@@ -54,28 +46,13 @@ function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, uni
         .attr("width", width)
         .attr("height", height);
 
-    const formatDate = d3.timeFormat("%d/%m/%y");
+    const formatDate = d3.timeFormat("%d/%m");
 
-
-    // Obtenez la date actuelle
-    var currentDate = new Date();
-
-    // Créez un tableau pour stocker les valeurs de repère
-    var tickValues = [];
-
-    // Ajoutez les 7 jours précédents à partir de la date actuelle
-    for (var i = 0; i < 8; i++) {
-        var date = new Date(currentDate);
-        date.setDate(currentDate.getDate() - i);
-        date.setHours(0, 0, 0, 0);
-        tickValues.push(date);
-    }
 
     // Créez l'axe en utilisant les valeurs de repère que vous avez calculées
     svg.append("g")
         .attr("transform", `translate(0,${height - marginBottom})`)
         .call(d3.axisBottom(x)
-            .tickValues(tickValues)
             .tickFormat(formatDate)
         );
 
@@ -177,134 +154,189 @@ function correct_date(val) {
         return "" + val
     }
 }
-const stringdateUneSemaineAvant = dateUneSemaineAvant.getFullYear() + "-" + correct_date(dateUneSemaineAvant.getMonth() + 1) + "-" + correct_date(dateUneSemaineAvant.getDate());
-const stringdateActuelle = dateActuelle.getFullYear() + "-" + correct_date(dateActuelle.getMonth() + 1) + "-" + correct_date(dateActuelle.getDate());
-$.ajax({
-    url: URL_START + 'Backend/journal.php?date1=' + stringdateUneSemaineAvant + '&date2=' + stringdateActuelle + '&identifiant=' + valeurDuCookie.IDENTIFIANT,
-    method: 'GET',
-    dataType: 'json',
-    success: function (data) {
-        console.log(data);
 
-        function calculerNutriments(journaux) {
-            const resultat = {};
 
-            // Pour chaque journal, calculer la valeur pour chaque nutriment
-            journaux.forEach(elem => {
-                const jour = elem.journal.DATE;
 
-                if (!resultat[jour]) {
-                    resultat[jour] = { jour, nutriments: {} };
-                }
+function create_graph_with_date(debut, fin) {
+    let stringdebut = debut.getFullYear() + "-" + correct_date(debut.getMonth() + 1) + "-" + correct_date(debut.getDate());
+    let stringfin = fin.getFullYear() + "-" + correct_date(fin.getMonth() + 1) + "-" + correct_date(fin.getDate());
 
-                (elem.nutriments).forEach(nutriment => {
-                    const quantite = parseFloat(elem.journal.QUANTITE);
-                    const valeurPortion = parseFloat(nutriment.VALEUR_PORTION);
-                    const resultatNutriment = quantite * valeurPortion;
+    $.ajax({
+        url: URL_START + 'Backend/journal.php?date1=' + stringdebut + '&date2=' + stringfin + '&identifiant=' + valeurDuCookie.IDENTIFIANT,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
 
-                    if (!resultat[jour].nutriments[nutriment.ID_NUTRIMENT]) {
-                        resultat[jour].nutriments[nutriment.ID_NUTRIMENT] = {
-                            nom: nutriment.NOM,
-                            valeur: 0,
-                        };
+            function calculerNutriments(journaux) {
+                const resultat = {};
+
+                // Pour chaque journal, calculer la valeur pour chaque nutriment
+                journaux.forEach(elem => {
+                    const jour = elem.journal.DATE;
+
+                    if (!resultat[jour]) {
+                        resultat[jour] = { jour, nutriments: {} };
                     }
 
-                    if (nutriment.UNITE === 'kJ') {
-                        // Convertir kJ en kcal (1 kJ = 0.239 kcal)
-                        resultat[jour].nutriments[nutriment.ID_NUTRIMENT].valeur += resultatNutriment * 0.239;
-                    } else if (nutriment.UNITE === 'mg') {
-                        // Convertir mg en g
-                        resultat[jour].nutriments[nutriment.ID_NUTRIMENT].valeur += resultatNutriment * 0.001;
-                    } else {
-                        resultat[jour].nutriments[nutriment.ID_NUTRIMENT].valeur += resultatNutriment;
-                    }
-                });
-            });
+                    (elem.nutriments).forEach(nutriment => {
+                        const quantite = parseFloat(elem.journal.QUANTITE);
+                        const valeurPortion = parseFloat(nutriment.VALEUR_PORTION);
+                        const resultatNutriment = quantite * valeurPortion;
 
-            // Convertir l'objet résultat en un tableau
-            const resultatFinal = Object.values(resultat);
-
-            return resultatFinal;
-        }
-
-
-        const resultats = calculerNutriments(data);
-        console.log(resultats);
-
-        //Insertion des données dans le graphe
-        //----------------------------------------------------------------------------------------------
-
-        $.ajax({
-            url: URL_START + 'Backend/recommendations.php?identifiant=' + valeurDuCookie.IDENTIFIANT,
-            method: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                const tab_reco = data;
-
-                $.ajax({
-                    url: URL_START + 'Backend/nomenclature.php',
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log(data);
-
-                        //Initialisation de la nomenclature des nutriments
-                        let contenu_select_nutriments = "";
-                        let tab_nutriments = data.nutriments;
-                        for (let i = 0; i < tab_nutriments.length; i++) {
-                            contenu_select_nutriments += "<option value=" + tab_nutriments[i].ID_NUTRIMENT + ">" + tab_nutriments[i].NOM + "</option>";
+                        if (!resultat[jour].nutriments[nutriment.ID_NUTRIMENT]) {
+                            resultat[jour].nutriments[nutriment.ID_NUTRIMENT] = {
+                                nom: nutriment.NOM,
+                                valeur: 0,
+                            };
                         }
-                        $("#selectNut").html(contenu_select_nutriments);
+
+                        if (nutriment.UNITE === 'kJ') {
+                            // Convertir kJ en kcal (1 kJ = 0.239 kcal)
+                            resultat[jour].nutriments[nutriment.ID_NUTRIMENT].valeur += resultatNutriment * 0.239;
+                        } else if (nutriment.UNITE === 'mg') {
+                            // Convertir mg en g
+                            resultat[jour].nutriments[nutriment.ID_NUTRIMENT].valeur += resultatNutriment * 0.001;
+                        } else {
+                            resultat[jour].nutriments[nutriment.ID_NUTRIMENT].valeur += resultatNutriment;
+                        }
+                    });
+                });
+
+                // Convertir l'objet résultat en un tableau
+                const resultatFinal = Object.values(resultat);
+
+                return resultatFinal;
+            }
 
 
-                        //Fonction pour initialiser le graphe
-                        function init_graphe(nutriment) {
-                            $("#container").html("");
-                            let val_recommendation = 0;
+            const resultats = calculerNutriments(data);
+            console.log(resultats);
 
-                            for (let i = 0; i < tab_reco.length; i++) {
-                                if (tab_reco[i].ID_NUTRIMENT == nutriment) {
-                                    val_recommendation = tab_reco[i].QUANTITE;
+            //Insertion des données dans le graphe
+            //----------------------------------------------------------------------------------------------
+
+            $.ajax({
+                url: URL_START + 'Backend/recommendations.php?identifiant=' + valeurDuCookie.IDENTIFIANT,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    const tab_reco = data;
+
+                    if ($("#selectNut").val() != null) {
+                        id_select = $("#selectNut").val();
+                    }
+                    else {
+                        id_select = 9;
+                    }
+
+                    $.ajax({
+                        url: URL_START + 'Backend/nomenclature.php',
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data);
+
+                            //Initialisation de la nomenclature des nutriments
+                            let contenu_select_nutriments = "";
+                            let tab_nutriments = data.nutriments;
+                            for (let i = 0; i < tab_nutriments.length; i++) {
+                                if (tab_nutriments[i].ID_NUTRIMENT == id_select) {
+                                    contenu_select_nutriments += "<option value=" + tab_nutriments[i].ID_NUTRIMENT + " selected>" + tab_nutriments[i].NOM + "</option>";
+                                }
+                                else {
+                                    contenu_select_nutriments += "<option value=" + tab_nutriments[i].ID_NUTRIMENT + ">" + tab_nutriments[i].NOM + "</option>";
                                 }
                             }
+                            $("#selectNut").html(contenu_select_nutriments);
 
-                            create_graph(resultats, nutriment, val_recommendation, "nutriment", "unite");
+
+                            //Fonction pour initialiser le graphe
+                            function init_graphe(nutriment, date_debut, date_fin) {
+                                $("#container").html("");
+                                let val_recommendation = 0;
+
+                                for (let i = 0; i < tab_reco.length; i++) {
+                                    if (tab_reco[i].ID_NUTRIMENT == nutriment) {
+                                        val_recommendation = tab_reco[i].QUANTITE;
+                                    }
+                                }
+
+                                let unite = "g"
+                                if (nutriment == 9) {
+                                    unite = "kcal"
+                                }
+                                let nom = $("#selectNut option[value=" + nutriment + "]").text();
+
+                                create_graph(resultats, nutriment, val_recommendation, nom, unite, date_debut, date_fin);
+                            }
+
+
+                            //Initialisation par défaut
+                            init_graphe($("#selectNut").val(), debut, fin);
+
+                            //Changement du graphe à chaque sélection
+                            $("#selectNut").on("change", function (e) {
+                                init_graphe($("#selectNut").val(), debut, fin);
+                            })
+                        },
+                        error: function (error) {
+                            console.error('Erreur lors de l\'importation des données de nomenclature : ', error);
                         }
+                    })
+                },
+                error: function (error) {
+                    console.error('Erreur lors de l\'importation des données de recommendations : ', error);
+                }
+            })
 
+            //----------------------------------------------------------------------------------------------
 
-                        //Initialisation par défaut
-                        $("#selectNut").val(9);
-                        init_graphe("9");
-
-                        //Changement du graphe à chaque sélection
-                        $("#selectNut").on("change", function (e) {
-                            init_graphe($("#selectNut").val());
-                        })
-                    },
-                    error: function (error) {
-                        console.error('Erreur lors de l\'importation des données de nomenclature : ', error);
-                    }
-                })
-            },
-            error: function (error) {
-                console.error('Erreur lors de l\'importation des données de recommendations : ', error);
+        },
+        error: function (error) {
+            if (error.status == 404) {
+                console.error('Vous n\'avez pas de données dans le journal');
+                $("#selectNut").hide();
+                $("#container").html("Vous n\'avez pas d'historique pour l'instant");
             }
-        })
-
-        //----------------------------------------------------------------------------------------------
-
-    },
-    error: function (error) {
-        if (error.status == 404) {
-            console.error('Vous n\'avez pas de données dans le journal');
-            $("#selectNut").hide();
-            $("#container").html("Vous n\'avez pas d'historique pour l'instant");
+            else {
+                console.error('Erreur lors de l\'importation des données du journal : ', error);
+            }
         }
-        else {
-            console.error('Erreur lors de l\'importation des données du journal : ', error);
-        }
-    }
-})
+    })
+}
 //----------------------------------------------------------------------------------------------
+
+
+//Initialisation des dates
+// Calculer la date actuelle
+const dateActuelle = new Date();
+
+// Calculer la date 1 semaine avant la date actuelle
+const dateUneSemaineAvant = new Date(dateActuelle);
+dateUneSemaineAvant.setDate(dateActuelle.getDate() - 7);
+
+const stringdateUneSemaineAvant = dateUneSemaineAvant.getFullYear() + "-" + correct_date(dateUneSemaineAvant.getMonth() + 1) + "-" + correct_date(dateUneSemaineAvant.getDate());
+const stringdateActuelle = dateActuelle.getFullYear() + "-" + correct_date(dateActuelle.getMonth() + 1) + "-" + correct_date(dateActuelle.getDate());
+
+$("#selectDebut").val(stringdateUneSemaineAvant);
+$("#selectFin").val(stringdateActuelle);
+
+create_graph_with_date(dateUneSemaineAvant, dateActuelle);
+
+
+//Changement du graphe en fonction des dates sélectionnées
+
+$("#selectDebut").on("input", function (e) {
+    let start = new Date($("#selectDebut").val());
+    let finish = new Date($("#selectFin").val());
+    create_graph_with_date(start, finish);
+})
+
+$("#selectFin").on("input", function (e) {
+    let start = new Date($("#selectDebut").val());
+    let finish = new Date($("#selectFin").val());
+    create_graph_with_date(start, finish);
+})
 
 

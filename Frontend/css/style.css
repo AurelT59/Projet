@@ -147,3 +147,26 @@ h1 {
 .error {
     color: red;
 }
+
+
+/*ACCUEIL*/
+
+.flexbox {
+    display: flex;
+    margin: 5px;
+}
+
+#selectDebut {
+    position: relative;
+    bottom: 15px;
+}
+
+#selectFin {
+    position: relative;
+    bottom: 15px;
+}
+
+#selectNut {
+    position: relative;
+    bottom: 15px;
+}
