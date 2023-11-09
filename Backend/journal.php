@@ -120,7 +120,7 @@ function checkAndResponse($request, $data, $result = array())
 
             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 echo json_encode($result);
-            } else if ($_SERVER['REQUEST_METHOD'] == 'POST' || ($_SERVER['REQUEST_METHOD'] == 'PUT')) {
+            } else {
                 echo json_encode(array('id_journal' => $data['id_journal']));
             }
         }
