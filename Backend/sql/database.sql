@@ -701,13 +701,13 @@ CREATE TRIGGER `calcul_energie_et_dependant` AFTER INSERT ON `utilisateurs` FOR 
     VALUES (NEW.IDENTIFIANT, 9, new_reco);
     
     INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
-    VALUES (NEW.IDENTIFIANT, 2, 1.5*new_reco/4);
+    VALUES (NEW.IDENTIFIANT, 2, 0.5*new_reco/4);
     
     INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
-    VALUES (NEW.IDENTIFIANT, 7, 1.15*new_reco/4);
+    VALUES (NEW.IDENTIFIANT, 7, 0.15*new_reco/4);
     
     INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
-    VALUES (NEW.IDENTIFIANT, 4, 1.4*new_reco/9);
+    VALUES (NEW.IDENTIFIANT, 4, 0.4*new_reco/9);
     
 END
 $$
@@ -733,6 +733,97 @@ DELIMITER $$
 CREATE TRIGGER `calcul_sel` AFTER INSERT ON `utilisateurs` FOR EACH ROW BEGIN
     INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
     VALUES (NEW.IDENTIFIANT, 8, 5);
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_calcium`;
+DELIMITER $$
+CREATE TRIGGER `calcul_calcium_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
+    DECLARE new_quantite DECIMAL(10, 2);
+    
+    IF NEW.ID_SEXE = 1 THEN
+        SET new_quantite = 0.95;
+    ELSEIF NEW.ID_SEXE = 2 THEN
+        SET new_quantite = 1;
+    ELSE
+        SET new_quantite = 0;
+    END IF;
+
+    UPDATE recommendations SET QUANTITE=new_quantite
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=1;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_cholesterol`;
+DELIMITER $$
+CREATE TRIGGER `calcul_cholesterol_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
+    UPDATE recommendations SET QUANTITE=0.3
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=3;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_energie_et_dependant`;
+DELIMITER $$
+CREATE TRIGGER `calcul_energie_et_dependant_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
+    DECLARE new_quantite DECIMAL(10, 2);
+    DECLARE new_reco DECIMAL(10, 2);
+    
+    IF NEW.ID_SEXE = 2 THEN
+        SET new_quantite = NEW.POIDS * 10 + NEW.TAILLE * 6.25 + NEW.AGE * 5 + 5;
+    ELSEIF NEW.ID_SEXE = 1 THEN
+        SET new_quantite = NEW.POIDS * 10 + NEW.TAILLE * 6.25 + NEW.AGE * 5 - 161;
+    ELSE
+        SET new_quantite = 0;
+    END IF;
+    
+    IF NEW.ID_SPORTIF = 1 THEN
+        SET new_reco = new_quantite * 1.2;
+    ELSEIF NEW.ID_SPORTIF = 2 THEN
+        SET new_reco = new_quantite * 1.375;
+    ELSEIF NEW.ID_SPORTIF = 3 THEN
+        SET new_reco = new_quantite * 1.55;
+    ELSEIF NEW.ID_SPORTIF = 4 THEN
+        SET new_reco = new_quantite * 1.725;
+    ELSE
+        SET new_reco = new_quantite;
+    END IF;
+
+    UPDATE recommendations SET QUANTITE=new_reco
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=9;
+    
+    UPDATE recommendations SET QUANTITE=0.5*new_reco/4
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=2;
+    
+    UPDATE recommendations SET QUANTITE=0.15*new_reco/4
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=7;
+    
+    UPDATE recommendations SET QUANTITE=0.4*new_reco/9
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=4;
+    
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_fer`;
+DELIMITER $$
+CREATE TRIGGER `calcul_fer_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
+    UPDATE recommendations SET QUANTITE=11
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=6;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_fibres`;
+DELIMITER $$
+CREATE TRIGGER `calcul_fibres_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
+    UPDATE recommendations SET QUANTITE=30
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=5;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_sel`;
+DELIMITER $$
+CREATE TRIGGER `calcul_sel_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
+    UPDATE recommendations SET QUANTITE=5
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=8;
 END
 $$
 DELIMITER ;
