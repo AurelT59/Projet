@@ -95,7 +95,7 @@ $(document).ready(function () {
                 contenu_select_ingredients += "<option value='" + tab_ingredients[i].ID_INGREDIENT + "'>" + tab_ingredients[i].NOM + "</option>";
             }
             $("#options0").html(contenu_select_ingredients);
-            $("#options1").html(contenu_select_ingredients);
+            $("#inputIngredient1").html(contenu_select_ingredients);
 
             //Gestion des catégories
             let tab_categories = data.categories;
@@ -134,10 +134,11 @@ $(document).ready(function () {
 
         function get_tab_compo(index) {
             var row = rows[index];
+            var selects = row.getElementsByTagName('select');
             var inputs = row.getElementsByTagName('input');
 
-            var ingredientValue = inputs[0].value;
-            var pourcentageValue = inputs[1].value;
+            var ingredientValue = selects[0].value;
+            var pourcentageValue = inputs[0].value;
 
             //ATTENTION : LES ID SONT POUR L'INSTANT LE NOM
             str_composition.push(JSON.parse('{"id_ingredient":' + ingredientValue + ',"pourcentage":' + pourcentageValue + '}'))
@@ -428,11 +429,19 @@ function ajouterLigne(ingredient, pourcentage) {
     const cell3 = newRow.insertCell(2);
 
     cell1.innerHTML = `
-<input type="text" class="form-control input-taille" placeholder="Ingrédient" id="inputIngredient${ligneCount}" list="options${ligneCount}" value=${ingredient}>
-<datalist id="options${ligneCount}">
+<select class="form-select input-taille" placeholder="Ingrédient" id="inputIngredient${ligneCount}">
 `+ $("#options0").html() + `
-                </datalist>
+                </select>
 `;
+
+    let selectElement = document.getElementById("inputIngredient" + ligneCount);
+    for (var i = 0; i < selectElement.options.length; i++) {
+        if (selectElement.options[i].value === ingredient) {
+            selectElement.selectedIndex = i;
+            break;
+        }
+    }
+
     cell2.innerHTML = `
 <input type="text" class="form-control input-taille" placeholder="Pourcentage" id="inputPourcentage${ligneCount}" value=${pourcentage}>
 `;
