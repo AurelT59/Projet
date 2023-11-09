@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 09 nov. 2023 à 10:10
+-- Généré le : jeu. 09 nov. 2023 à 10:49
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -29,12 +29,12 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `aliments`;
 CREATE TABLE IF NOT EXISTS `aliments` (
-  `CODE` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-  `PRODUIT` varchar(256) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `CODE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `PRODUIT` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `QUANTITE` int DEFAULT NULL,
   `PORTION` int DEFAULT NULL,
-  `MARQUE` varchar(256) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `NUTRISCORE_GRADE` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `MARQUE` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `NUTRISCORE_GRADE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`CODE`),
   KEY `INDEX_PRODUIT` (`PRODUIT`(250))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -60,7 +60,7 @@ INSERT INTO `aliments` (`CODE`, `PRODUIT`, `QUANTITE`, `PORTION`, `MARQUE`, `NUT
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `ID_CATEGORIES` int NOT NULL AUTO_INCREMENT,
-  `NOM` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `NOM` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_CATEGORIES`),
   KEY `INDEX_NOM_CATEGORIES` (`NOM`)
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -151,7 +151,7 @@ INSERT INTO `categories` (`ID_CATEGORIES`, `NOM`) VALUES
 
 DROP TABLE IF EXISTS `composition`;
 CREATE TABLE IF NOT EXISTS `composition` (
-  `CODE` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `CODE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `ID_INGREDIENT` int NOT NULL,
   `POURCENTAGE` int DEFAULT NULL,
   PRIMARY KEY (`CODE`,`ID_INGREDIENT`),
@@ -236,11 +236,11 @@ INSERT INTO `composition` (`CODE`, `ID_INGREDIENT`, `POURCENTAGE`) VALUES
 
 DROP TABLE IF EXISTS `composition_nutritive`;
 CREATE TABLE IF NOT EXISTS `composition_nutritive` (
-  `CODE` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `CODE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `ID_NUTRIMENT` int NOT NULL,
   `VALEUR_100` float DEFAULT NULL,
   `VALEUR_PORTION` float DEFAULT NULL,
-  `UNITE` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `UNITE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`CODE`,`ID_NUTRIMENT`),
   KEY `ID_NUTRIMENT` (`ID_NUTRIMENT`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -290,7 +290,7 @@ INSERT INTO `composition_nutritive` (`CODE`, `ID_NUTRIMENT`, `VALEUR_100`, `VALE
 DROP TABLE IF EXISTS `ingredients`;
 CREATE TABLE IF NOT EXISTS `ingredients` (
   `ID_INGREDIENT` int NOT NULL AUTO_INCREMENT,
-  `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `NOM` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_INGREDIENT`)
 ) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -394,8 +394,8 @@ INSERT INTO `ingredients` (`ID_INGREDIENT`, `NOM`) VALUES
 DROP TABLE IF EXISTS `journal`;
 CREATE TABLE IF NOT EXISTS `journal` (
   `ID_JOURNAL` int NOT NULL AUTO_INCREMENT,
-  `CODE` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-  `IDENTIFIANT` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `CODE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `IDENTIFIANT` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `QUANTITE` int DEFAULT NULL,
   `DATE` date DEFAULT NULL,
   PRIMARY KEY (`ID_JOURNAL`),
@@ -422,7 +422,7 @@ INSERT INTO `journal` (`ID_JOURNAL`, `CODE`, `IDENTIFIANT`, `QUANTITE`, `DATE`) 
 
 DROP TABLE IF EXISTS `labels`;
 CREATE TABLE IF NOT EXISTS `labels` (
-  `CODE` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `CODE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `ID_CATEGORIES` int NOT NULL,
   PRIMARY KEY (`CODE`,`ID_CATEGORIES`),
   KEY `ID_CATEGORIES` (`ID_CATEGORIES`)
@@ -518,8 +518,8 @@ INSERT INTO `labels` (`CODE`, `ID_CATEGORIES`) VALUES
 DROP TABLE IF EXISTS `nutriments`;
 CREATE TABLE IF NOT EXISTS `nutriments` (
   `ID_NUTRIMENT` int NOT NULL AUTO_INCREMENT,
-  `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `NOM_EN` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `NOM` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `NOM_EN` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_NUTRIMENT`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -547,7 +547,7 @@ INSERT INTO `nutriments` (`ID_NUTRIMENT`, `NOM`, `NOM_EN`) VALUES
 DROP TABLE IF EXISTS `pratique_sportive`;
 CREATE TABLE IF NOT EXISTS `pratique_sportive` (
   `ID_SPORTIF` int NOT NULL AUTO_INCREMENT,
-  `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `NOM` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_SPORTIF`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -569,7 +569,7 @@ INSERT INTO `pratique_sportive` (`ID_SPORTIF`, `NOM`) VALUES
 
 DROP TABLE IF EXISTS `recommendations`;
 CREATE TABLE IF NOT EXISTS `recommendations` (
-  `IDENTIFIANT` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `IDENTIFIANT` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `ID_NUTRIMENT` int NOT NULL,
   `QUANTITE` float DEFAULT NULL,
   PRIMARY KEY (`IDENTIFIANT`,`ID_NUTRIMENT`),
@@ -582,12 +582,12 @@ CREATE TABLE IF NOT EXISTS `recommendations` (
 
 INSERT INTO `recommendations` (`IDENTIFIANT`, `ID_NUTRIMENT`, `QUANTITE`) VALUES
 ('lil', 1, 0.95),
-('lil', 2, 860.58),
+('lil', 2, 286.86),
 ('lil', 3, 0.3),
-('lil', 4, 356.981),
+('lil', 4, 101.995),
 ('lil', 5, 30),
 ('lil', 6, 11),
-('lil', 7, 659.778),
+('lil', 7, 86.058),
 ('lil', 8, 5),
 ('lil', 9, 2294.88);
 
@@ -600,7 +600,7 @@ INSERT INTO `recommendations` (`IDENTIFIANT`, `ID_NUTRIMENT`, `QUANTITE`) VALUES
 DROP TABLE IF EXISTS `sexe`;
 CREATE TABLE IF NOT EXISTS `sexe` (
   `ID_SEXE` int NOT NULL AUTO_INCREMENT,
-  `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `NOM` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_SEXE`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -620,12 +620,12 @@ INSERT INTO `sexe` (`ID_SEXE`, `NOM`) VALUES
 
 DROP TABLE IF EXISTS `utilisateurs`;
 CREATE TABLE IF NOT EXISTS `utilisateurs` (
-  `IDENTIFIANT` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `IDENTIFIANT` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `ID_SPORTIF` int NOT NULL,
   `ID_SEXE` int DEFAULT NULL,
   `MOT_DE_PASSE` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `PRENOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `PRENOM` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `NOM` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `AGE` int DEFAULT NULL,
   `POIDS` int DEFAULT NULL,
   `TAILLE` int DEFAULT NULL,
@@ -640,7 +640,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`IDENTIFIANT`, `ID_SPORTIF`, `ID_SEXE`, `MOT_DE_PASSE`, `PRENOM`, `NOM`, `AGE`, `POIDS`, `TAILLE`) VALUES
-('lil', 2, 1, '$2y$10$FIN8qMwzaSCxHsett1I0TuMgQqWzWrl53w820cMIYsyMvdkn.mBL2', 'Aurel', 'Tera', 21, 60, 180);
+('lil', 2, 1, '$2y$10$FIN8qMwzaSCxHsett1I0TuMgQqWzWrl53w820cMIYsyMvdkn.mBL2', 'Aurel', 'Terad', 21, 60, 180);
 
 --
 -- Déclencheurs `utilisateurs`
@@ -663,11 +663,37 @@ CREATE TRIGGER `calcul_calcium` AFTER INSERT ON `utilisateurs` FOR EACH ROW BEGI
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_calcium_update`;
+DELIMITER $$
+CREATE TRIGGER `calcul_calcium_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
+    DECLARE new_quantite DECIMAL(10, 2);
+    
+    IF NEW.ID_SEXE = 1 THEN
+        SET new_quantite = 0.95;
+    ELSEIF NEW.ID_SEXE = 2 THEN
+        SET new_quantite = 1;
+    ELSE
+        SET new_quantite = 0;
+    END IF;
+
+    UPDATE recommendations SET QUANTITE=new_quantite
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=1;
+END
+$$
+DELIMITER ;
 DROP TRIGGER IF EXISTS `calcul_cholesterol`;
 DELIMITER $$
 CREATE TRIGGER `calcul_cholesterol` AFTER INSERT ON `utilisateurs` FOR EACH ROW BEGIN
     INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
     VALUES (NEW.IDENTIFIANT, 3, 0.3);
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_cholesterol_update`;
+DELIMITER $$
+CREATE TRIGGER `calcul_cholesterol_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
+    UPDATE recommendations SET QUANTITE=0.3
+    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=3;
 END
 $$
 DELIMITER ;
@@ -712,57 +738,7 @@ CREATE TRIGGER `calcul_energie_et_dependant` AFTER INSERT ON `utilisateurs` FOR 
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `calcul_fer`;
-DELIMITER $$
-CREATE TRIGGER `calcul_fer` AFTER INSERT ON `utilisateurs` FOR EACH ROW BEGIN
-    INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
-    VALUES (NEW.IDENTIFIANT, 6, 11);
-END
-$$
-DELIMITER ;
-DROP TRIGGER IF EXISTS `calcul_fibres`;
-DELIMITER $$
-CREATE TRIGGER `calcul_fibres` AFTER INSERT ON `utilisateurs` FOR EACH ROW BEGIN
-    INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
-    VALUES (NEW.IDENTIFIANT, 5, 30);
-END
-$$
-DELIMITER ;
-DROP TRIGGER IF EXISTS `calcul_sel`;
-DELIMITER $$
-CREATE TRIGGER `calcul_sel` AFTER INSERT ON `utilisateurs` FOR EACH ROW BEGIN
-    INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
-    VALUES (NEW.IDENTIFIANT, 8, 5);
-END
-$$
-DELIMITER ;
-DROP TRIGGER IF EXISTS `calcul_calcium`;
-DELIMITER $$
-CREATE TRIGGER `calcul_calcium_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
-    DECLARE new_quantite DECIMAL(10, 2);
-    
-    IF NEW.ID_SEXE = 1 THEN
-        SET new_quantite = 0.95;
-    ELSEIF NEW.ID_SEXE = 2 THEN
-        SET new_quantite = 1;
-    ELSE
-        SET new_quantite = 0;
-    END IF;
-
-    UPDATE recommendations SET QUANTITE=new_quantite
-    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=1;
-END
-$$
-DELIMITER ;
-DROP TRIGGER IF EXISTS `calcul_cholesterol`;
-DELIMITER $$
-CREATE TRIGGER `calcul_cholesterol_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
-    UPDATE recommendations SET QUANTITE=0.3
-    WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=3;
-END
-$$
-DELIMITER ;
-DROP TRIGGER IF EXISTS `calcul_energie_et_dependant`;
+DROP TRIGGER IF EXISTS `calcul_energie_et_dependant_update`;
 DELIMITER $$
 CREATE TRIGGER `calcul_energie_et_dependant_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
     DECLARE new_quantite DECIMAL(10, 2);
@@ -805,6 +781,14 @@ $$
 DELIMITER ;
 DROP TRIGGER IF EXISTS `calcul_fer`;
 DELIMITER $$
+CREATE TRIGGER `calcul_fer` AFTER INSERT ON `utilisateurs` FOR EACH ROW BEGIN
+    INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
+    VALUES (NEW.IDENTIFIANT, 6, 11);
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_fer_update`;
+DELIMITER $$
 CREATE TRIGGER `calcul_fer_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
     UPDATE recommendations SET QUANTITE=11
     WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=6;
@@ -813,6 +797,14 @@ $$
 DELIMITER ;
 DROP TRIGGER IF EXISTS `calcul_fibres`;
 DELIMITER $$
+CREATE TRIGGER `calcul_fibres` AFTER INSERT ON `utilisateurs` FOR EACH ROW BEGIN
+    INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
+    VALUES (NEW.IDENTIFIANT, 5, 30);
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_fibres_update`;
+DELIMITER $$
 CREATE TRIGGER `calcul_fibres_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
     UPDATE recommendations SET QUANTITE=30
     WHERE IDENTIFIANT=NEW.IDENTIFIANT AND ID_NUTRIMENT=5;
@@ -820,6 +812,14 @@ END
 $$
 DELIMITER ;
 DROP TRIGGER IF EXISTS `calcul_sel`;
+DELIMITER $$
+CREATE TRIGGER `calcul_sel` AFTER INSERT ON `utilisateurs` FOR EACH ROW BEGIN
+    INSERT INTO recommendations (IDENTIFIANT, ID_NUTRIMENT, QUANTITE)
+    VALUES (NEW.IDENTIFIANT, 8, 5);
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `calcul_sel_update`;
 DELIMITER $$
 CREATE TRIGGER `calcul_sel_update` AFTER UPDATE ON `utilisateurs` FOR EACH ROW BEGIN
     UPDATE recommendations SET QUANTITE=5
