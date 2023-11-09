@@ -89,18 +89,19 @@ $(document).ready(function () {
     //------------------------------------------------------------------------------------------------
     $('#btnValider').on("click", function (e) {
 
-        let row = table.row(e.target.closest('tr'));
-        let id_journal = row.data()[0];
+        let id_journal = $("#inputIdJournal").val();
         let date = $("#inputDate").val();
         let code = $("#selectAliment").val();
+        let produit = $("#selectAliment option[value=" + code + "]").text();
+
         let quantite = $("#inputQuantite").val();
 
         var formData = {
-            id_journal: id_journal,
             identifiant: valeurDuCookie.IDENTIFIANT,
             date: date,
             code: code,
             quantite: quantite,
+            id_journal: id_journal
         }
 
         console.log(formData);
@@ -115,9 +116,9 @@ $(document).ready(function () {
                 success: function (data) {
                     table.row.add({
                         "date": formData.date,
-                        "aliment": formData.code,
+                        "aliment": produit,
                         "quantite": formData.quantite,
-                        "id_journal": formData.id_journal
+                        "id_journal": data.id_journal
                     }).draw();
                 },
                 error: function (error) {
@@ -148,7 +149,7 @@ $(document).ready(function () {
                     console.log(data);
                     row.data({
                         "date": formData.date,
-                        "aliment": formData.aliment,
+                        "aliment": produit,
                         "quantite": formData.quantite,
                         "id_journal": formData.id_journal
                     }).draw();
@@ -191,7 +192,8 @@ $(document).ready(function () {
     table.on('click', '#edit', function (e) {
         retourAjout();
         let row = table.row(e.target.closest('tr'));
-        let id_journal = row.data()[0];
+        let id_journal = table.cell(row, 0).data()
+        console.log(id_journal);
 
         $.ajax({
             url: URL_START + 'Backend/journal.php?id_journal=' + id_journal,
@@ -205,9 +207,10 @@ $(document).ready(function () {
                 $('#btnValider').addClass("modif");
 
                 //Infos générales de l'entrée
-                $("#inputDate").val(data.DATE);
-                $("#selectAliment").val(data.PRODUIT);
-                $("#inputQuantite").val(data.QUANTITE);
+                $("#inputIdJournal").val(id_journal);
+                $("#inputDate").val(data[0].DATE);
+                $("#selectAliment").val(data[0].CODE);
+                $("#inputQuantite").val(data[0].QUANTITE);
 
             },
             error: function (error) {

@@ -1,8 +1,11 @@
 <!-- FORMULAIRE POUR RENTRER UNE CONSOMMATION -->
 
 <div class="box" id="box_form_conso">
-    <h1>Nouvelle entrée dans le journal</h1>
+    <h1 id="titre">Nouvelle entrée dans le journal</h1>
 
+    <span id="buttonReturn">
+    </span>
+    <input type="hidden" id="inputIdJournal">
     <div class="mb-3">
         <label for="inputDateConso" class="col-sm-2 col-form-label">Date</label>
         <div class="col-sm-3">
@@ -19,6 +22,7 @@
         <input type="number" class="form-control" id="inputQuantite">
     </div>
     <button type="button" id="btnValider" class="btn btn-success body-button">Valider</button>
+
 
 </div>
 
