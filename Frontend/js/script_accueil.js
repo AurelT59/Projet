@@ -280,6 +280,16 @@ $.ajax({
                         $("#selectNut").on("change", function (e) {
                             init_graphe($("#selectNut").val());
                         })
+
+                        console.log(tab_nutriments);
+
+                        let contenu_apport_jour = "";
+                        for (i in tab_reco) {
+                            contenu_apport_jour += "<label class='form-label'>" + tab_nutriments[i].NOM + "</label><div class='progress' role='progressbar' aria-valuemin='0' aria-valuemax='100'> <div class='progress-bar' style='width: " + "0%'></div></div>";
+                        }
+
+                        $("#affichageApports").html(contenu_apport_jour);
+
                     },
                     error: function (error) {
                         console.error('Erreur lors de l\'importation des données de nomenclature : ', error);
@@ -292,6 +302,7 @@ $.ajax({
         })
 
         //----------------------------------------------------------------------------------------------
+
 
     },
     error: function (error) {
@@ -308,3 +319,123 @@ $.ajax({
 //----------------------------------------------------------------------------------------------
 
 
+// Remplissage avancement journée
+const stringdateActuelle = dateActuelle.getFullYear() + "-" + correct_date(dateActuelle.getMonth() + 1) + "-" + correct_date(dateActuelle.getDate());
+
+
+$.ajax({
+    url: URL_START + 'Backend/journal.php?date1=' + stringdateActuelle + '&date2=' + stringdateActuelle + '&identifiant=' + valeurDuCookie.IDENTIFIANT,
+    method: 'GET',
+    dataType: 'json',
+    success: function (data) {
+        console.log(data);
+
+        function calculerNutriments(journaux) {
+            const resultat = {};
+
+            // Pour chaque journal, calculer la valeur pour chaque nutriment
+            journaux.forEach(elem => {
+                const jour = elem.journal.DATE;
+
+                if (!resultat[jour]) {
+                    resultat[jour] = { jour, nutriments: {} };
+                }
+
+                (elem.nutriments).forEach(nutriment => {
+                    const quantite = parseFloat(elem.journal.QUANTITE);
+                    const valeurPortion = parseFloat(nutriment.VALEUR_PORTION);
+                    const resultatNutriment = quantite * valeurPortion;
+
+                    if (!resultat[jour].nutriments[nutriment.ID_NUTRIMENT]) {
+                        resultat[jour].nutriments[nutriment.ID_NUTRIMENT] = {
+                            nom: nutriment.NOM,
+                            valeur: 0,
+                        };
+                    }
+
+                    if (nutriment.UNITE === 'kJ') {
+                        // Convertir kJ en kcal (1 kJ = 0.239 kcal)
+                        resultat[jour].nutriments[nutriment.ID_NUTRIMENT].valeur += resultatNutriment * 0.239;
+                    } else if (nutriment.UNITE === 'mg') {
+                        // Convertir mg en g
+                        resultat[jour].nutriments[nutriment.ID_NUTRIMENT].valeur += resultatNutriment * 0.001;
+                    } else {
+                        resultat[jour].nutriments[nutriment.ID_NUTRIMENT].valeur += resultatNutriment;
+                    }
+                });
+            });
+
+            // Convertir l'objet résultat en un tableau
+            const resultatFinal = Object.values(resultat);
+
+            return resultatFinal;
+        }
+
+
+        const resultats = calculerNutriments(data);
+        console.log(resultats);
+
+        //Insertion des données dans le graphe
+        //----------------------------------------------------------------------------------------------
+
+        $.ajax({
+            url: URL_START + 'Backend/recommendations.php?identifiant=' + valeurDuCookie.IDENTIFIANT,
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                const tab_reco = data;
+
+                $.ajax({
+                    url: URL_START + 'Backend/nomenclature.php',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+
+                        //Initialisation de la nomenclature des nutriments
+                        let tab_nutriments = data.nutriments;
+
+                        function calculRatio(nutriment) {
+
+                            return calculRatio;
+                        }
+
+                        console.log(tab_nutriments);
+
+
+                        let contenu_apport_jour = "";
+                        for (i in tab_reco) {
+                            for (j in resultats) {
+                                contenu_apport_jour += "<label class='form-label'>" + tab_nutriments[i].NOM + "</label><div class='progress' role='progressbar' aria-valuemin='0' aria-valuemax='100'> <div class='progress-bar' style='width: " + "0%'></div></div>";
+                            }
+                        }
+
+                        $("#affichageApports").html(contenu_apport_jour);
+
+                    },
+                    error: function (error) {
+                        console.error('Erreur lors de l\'importation des données de nomenclature : ', error);
+                    }
+                })
+            },
+            error: function (error) {
+                console.error('Erreur lors de l\'importation des données de recommendations : ', error);
+            }
+        })
+
+        //----------------------------------------------------------------------------------------------
+
+
+    },
+    error: function (error) {
+        if (error.status == 404) {
+            console.error('Vous n\'avez pas de données dans le journal');
+            $("#selectNut").hide();
+            $("#container").html("Vous n\'avez pas d'historique pour l'instant");
+        }
+        else {
+            console.error('Erreur lors de l\'importation des données du journal : ', error);
+        }
+    }
+})
+//----------------------------------------------------------------------------------------------
