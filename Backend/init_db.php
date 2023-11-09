@@ -26,7 +26,7 @@ $request = $pdo->prepare($sql);
 $request->execute();
 
 for ($i = 0; $i < count($extractedTriggers); $i++) {
-    $trigger = substr($extractedTriggers[$i], 0, -3);
+    $trigger = substr($extractedTriggers[$i], 0, -4);
     $request = $pdo->prepare($trigger);
     $request->execute();
 }

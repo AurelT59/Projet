@@ -1,3 +1,11 @@
+// Calculer la date actuelle
+const dateActuelle = new Date();
+
+// Calculer la date 1 semaine avant la date actuelle
+const dateUneSemaineAvant = new Date(dateActuelle);
+dateUneSemaineAvant.setDate(dateActuelle.getDate() - 8);
+
+
 //Fonction de création du graphe
 //----------------------------------------------------------------------------------------------
 function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, unite) {
@@ -26,13 +34,6 @@ function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, uni
     const marginRight = 200;
     const marginBottom = 60;
     const marginLeft = 60;
-
-    // Calculer la date actuelle
-    const dateActuelle = new Date();
-
-    // Calculer la date 1 semaine avant la date actuelle
-    const dateUneSemaineAvant = new Date(dateActuelle);
-    dateUneSemaineAvant.setDate(dateActuelle.getDate() - 8);
 
     // Declare the x (horizontal position) scale.
     const x = d3.scaleUtc()
@@ -168,8 +169,18 @@ var valeurDuCookie = JSON.parse(getCookieValue("session"));
 
 
 //Récupération des données du journal
+function correct_date(val) {
+    if (val < 10) {
+        return "0" + val
+    }
+    else {
+        return "" + val
+    }
+}
+const stringdateUneSemaineAvant = dateUneSemaineAvant.getFullYear() + "-" + correct_date(dateUneSemaineAvant.getMonth() + 1) + "-" + correct_date(dateUneSemaineAvant.getDate());
+const stringdateActuelle = dateActuelle.getFullYear() + "-" + correct_date(dateActuelle.getMonth() + 1) + "-" + correct_date(dateActuelle.getDate());
 $.ajax({
-    url: URL_START + 'Backend/journal.php?date1=2023-10-31&date2=2023-11-07&identifiant=' + valeurDuCookie.IDENTIFIANT,
+    url: URL_START + 'Backend/journal.php?date1=' + stringdateUneSemaineAvant + '&date2=' + stringdateActuelle + '&identifiant=' + valeurDuCookie.IDENTIFIANT,
     method: 'GET',
     dataType: 'json',
     success: function (data) {

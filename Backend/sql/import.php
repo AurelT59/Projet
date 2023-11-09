@@ -5,7 +5,7 @@
 require_once('../init_pdo.php');
 
 // URL du JSON
-$code_barre = "3166352968591";
+$code_barre = "3242272261650";
 $url = 'https://world.openfoodfacts.org/api/v2/product/' . $code_barre . '.json';
 
 // 3038359003356 nouilles

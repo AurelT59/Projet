@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 30 oct. 2023 à 13:30
+-- Généré le : jeu. 09 nov. 2023 à 10:10
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -44,9 +44,12 @@ CREATE TABLE IF NOT EXISTS `aliments` (
 --
 
 INSERT INTO `aliments` (`CODE`, `PRODUIT`, `QUANTITE`, `PORTION`, `MARQUE`, `NUTRISCORE_GRADE`) VALUES
-('3032220061100', 'PRESIDENT BURGER CHEDDAR EMMENTAL 12 TRANCHES 200g', 200, 30, 'Président,Lactalis', 'e'),
 ('3038359003356', 'banzaï noodle saveur poulet', 60, 340, 'Lustucru,Panzani', 'c'),
-('3166352968591', 'Lasagnes à la bolognaise', 300, 300, 'Marie', 'c');
+('3166352968591', 'Lasagnes à la bolognaise', 300, 300, 'Marie', 'c'),
+('3168930008958', 'Chips Nature', 150, 30, 'Lay\'s', 'd'),
+('3242272261650', 'XtremBox - Radiatori  Bœuf Sauce au poivre', 400, 400, 'Sodebo, pasta xtrem', 'c'),
+('8076800195057', 'Spaghetti n.5', 500, 85, 'Barilla', 'a'),
+('8076809513722', 'Tomatensosse Basilico', 400, 100, 'Barilla', 'a');
 
 -- --------------------------------------------------------
 
@@ -60,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `NOM` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_CATEGORIES`),
   KEY `INDEX_NOM_CATEGORIES` (`NOM`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `categories`
@@ -68,9 +71,31 @@ CREATE TABLE IF NOT EXISTS `categories` (
 
 INSERT INTO `categories` (`ID_CATEGORIES`, `NOM`) VALUES
 (18, ' Aliments d\'origine végétale'),
+(58, ' Amuse-gueules'),
+(88, ' Box'),
 (25, ' Céréales et dérivés'),
 (19, ' Céréales et pommes de terre'),
+(60, ' Chips'),
+(61, ' Chips de pommes de terre'),
+(62, ' Chips de pommes de terre à l\'huile de tournesol'),
+(59, ' Chips et frites'),
+(63, ' en:Aliments d\'origine végétale'),
+(64, ' en:Aliments et boissons à base de végétaux'),
+(65, ' en:Aliments-d-origine-vegetale'),
+(66, ' en:Aliments-et-boissons-a-base-de-vegetaux'),
+(67, ' en:Amuse-gueules'),
+(74, ' en:Céréales et pommes de terre'),
+(68, ' en:Cereales-et-pommes-de-terre'),
+(69, ' en:Chips'),
+(70, ' en:Chips de pommes de terre'),
+(71, ' en:Chips et frites'),
+(72, ' en:Chips-de-pommes-de-terre'),
+(73, ' en:Chips-et-frites'),
+(81, ' en:Food'),
+(82, ' en:groceries'),
 (48, ' en:Meat lasagnas'),
+(75, ' en:Snacks salés'),
+(76, ' en:Snacks-sales'),
 (40, ' Frais'),
 (38, ' Fromages'),
 (39, ' Fromages de vache'),
@@ -85,7 +110,13 @@ INSERT INTO `categories` (`ID_CATEGORIES`, `NOM`) VALUES
 (21, ' Pains de mie'),
 (24, ' Pains de mie complet'),
 (22, ' Pains de mie sans croûte'),
+(85, ' Pâtes à la viande'),
 (28, ' Pâtes alimentaires'),
+(51, ' Pâtes alimentaires de céréales'),
+(87, ' Pâtes au boeuf'),
+(53, ' Pâtes de blé dur'),
+(84, ' Pâtes instantanées'),
+(52, ' Pâtes sèches'),
 (44, ' Plats à base de pâtes'),
 (47, ' Plats au bœuf'),
 (26, ' Plats préparés'),
@@ -96,9 +127,19 @@ INSERT INTO `categories` (`ID_CATEGORIES`, `NOM`) VALUES
 (36, ' Produits fermentés'),
 (37, ' Produits laitiers fermentés'),
 (29, ' Produits lyophilisés à reconstituer'),
+(78, ' Sauces'),
+(86, ' Sauces au poivre'),
+(79, ' Sauces tomate'),
+(80, ' Sauces tomates au basilic'),
+(56, ' Snacks'),
+(57, ' Snacks salés'),
 (31, ' Soupes'),
 (34, ' Soupes déshydratées'),
+(54, ' Spaghetti'),
+(55, ' Spaghettis de blé dur'),
+(83, ' Viandes et dérivés'),
 (17, 'Aliments et boissons à base de végétaux'),
+(77, 'Condiments'),
 (35, 'Produits laitiers'),
 (43, 'Viandes et dérivés');
 
@@ -122,18 +163,6 @@ CREATE TABLE IF NOT EXISTS `composition` (
 --
 
 INSERT INTO `composition` (`CODE`, `ID_INGREDIENT`, `POURCENTAGE`) VALUES
-('3032220061100', 2, 2),
-('3032220061100', 6, 0),
-('3032220061100', 7, 0),
-('3032220061100', 25, 0),
-('3032220061100', 27, 0),
-('3032220061100', 31, 50),
-('3032220061100', 32, 46),
-('3032220061100', 33, 1),
-('3032220061100', 34, 1),
-('3032220061100', 35, 0),
-('3032220061100', 36, 0),
-('3032220061100', 37, 0),
 ('3038359003356', 5, 0),
 ('3038359003356', 6, 6),
 ('3038359003356', 13, 88),
@@ -170,7 +199,34 @@ INSERT INTO `composition` (`CODE`, `ID_INGREDIENT`, `POURCENTAGE`) VALUES
 ('3166352968591', 48, 0),
 ('3166352968591', 49, 0),
 ('3166352968591', 50, 0),
-('3166352968591', 51, 0);
+('3166352968591', 51, 0),
+('3168930008958', 6, 3),
+('3168930008958', 70, 65),
+('3168930008958', 71, 22),
+('3168930008958', 72, 7),
+('3168930008958', 73, 3),
+('3242272261650', 2, 6),
+('3242272261650', 6, 0),
+('3242272261650', 23, 0),
+('3242272261650', 77, 0),
+('3242272261650', 78, 54),
+('3242272261650', 79, 23),
+('3242272261650', 80, 11),
+('3242272261650', 81, 3),
+('3242272261650', 82, 1),
+('3242272261650', 83, 1),
+('3242272261650', 84, 0),
+('3242272261650', 85, 0),
+('8076800195057', 2, 25),
+('8076800195057', 69, 75),
+('8076809513722', 5, 1),
+('8076809513722', 6, 0),
+('8076809513722', 44, 6),
+('8076809513722', 47, 2),
+('8076809513722', 74, 72),
+('8076809513722', 75, 14),
+('8076809513722', 76, 5),
+('8076809513722', 77, 0);
 
 -- --------------------------------------------------------
 
@@ -194,18 +250,36 @@ CREATE TABLE IF NOT EXISTS `composition_nutritive` (
 --
 
 INSERT INTO `composition_nutritive` (`CODE`, `ID_NUTRIMENT`, `VALEUR_100`, `VALEUR_PORTION`, `UNITE`) VALUES
-('3032220061100', 1, 0.45, 0.135, 'mg'),
-('3032220061100', 2, 4.5, 1.35, 'g'),
-('3032220061100', 4, 17, 5.1, 'g'),
-('3032220061100', 7, 13.5, 4.05, 'g'),
-('3032220061100', 8, 2.4, 0.72, 'g'),
-('3032220061100', 9, 961, 288, 'kJ'),
 ('3166352968591', 2, 14, 42, 'g'),
 ('3166352968591', 4, 5.3, 15.9, 'g'),
 ('3166352968591', 5, 1, 3, 'g'),
 ('3166352968591', 7, 7.5, 22.5, 'g'),
 ('3166352968591', 8, 0.67, 2.01, 'g'),
-('3166352968591', 9, 570, 1710, 'kJ');
+('3166352968591', 9, 570, 1710, 'kJ'),
+('3168930008958', 2, 53, 15.9, 'g'),
+('3168930008958', 4, 34, 10.2, 'g'),
+('3168930008958', 5, 4.2, 1.26, 'g'),
+('3168930008958', 7, 6.3, 1.89, 'g'),
+('3168930008958', 8, 1.1, 0.33, 'g'),
+('3168930008958', 9, 2305, 692, 'kJ'),
+('3242272261650', 2, 22, 88, 'g'),
+('3242272261650', 4, 4.7, 18.8, 'g'),
+('3242272261650', 5, 1.3, 5.2, 'g'),
+('3242272261650', 7, 8.6, 34.4, 'g'),
+('3242272261650', 8, 0.48, 1.92, 'g'),
+('3242272261650', 9, 698, 2790, 'kJ'),
+('8076800195057', 2, 71, 60.3, 'g'),
+('8076800195057', 4, 2, 1.7, 'g'),
+('8076800195057', 5, 3, 2.55, 'g'),
+('8076800195057', 7, 13, 11.1, 'g'),
+('8076800195057', 8, 0.01, 0.0085, 'g'),
+('8076800195057', 9, 1521, 1290, 'kJ'),
+('8076809513722', 2, 7.6, 7.6, 'g'),
+('8076809513722', 4, 2.6, 2.6, 'g'),
+('8076809513722', 5, 1.9, 1.9, 'g'),
+('8076809513722', 7, 1.6, 1.6, 'g'),
+('8076809513722', 8, 0.9, 0.9, 'g'),
+('8076809513722', 9, 268, 268, 'kJ');
 
 -- --------------------------------------------------------
 
@@ -218,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `ingredients` (
   `ID_INGREDIENT` int NOT NULL AUTO_INCREMENT,
   `NOM` varchar(40) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`ID_INGREDIENT`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `ingredients`
@@ -275,7 +349,41 @@ INSERT INTO `ingredients` (`ID_INGREDIENT`, `NOM`) VALUES
 (48, '_moutarde_ de Dijon'),
 (49, 'amidon de maïs'),
 (50, 'ail'),
-(51, 'origan');
+(51, 'origan'),
+(52, 'pork'),
+(53, 'water'),
+(54, 'pork fat'),
+(55, 'whey'),
+(56, 'salt'),
+(57, 'milk protein'),
+(58, 'dextrose'),
+(59, 'wheat fiber'),
+(60, 'yeast'),
+(61, 'pea protein'),
+(62, 'flavor'),
+(63, 'color'),
+(64, 'paprika extract'),
+(65, 'antioxidant'),
+(66, 'preservative'),
+(67, 'ferment'),
+(68, 'smoke'),
+(69, 'Semoule de BLÉ dur'),
+(70, 'Pommes de terre'),
+(71, 'huiles végétales de tournesol'),
+(72, 'huiles végétales de colza'),
+(73, 'maïs'),
+(74, 'Pulpe de tomates'),
+(75, 'concentré de tomates'),
+(76, 'huile de tournesol'),
+(77, 'arôme naturel'),
+(78, 'Radiatori cuits'),
+(79, 'crème fraiche légère'),
+(80, 'viande de boeuf'),
+(81, 'lait écrémé'),
+(82, 'fécule de manioc'),
+(83, 'conservateurs'),
+(84, 'e2621'),
+(85, 'Boeuf');
 
 -- --------------------------------------------------------
 
@@ -293,7 +401,18 @@ CREATE TABLE IF NOT EXISTS `journal` (
   PRIMARY KEY (`ID_JOURNAL`),
   KEY `IDENTIFIANT` (`IDENTIFIANT`),
   KEY `CODE` (`CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `journal`
+--
+
+INSERT INTO `journal` (`ID_JOURNAL`, `CODE`, `IDENTIFIANT`, `QUANTITE`, `DATE`) VALUES
+(5, '8076809513722', 'lil', 2, '2023-11-05'),
+(10, '8076800195057', 'lil', 1, '2023-11-05'),
+(11, '3038359003356', 'lil', 1, '2023-11-07'),
+(12, '3166352968591', 'lil', 1, '2023-11-08'),
+(13, '3242272261650', 'lil', 2, '2023-11-09');
 
 -- --------------------------------------------------------
 
@@ -315,35 +434,80 @@ CREATE TABLE IF NOT EXISTS `labels` (
 
 INSERT INTO `labels` (`CODE`, `ID_CATEGORIES`) VALUES
 ('3038359003356', 17),
+('3168930008958', 17),
+('8076800195057', 17),
 ('3038359003356', 18),
+('3168930008958', 18),
+('8076800195057', 18),
 ('3038359003356', 19),
+('3168930008958', 19),
+('8076800195057', 19),
 ('3038359003356', 25),
+('8076800195057', 25),
 ('3038359003356', 26),
 ('3166352968591', 26),
+('3242272261650', 26),
 ('3038359003356', 27),
 ('3038359003356', 28),
+('8076800195057', 28),
 ('3038359003356', 29),
 ('3038359003356', 30),
 ('3038359003356', 31),
 ('3038359003356', 32),
 ('3038359003356', 33),
 ('3038359003356', 34),
-('3032220061100', 35),
-('3032220061100', 36),
-('3032220061100', 37),
-('3032220061100', 38),
-('3032220061100', 39),
-('3032220061100', 40),
-('3032220061100', 41),
-('3032220061100', 42),
 ('3166352968591', 43),
 ('3166352968591', 44),
+('3242272261650', 44),
 ('3166352968591', 45),
+('3242272261650', 45),
 ('3166352968591', 46),
 ('3166352968591', 47),
+('3242272261650', 47),
 ('3166352968591', 48),
 ('3166352968591', 49),
-('3166352968591', 50);
+('3242272261650', 49),
+('3166352968591', 50),
+('8076800195057', 51),
+('8076800195057', 52),
+('8076800195057', 53),
+('8076800195057', 54),
+('8076800195057', 55),
+('3168930008958', 56),
+('3168930008958', 57),
+('3168930008958', 58),
+('3168930008958', 59),
+('3168930008958', 60),
+('3168930008958', 61),
+('3168930008958', 62),
+('3168930008958', 63),
+('3168930008958', 64),
+('3168930008958', 65),
+('3168930008958', 66),
+('3168930008958', 67),
+('3168930008958', 68),
+('3168930008958', 69),
+('3168930008958', 70),
+('3168930008958', 71),
+('3168930008958', 72),
+('3168930008958', 73),
+('3168930008958', 74),
+('3168930008958', 75),
+('3168930008958', 76),
+('3242272261650', 77),
+('8076809513722', 77),
+('3242272261650', 78),
+('8076809513722', 78),
+('8076809513722', 79),
+('8076809513722', 80),
+('8076809513722', 81),
+('8076809513722', 82),
+('3242272261650', 83),
+('3242272261650', 84),
+('3242272261650', 85),
+('3242272261650', 86),
+('3242272261650', 87),
+('3242272261650', 88);
 
 -- --------------------------------------------------------
 
@@ -417,15 +581,15 @@ CREATE TABLE IF NOT EXISTS `recommendations` (
 --
 
 INSERT INTO `recommendations` (`IDENTIFIANT`, `ID_NUTRIMENT`, `QUANTITE`) VALUES
-('test', 1, 0.95),
-('test', 2, 1144.48),
-('test', 3, 0.3),
-('test', 4, 474.748),
-('test', 5, 30),
-('test', 6, 11),
-('test', 7, 877.436),
-('test', 8, 5),
-('test', 9, 3051.95);
+('lil', 1, 0.95),
+('lil', 2, 860.58),
+('lil', 3, 0.3),
+('lil', 4, 356.981),
+('lil', 5, 30),
+('lil', 6, 11),
+('lil', 7, 659.778),
+('lil', 8, 5),
+('lil', 9, 2294.88);
 
 -- --------------------------------------------------------
 
@@ -476,7 +640,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`IDENTIFIANT`, `ID_SPORTIF`, `ID_SEXE`, `MOT_DE_PASSE`, `PRENOM`, `NOM`, `AGE`, `POIDS`, `TAILLE`) VALUES
-('test', 2, 1, 'xsx', 'sqcsq', 'sqcqsc', 21, 90, 180);
+('lil', 2, 1, '$2y$10$FIN8qMwzaSCxHsett1I0TuMgQqWzWrl53w820cMIYsyMvdkn.mBL2', 'Aurel', 'Tera', 21, 60, 180);
 
 --
 -- Déclencheurs `utilisateurs`
