@@ -69,7 +69,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
             VALUES ('" . $data['code'] . "','" . $data['identifiant'] . "','" . $data['quantite'] . "','" . $data['date'] . "')"
         );
 
-
+        $req = $pdo->prepare('SELECT MAX(id_journal) AS id FROM journal');
+        $req->execute();
+        $res = $req->fetchAll(PDO::FETCH_OBJ);
+        $data['id_journal'] = $res[0]->id;
 
         checkAndResponse($request, $data);
         break;
@@ -118,8 +121,6 @@ function checkAndResponse($request, $data, $result = array())
             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 echo json_encode($result);
             } else if ($_SERVER['REQUEST_METHOD'] == 'POST' || ($_SERVER['REQUEST_METHOD'] == 'PUT')) {
-                echo json_encode(array('code' => $data['code']));
-            } else {
                 echo json_encode(array('id_journal' => $data['id_journal']));
             }
         }
