@@ -92,9 +92,6 @@ function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, uni
         .attr("stroke-width", 2); // Épaisseur de la ligne
 
 
-
-
-
     //Gestion des légendes 
     //Axe x
     svg.append("text")
@@ -102,7 +99,6 @@ function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, uni
         .attr("y", height - 20)
         .style("text-anchor", "middle")
         .text("Jours");
-
 
     //Axe y
     svg.append("text")
@@ -340,7 +336,7 @@ $("#selectFin").on("input", function (e) {
 })
 
 
-// Remplissage avancement journée
+// Remplissage barres d'avancement journée
 
 $.ajax({
     url: URL_START + 'Backend/journal.php?date1=' + stringdateActuelle + '&date2=' + stringdateActuelle + '&identifiant=' + valeurDuCookie.IDENTIFIANT,
@@ -395,7 +391,7 @@ $.ajax({
         console.log("resultats");
         console.log(resultats);
 
-        //Insertion des données dans le graphe
+        //Insertion des données dans les barres
         //----------------------------------------------------------------------------------------------
 
         $.ajax({
