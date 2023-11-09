@@ -1,0 +1,15 @@
+BESOIN_ENERGETIQUE : "Par exemple, en fonction de sa
+tranche d’age (<40, <60, 60+), de son sexe (homme, femme) et de son niveau de pratique sportive
+(bas, moyen, élevé), il est possible de calculer ses besoins énergétiques journaliers"
+
+CARACTERISATION_UTILISATEUR : "Un utilisateur de l'application est caractérisé par son login"
+
+DATE_JOURNAL : "A terme, l’application doit calculer et afficher des indicateurs intéressants pour une période
+donnée (jour, semaine, mois, ...)."
+
+POURCENTAGE_INGREDIENTS : "Notez qu’un aliment peut être composé d’autres aliments. Par exemple : une ratatouille est
+généralement composée de tomates, courgettes, aubergines, . . . avec un % de composition qui
+permettra de déduire la quantité par sous aliments."
+
+RECOMMENDATION_OMS : "Ces indicateurs sont à confronter avec les recommandations nutritionnelles officielles. Par exemple,
+l’OMS 1 recommande d’ingérer une quantité maximum de sel par jour. "
