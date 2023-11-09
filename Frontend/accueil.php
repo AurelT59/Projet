@@ -1,5 +1,6 @@
-<div class="box" id="graphBox">
-    <h1>Statistiques sur les 7 derniers jours</h1>
+<div class="box">
+    <h1 class="flexbox">Statistiques du <input type="date" id="selectDebut" class="form-control input-taille"> au <input type="date" id="selectFin" class="form-control input-taille"> sur <select id="selectNut" class="form-select input-taille">
+        </select></h1>
     <div id="container"></div>
     <select id="selectNut" class="form-select input-taille">
     </select>
