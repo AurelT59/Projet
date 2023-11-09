@@ -43,7 +43,7 @@
                     </td>
                 </tr>
             </table>
-            <input type="button" class="btn btn-primary" id="inputAjoutIng" onclick="ajouterLigne('','')" value="Ajouter une ligne">
+            <input type="button" class="btn btn-primary btn-ajout-ligne" id="inputAjoutIng" onclick="ajouterLigne('','')" value="Ajouter une ligne">
         </div>
         <label class="form-label">Nutriments</label>
         <select style="display:none" id="inputNutriment0">
@@ -69,7 +69,7 @@
                     </td>
                 </tr>
             </table>
-            <input type="button" class="btn btn-primary" id="inputAjoutNut" onclick="ajouterLigneNutriment('','','','')" value="Ajouter une ligne">
+            <input type="button" class="btn btn-primary btn-ajout-ligne" id="inputAjoutNut" onclick="ajouterLigneNutriment('','','','')" value="Ajouter une ligne">
         </div>
         <button type="button" id="btnValider" class="btn btn-success body-button">Valider</button>
     </form>

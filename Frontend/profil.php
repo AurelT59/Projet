@@ -1,44 +1,51 @@
 <div class="box" id="box_form_profil">
     <h1>Modification des informations personnelles</h1>
-    <div class="mb-3">
-        <label class="form-label">Identifiant</label>
-        <input type="text" class="form-control" id="inputLogin" value=<?php echo $valeurDuCookie->IDENTIFIANT ?>>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Nouveau mot de passe</label>
-        <input type="password" class="form-control" id="inputMdp">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Confirmation nouveau mot de passe</label>
-        <input type="password" class="form-control" id="inputMdp2">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Nom</label>
-        <input type="text" class="form-control" id="inputNom" value=<?php echo $valeurDuCookie->NOM ?>>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Prénom</label>
-        <input type="text" class="form-control" id="inputPrenom" value=<?php echo $valeurDuCookie->PRENOM ?>>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Âge</label>
-        <input type="number" class="form-control" id="inputAge" value=<?php echo $valeurDuCookie->AGE ?>>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Taille (cm)</label>
-        <input type="number" class="form-control" id="inputTaille" value=<?php echo $valeurDuCookie->TAILLE ?>>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Poids (kg)</label>
-        <input type="number" class="form-control" id="inputPoids" value=<?php echo $valeurDuCookie->POIDS ?>>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Genre</label>
-        <select type="text" class="form-select input-taille" id="inputSexe"></select>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Pratique sportive</label>
-        <select type="text" class="form-select input-taille" id="inputSport"></select>
+
+    <div class="row">
+        <div class="col-3">
+            <div class="mb-3">
+                <label class="form-label">Identifiant</label>
+                <input type="text" class="form-control" id="inputLogin" value=<?php echo $valeurDuCookie->IDENTIFIANT ?>>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Nouveau mot de passe</label>
+                <input type="password" class="form-control" id="inputMdp">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Confirmation nouveau mot de passe</label>
+                <input type="password" class="form-control" id="inputMdp2">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Nom</label>
+                <input type="text" class="form-control" id="inputNom" value=<?php echo $valeurDuCookie->NOM ?>>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Prénom</label>
+                <input type="text" class="form-control" id="inputPrenom" value=<?php echo $valeurDuCookie->PRENOM ?>>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="mb-3">
+                <label class="form-label">Âge</label>
+                <input type="number" class="form-control" id="inputAge" value=<?php echo $valeurDuCookie->AGE ?>>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Taille (cm)</label>
+                <input type="number" class="form-control" id="inputTaille" value=<?php echo $valeurDuCookie->TAILLE ?>>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Poids (kg)</label>
+                <input type="number" class="form-control" id="inputPoids" value=<?php echo $valeurDuCookie->POIDS ?>>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Genre</label>
+                <select type="text" class="form-select input-taille" id="inputSexe"></select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Pratique sportive</label>
+                <select type="text" class="form-select input-taille" id="inputSport"></select>
+            </div>
+        </div>
     </div>
     <button id="btnValider" class="btn btn-primary body-button">Valider</button>
 </div>
