@@ -76,8 +76,7 @@ $('#btnValider').on("click", function (e) {
                     "TAILLE": taille
                 }
 
-                document.cookie = "session=" + encodeURIComponent(JSON.stringify(formDataBis));
-                window.location.href = URL_START + 'Frontend/index.php?page=accueil';
+                window.location.href = URL_START + 'Frontend/connexion.php';
             },
             error: function (error) {
                 if (error.status == 501) {
