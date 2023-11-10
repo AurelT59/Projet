@@ -71,6 +71,7 @@ $(document).ready(function () {
         let poids = $("#inputPoids").val();
         let taille = $("#inputTaille").val();
         let sport = $("#inputSport").val();
+        $('#messageConfirmation').html("");
 
         if (mdp == confirmmdp) {
             var formData = {
@@ -107,6 +108,8 @@ $(document).ready(function () {
 
                     document.cookie = "session=" + encodeURIComponent(JSON.stringify(formDataBis));
                     $('#iduser').html(identifiant);
+
+                    $('#messageConfirmation').html("Changements enregistrés");
                 },
                 error: function (error) {
                     console.error('Erreur lors de l\'ajout des données : ', error);
