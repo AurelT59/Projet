@@ -11,7 +11,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $data = "";
 
         try {
-            $request = $pdo->prepare("SELECT recommendations.*, nutriments.nom FROM recommendations JOIN nutriments ON nutriments.ID_NUTRIMENT=recommendations.ID_NUTRIMENT WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "'");
+            $request = $pdo->prepare("SELECT recommendations.*, nutriments.nom FROM recommendations JOIN nutriments ON nutriments.ID_NUTRIMENT=recommendations.ID_NUTRIMENT WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "' ORDER BY nutriments.nom ASC");
             $request->execute();
         } catch (PDOException $e) {
             http_response_code(500);
