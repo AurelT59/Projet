@@ -71,6 +71,11 @@ h1 {
 }
 
 
+.input-taille {
+    width: 200px;
+    margin: 10px;
+}
+
 /* JOURNAL */
 
 #box_form_conso {
@@ -109,11 +114,6 @@ h1 {
 }
 
 /* ALIMENTS */
-
-.input-taille {
-    width: 200px;
-    margin: 10px;
-}
 
 .encadre {
     border: 2px solid #ccc;

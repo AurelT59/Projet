@@ -10,11 +10,6 @@ function renderMenuToHTML($currentPageId)
         'aliments' => array('Aliments'),
     );
 
-    //  bg-body-tertiary
-    // <img class="navbar-brand" id="logo_healtheat" src="imgs/logo_healtheat.png">
-    // <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    //     <span class="navbar-toggler-icon"></span>
-    // </button>
 
     echo '
         <div id="header">

@@ -1,5 +1,8 @@
 <?php
-//URL à récup : https://world.openfoodfacts.org/api/v2/product/737628064502.json
+/* Cette page n'est pas utilisée dans l'application.
+Elle nous a uniquement servie à importer les données de openfoodfacts dans 
+notre base de données.
+*/
 
 
 require_once('../init_pdo.php');
@@ -14,7 +17,7 @@ function exist($key, $val)
     }
 }
 
-//Suppression Yaourt nature, pané chevre chaud, Fajitas kit, Original Burger Cheese, Tartimiel, Mozzarela
+//Tableau de codes à insérer dans la bdd
 $codes_barre =  [
     "3329770075405", "3033490005221", "3023290797365", "3322680010818", "3017760756198", "3083681095319", "3329770063624"
 ];
@@ -27,9 +30,6 @@ for ($k = 0; $k < count($codes_barre); $k++) {
         // URL du JSON
         $url = 'https://world.openfoodfacts.org/api/v2/product/' . $code_barre . '.json';
 
-        // 3038359003356 nouilles
-        // 3181232138345 burger
-        // 3242272261650 sodebox
 
         $json_data = file_get_contents($url);
 
@@ -74,8 +74,7 @@ for ($k = 0; $k < count($codes_barre); $k++) {
                 $request->execute();
                 $tab_id = $request->fetchAll(PDO::FETCH_OBJ);
 
-                //Problème : j'utilise le nom pour le trouver, 
-                //et ce n'est pas unique (si il y a plusieurs fois le même nom, alors je sélectionne le premier)
+
                 if (count($tab_id) == 0) {
                     $sql = "INSERT INTO `ingredients` (`NOM`) VALUES ('" . addslashes($tab[$i]['text']) . "')";
                     $request = $pdo->prepare($sql);
@@ -157,8 +156,6 @@ for ($i = 0; $i < count($tab_nutriments); $i++) {
             $request->execute();
             $tab_id = $request->fetchAll(PDO::FETCH_OBJ);
 
-            //Problème : j'utilise le nom pour le trouver, 
-            //et ce n'est pas unique (si il y a plusieurs fois le même nom, alors je sélectionne le premier)
             if (count($tab_id) == 0) {
                 $sql = "INSERT INTO `categories` (`NOM`) VALUES ('" . addslashes($tab[$i]) . "')";
                 $request = $pdo->prepare($sql);
@@ -181,9 +178,8 @@ for ($i = 0; $i < count($tab_nutriments); $i++) {
             $success = $request->execute();
         }
     } catch (Exception $e) {
-        // En cas d'erreur, affiche ou journalise l'erreur (selon les besoins)
+        // En cas d'erreur, affiche l'erreur
         echo "Erreur SQL : " . $e->getMessage() . PHP_EOL;
-        // Continuer avec la prochaine itération
         continue;
     }
 }

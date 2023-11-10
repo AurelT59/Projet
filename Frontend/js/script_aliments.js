@@ -139,7 +139,6 @@ $(document).ready(function () {
             var ingredientValue = selects[0].value;
             var pourcentageValue = inputs[0].value;
 
-            //ATTENTION : LES ID SONT POUR L'INSTANT LE NOM
             str_composition.push(JSON.parse('{"id_ingredient":' + ingredientValue + ',"pourcentage":' + pourcentageValue + '}'))
         }
 

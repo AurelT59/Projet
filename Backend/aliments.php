@@ -1,12 +1,4 @@
 <?php
-
-// JOIN composition ON aliments.code = composition.code
-// JOIN ingredients ON composition.id_ingredient = ingredients.id_ingredient
-// JOIN labels ON aliments.code = labels.code
-// JOIN categories ON labels.id_categories = categories.id_categories
-// JOIN composition_nutritive ON aliments.code = composition_nutritive.code
-// JOIN nutriments ON composition_nutritive.id_nutriment = nutriments.id_nutriment
-
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
@@ -78,8 +70,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $data_composition = $data['composition'];
         $data_labels = $data['labels'];
         $data_composition_nutritive = $data['composition_nutritive'];
-        // $data_ingredients = $data['ingredients'];
-        // $data_categoriess = $data['categories'];
 
         try {
             $request_1 = $pdo->exec("INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `nutriscore_grade`)
@@ -130,8 +120,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $data_labels = $data['labels'];
         $data_composition_nutritive = $data['composition_nutritive'];
 
-        // $request = $pdo->prepare("UPDATE users SET name = '" . $data['name'] . "', email = '" . $data['mail'] . "' WHERE id = " . $data['id']);
-        // $request->execute();
         try {
             $request_1 = $pdo->exec("UPDATE aliments SET produit = '" . addslashes($data['produit']) . "', quantite = '" . $data['quantite'] . "', portion = '" . $data['portion'] . "', marque = '" . addslashes($data['marque']) . "', nutriscore_grade = '" . $data['nutriscore_grade'] . "' WHERE code = " . $data['code']);
 
@@ -207,11 +195,6 @@ function checkAndResponse($request, $result, $data)
         http_response_code(500);
         echo json_encode(array('message' => "Echec de la requête SQL : Erreur interne au serveur."));
     } else {
-        /*
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $result = $request->fetchAll(PDO::FETCH_OBJ);
-        }*/
-
         if ((empty($result) && $_SERVER['REQUEST_METHOD'] == 'GET') || ($request == 0)) {
 
             // Aucune donnée trouvée, renvoyer un statut 404 - Not Found
@@ -234,12 +217,3 @@ function checkAndResponse($request, $result, $data)
         }
     }
 }
-
-// function existsIngredient($data_composition)
-// {
-    
-// }
-
-// function existsCategories($data_labels)
-// {
-// }

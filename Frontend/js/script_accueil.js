@@ -55,7 +55,7 @@ function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, uni
     const formatDate = d3.timeFormat("%d/%m");
 
 
-    // Créez l'axe en utilisant les valeurs de repère que vous avez calculées
+    // Add the x-axis.
     svg.append("g")
         .attr("transform", `translate(0,${height - marginBottom})`)
         .call(d3.axisBottom(x)
@@ -69,7 +69,7 @@ function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, uni
         .call(d3.axisLeft(y));
 
 
-    // Ajoutez des cercles pour les points de données
+    // Ajout des cercles pour les points de données
     svg.selectAll("circle")
         .data(donnees)
         .enter()
@@ -88,7 +88,7 @@ function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, uni
         .attr("r", 4) // Rayon du cercle
         .attr("fill", "steelblue"); // Couleur des cercles
 
-    // Ajoutez la ligne horizontale à la valeur 50
+    // Ajout de la ligne horizontale à la valeur 50
     svg.append("line")
         .attr("x1", marginLeft) // Coordonnée x du début de la ligne
         .attr("x2", width - marginRight) // Coordonnée x de la fin de la ligne
@@ -300,7 +300,6 @@ function create_graph_with_date(debut, fin) {
         error: function (error) {
             if (error.status == 404) {
                 console.error('Vous n\'avez pas de données dans le journal');
-                //$("#choix").hide();
                 $("#container").html("Vous n\'avez pas d'historique pour l'instant");
             }
             else {
@@ -314,10 +313,9 @@ function create_graph_with_date(debut, fin) {
 
 
 //Initialisation des dates
-// Calculer la date actuelle
+
 const dateActuelle = new Date();
 
-// Calculer la date 1 semaine avant la date actuelle
 const dateUneSemaineAvant = new Date(dateActuelle);
 dateUneSemaineAvant.setDate(dateActuelle.getDate() - 7);
 
@@ -346,6 +344,7 @@ $("#selectFin").on("input", function (e) {
 
 
 // Remplissage barres d'avancement journée
+//----------------------------------------------------------------------------------------------
 
 $.ajax({
     url: URL_START + 'Backend/journal.php?date1=' + stringdateActuelle + '&date2=' + stringdateActuelle + '&identifiant=' + valeurDuCookie.IDENTIFIANT,
