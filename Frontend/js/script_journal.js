@@ -68,18 +68,9 @@ $(document).ready(function () {
 
             //Options d'aliments
             for (let i = 0; i < data.length; i++) {
-                contenu_select_aliment += "<option value=" + data[i].CODE + ">" + data[i].PRODUIT + "</option>";
+                contenu_select_aliment += "<option value=" + data[i].CODE + ">" + data[i].PRODUIT + " (1 portion = " + data[i].PORTION + "g)</option>";
             }
             $("#selectAliment").html(contenu_select_aliment);
-
-            // //ALiments dans le journal
-            // for (let i = 0; i < data.length; i++) {
-            //     for (let j = 0; i < table.length; j++) {
-            //         if (data[i].CODE == table.cell(j, 2).data()) {
-            //             table.cell(j, 2).data(data[i].PRODUIT).draw();
-            //         }
-            //     }
-            // }
 
             $("#selectAliment").html(contenu_select_aliment);
 
