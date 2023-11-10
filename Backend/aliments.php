@@ -17,22 +17,27 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         if (isset($_GET['code'])) {
             $data = "";
+            try {
+                $request_1 = $pdo->prepare("SELECT * FROM aliments WHERE code ='" . $_GET['code'] . "'");
+                $request_1->execute();
+                $result_1 = $request_1->fetchAll(PDO::FETCH_OBJ);
 
-            $request_1 = $pdo->prepare("SELECT * FROM aliments WHERE code ='" . $_GET['code'] . "'");
-            $request_1->execute();
-            $result_1 = $request_1->fetchAll(PDO::FETCH_OBJ);
+                $request_2 = $pdo->prepare("SELECT * FROM composition WHERE code ='" . $_GET['code'] . "'");
+                $request_2->execute();
+                $result_2 = $request_2->fetchAll(PDO::FETCH_OBJ);
 
-            $request_2 = $pdo->prepare("SELECT * FROM composition WHERE code ='" . $_GET['code'] . "'");
-            $request_2->execute();
-            $result_2 = $request_2->fetchAll(PDO::FETCH_OBJ);
+                $request_3 = $pdo->prepare("SELECT * FROM composition_nutritive WHERE code ='" . $_GET['code'] . "'");
+                $request_3->execute();
+                $result_3 = $request_3->fetchAll(PDO::FETCH_OBJ);
 
-            $request_3 = $pdo->prepare("SELECT * FROM composition_nutritive WHERE code ='" . $_GET['code'] . "'");
-            $request_3->execute();
-            $result_3 = $request_3->fetchAll(PDO::FETCH_OBJ);
+                $request_4 = $pdo->prepare("SELECT * FROM labels WHERE code ='" . $_GET['code'] . "'");
+                $request_4->execute();
+                $result_4 = $request_4->fetchAll(PDO::FETCH_OBJ);
+            } catch (PDOException $e) {
+                http_response_code(500);
+                echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+            }
 
-            $request_4 = $pdo->prepare("SELECT * FROM labels WHERE code ='" . $_GET['code'] . "'");
-            $request_4->execute();
-            $result_4 = $request_4->fetchAll(PDO::FETCH_OBJ);
 
 
             if ($request_1 == false || $request_2 == false || $request_3 == false || $request_4 == false) {
@@ -53,9 +58,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
         } else {
             $data = "";
 
-            $request = $pdo->prepare("SELECT * FROM aliments");
-            $request->execute();
-            $result = $request->fetchAll(PDO::FETCH_OBJ);
+            try {
+                $request = $pdo->prepare("SELECT * FROM aliments ORDER BY produit ASC");
+                $request->execute();
+                $result = $request->fetchAll(PDO::FETCH_OBJ);
+            } catch (PDOException $e) {
+                http_response_code(500);
+                echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+            }
 
             checkAndResponse($request, $result, $data);
             break;
@@ -71,35 +81,33 @@ switch ($_SERVER['REQUEST_METHOD']) {
         // $data_ingredients = $data['ingredients'];
         // $data_categoriess = $data['categories'];
 
-        $request_1 = $pdo->exec("INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `nutriscore_grade`)
+        try {
+            $request_1 = $pdo->exec("INSERT INTO `aliments` (`code`, `produit`, `quantite`, `portion`, `marque`, `nutriscore_grade`)
                               VALUES ('" . $data['code'] . "','" . $data['produit'] . "','" . $data['quantite'] . "','" . $data['portion'] . "','" . $data['marque'] . "','" . $data['nutriscore_grade'] . "')");
 
-        foreach ($data_composition as $composition) {
-            $request_2 = $pdo->exec("INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
+            foreach ($data_composition as $composition) {
+                $request_2 = $pdo->exec("INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
                                   VALUES ('" . $data['code'] . "','" . $composition['id_ingredient'] . "','" . $composition['pourcentage'] . "')");
-        }
+            }
 
-        foreach ($data_labels as $label) {
-            $request_3 = $pdo->exec("INSERT INTO `labels` (`code`, `id_categories`)
+            foreach ($data_labels as $label) {
+                $request_3 = $pdo->exec("INSERT INTO `labels` (`code`, `id_categories`)
                                   VALUES ('" . $data['code'] . "','" . $label['id_categories'] . "')");
-        }
+            }
 
-        foreach ($data_composition_nutritive as $composition_nutritive) {
-            $request_4 = $pdo->exec("INSERT INTO `composition_nutritive` (`code`, `id_nutriment`, `valeur_100`, `valeur_portion`, `unite`)
+            foreach ($data_composition_nutritive as $composition_nutritive) {
+                $request_4 = $pdo->exec("INSERT INTO `composition_nutritive` (`code`, `id_nutriment`, `valeur_100`, `valeur_portion`, `unite`)
                                  VALUES ('" . $data['code'] . "','" . $composition_nutritive['id_nutriment'] . "','" . $composition_nutritive['valeur_100'] . "','" . $composition_nutritive['valeur_portion'] . "','" . $composition_nutritive['unite'] . "')");
+            }
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                // L'identifiant existe déjà, renvoyer un statut 501 - Not Implemented
+                http_response_code(501);
+            } else {
+                http_response_code(500);
+                echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+            }
         }
-
-        // foreach ($data_ingredient as $ingredient) {
-
-        //     $check_request_1 = $pdo->prepare("SELECT * FROM aliments WHERE 'nom' = " . $ingredient['nom']);
-        //     $check_request_1->execute();
-        //     $check_result_1 = $check_request_1->fetchAll(PDO::FETCH_OBJ);
-
-        //     if $result
-
-        //     $request_5 = $pdo->exec("INSERT INTO `ingredient` (`nom`)
-        //                          VALUES ('" . $data['code'] . "','" . $ingredient['id_nutriment'] . "','" . $nutriment['valeur_100'] . "','" . $nutriment['valeur_portion'] . "','" . $nutriment['unite'] . "')");
-        // }
 
 
 
@@ -124,30 +132,39 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         // $request = $pdo->prepare("UPDATE users SET name = '" . $data['name'] . "', email = '" . $data['mail'] . "' WHERE id = " . $data['id']);
         // $request->execute();
+        try {
+            $request_1 = $pdo->exec("UPDATE aliments SET produit = '" . $data['produit'] . "', quantite = '" . $data['quantite'] . "', portion = '" . $data['portion'] . "', marque = '" . $data['marque'] . "', nutriscore_grade = '" . $data['nutriscore_grade'] . "' WHERE code = " . $data['code']);
 
-        $request_1 = $pdo->exec("UPDATE aliments SET produit = '" . $data['produit'] . "', quantite = '" . $data['quantite'] . "', portion = '" . $data['portion'] . "', marque = '" . $data['marque'] . "', nutriscore_grade = '" . $data['nutriscore_grade'] . "' WHERE code = " . $data['code']);
-
-        $request_2_bis = $pdo->exec("DELETE FROM `composition` WHERE `code` = " . $data['code']);
-        if ($request_2_bis) {
-            foreach ($data_composition as $composition) {
-                $request_2 = $pdo->exec("INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
+            $request_2_bis = $pdo->exec("DELETE FROM `composition` WHERE `code` = " . $data['code']);
+            if ($request_2_bis) {
+                foreach ($data_composition as $composition) {
+                    $request_2 = $pdo->exec("INSERT INTO `composition` (`code`, `id_ingredient`, `pourcentage`)
                                   VALUES ('" . $data['code'] . "','" . $composition['id_ingredient'] . "','" . $composition['pourcentage'] . "')");
+                }
             }
-        }
 
-        $request_3_bis = $pdo->exec("DELETE FROM `labels` WHERE `code` = " . $data['code']);
-        if ($request_3_bis) {
-            foreach ($data_labels as $label) {
-                $request_3 = $pdo->exec("INSERT INTO `labels` (`code`, `id_categories`)
+            $request_3_bis = $pdo->exec("DELETE FROM `labels` WHERE `code` = " . $data['code']);
+            if ($request_3_bis) {
+                foreach ($data_labels as $label) {
+                    $request_3 = $pdo->exec("INSERT INTO `labels` (`code`, `id_categories`)
                                   VALUES ('" . $data['code'] . "','" . $label['id_categories'] . "')");
+                }
             }
-        }
 
-        $request_4_bis = $pdo->exec("DELETE FROM `composition_nutritive` WHERE `code` = " . $data['code']);
-        if ($request_4_bis) {
-            foreach ($data_composition_nutritive as $composition_nutritive) {
-                $request_4 = $pdo->exec("INSERT INTO `composition_nutritive` (`code`, `id_nutriment`, `valeur_100`, `valeur_portion`, `unite`)
+            $request_4_bis = $pdo->exec("DELETE FROM `composition_nutritive` WHERE `code` = " . $data['code']);
+            if ($request_4_bis) {
+                foreach ($data_composition_nutritive as $composition_nutritive) {
+                    $request_4 = $pdo->exec("INSERT INTO `composition_nutritive` (`code`, `id_nutriment`, `valeur_100`, `valeur_portion`, `unite`)
                                  VALUES ('" . $data['code'] . "','" . $composition_nutritive['id_nutriment'] . "','" . $composition_nutritive['valeur_100'] . "','" . $composition_nutritive['valeur_portion'] . "','" . $composition_nutritive['unite'] . "')");
+                }
+            }
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                // L'identifiant existe déjà, renvoyer un statut 501 - Not Implemented
+                http_response_code(501);
+            } else {
+                http_response_code(500);
+                echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
             }
         }
 
@@ -166,9 +183,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'DELETE':
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->prepare("DELETE FROM `aliments` WHERE `code` = " . $data['code']);
-        $request->execute();
-        $result = "";
+        try {
+            $request = $pdo->prepare("DELETE FROM `aliments` WHERE `code` = " . $data['code']);
+            $request->execute();
+            $result = "";
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+        }
 
         checkAndResponse($request, $result, $data);
         break;

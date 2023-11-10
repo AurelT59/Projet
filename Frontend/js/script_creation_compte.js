@@ -1,3 +1,8 @@
+//Fonction pour lancer une erreur
+function throwAlert(text) {
+    alert(text);
+}
+
 $(document).ready(function () {
 
     //Initialisation des nomenclatures
@@ -27,7 +32,7 @@ $(document).ready(function () {
 
         },
         error: function (error) {
-            throwAlert('Erreur lors de la récupération des données : ', error);
+            throwAlert('Erreur lors de la récupération des données : ', error.status);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
@@ -65,17 +70,6 @@ $('#btnValider').on("click", function (e) {
             data: JSON.stringify(formData),
             dataType: 'json',
             success: function (data) {
-                let formDataBis = {
-                    "IDENTIFIANT": identifiant,
-                    "ID_SPORTIF": sport,
-                    "ID_SEXE": sexe,
-                    "PRENOM": prenom,
-                    "NOM": nom,
-                    "AGE": age,
-                    "POIDS": poids,
-                    "TAILLE": taille
-                }
-
                 window.location.href = URL_START + 'Frontend/connexion.php';
             },
             error: function (error) {
@@ -86,6 +80,7 @@ $('#btnValider').on("click", function (e) {
                     console.error('L\'identifiant existe déjà');
                 }
                 else {
+                    throwAlert('Erreur lors de l\'ajout des données utilisateurs : ', error.status);
                     console.error('Erreur lors de l\'ajout des données utilisateurs : ', error);
                 }
             }

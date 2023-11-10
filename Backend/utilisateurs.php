@@ -10,8 +10,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = "";
 
-        $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "'");
-        $request->execute();
+        try {
+            $request = $pdo->prepare("SELECT * FROM utilisateurs WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "'");
+            $request->execute();
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+        }
 
         checkAndResponse($request, $data);
         break;
@@ -59,7 +64,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'DELETE':
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->exec("DELETE FROM `utilisateurs` WHERE `identifiant` = '" . $data['identifiant'] . "'");
+        try {
+            $request = $pdo->exec("DELETE FROM `utilisateurs` WHERE `identifiant` = '" . $data['identifiant'] . "'");
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+        }
 
         checkAndResponse($request, $data);
         break;

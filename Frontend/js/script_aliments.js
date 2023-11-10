@@ -63,7 +63,7 @@ $(document).ready(function () {
             }
         },
         error: function (error) {
-            throwAlert('Erreur lors de la récupération des données : ', error);
+            throwAlert('Erreur lors de la récupération des données : ', error.status);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
@@ -112,7 +112,7 @@ $(document).ready(function () {
 
         },
         error: function (error) {
-            throwAlert('Erreur lors de la récupération des données : ', error);
+            throwAlert('Erreur lors de la récupération des données : ', error.status);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
@@ -220,7 +220,7 @@ $(document).ready(function () {
                     }).draw();
                 },
                 error: function (error) {
-                    throwAlert('Erreur lors de l\'ajout des données : ' + error);
+                    throwAlert('Erreur lors de l\'ajout des données : ' + error.status);
                     console.error('Erreur lors de l\'ajout des données : ', error);
                 }
             })
@@ -255,7 +255,7 @@ $(document).ready(function () {
                     }).draw();
                 },
                 error: function (error) {
-                    throwAlert('Erreur lors de l\'ajout des données : ' + error);
+                    throwAlert('Erreur lors de l\'ajout des données : ' + error.status);
                     console.error('Erreur lors de l\'ajout des données : ', error);
                 }
             })
@@ -281,7 +281,7 @@ $(document).ready(function () {
                 row.remove().draw();
             },
             error: function (error) {
-                throwAlert('Erreur lors de la suppression des données : ' + error);
+                throwAlert('Erreur lors de la suppression des données : ' + error.status);
                 console.error('Erreur lors de la suppression des données : ', error);
             }
         })
@@ -353,7 +353,7 @@ $(document).ready(function () {
 
             },
             error: function (error) {
-                throwAlert('Erreur lors de la récupération des données : ' + error);
+                throwAlert('Erreur lors de la récupération des données : ' + error.status);
                 console.error('Erreur lors de la récupération des données : ', error);
             }
         })
@@ -366,17 +366,7 @@ $(document).ready(function () {
 
 //Fonction pour lancer une erreur
 function throwAlert(text) {
-    var alertElement = document.getElementById("myAlert");
-    var msgError = document.getElementById("msgError");
-
-    alertElement.style.display = "block";
-    msgError.innerHTML = text;
-    alertElement.classList.add("show");
-
-    setTimeout(function () {
-        alertElement.style.display = "none";
-        alertElement.classList.remove("show");
-    }, 5000);
+    alert(text);
 }
 
 

@@ -8,14 +8,19 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        $request_sexe = $pdo->prepare("SELECT * 
+        try {
+            $request_sexe = $pdo->prepare("SELECT * 
                                               FROM sexe");
-        $request_sexe->execute();
+            $request_sexe->execute();
 
 
-        $request_sport = $pdo->prepare("SELECT * 
+            $request_sport = $pdo->prepare("SELECT * 
                                              FROM pratique_sportive");
-        $request_sport->execute();
+            $request_sport->execute();
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+        }
 
 
         if ($request_sexe == false || $request_sport == false) {
