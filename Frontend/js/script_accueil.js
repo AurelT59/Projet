@@ -465,8 +465,7 @@ $.ajax({
     error: function (error) {
         if (error.status == 404) {
             console.error('Vous n\'avez pas de données dans le journal');
-            $("#selectNut").hide();
-            $("#container").html("Vous n\'avez pas d'historique pour l'instant");
+            $("#affichageApports").html("Vous n\'avez encore rentré aucune consommation aujourd'hui");
         }
         else {
             console.error('Erreur lors de l\'importation des données du journal : ', error);
