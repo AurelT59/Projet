@@ -5,7 +5,7 @@
 </div>
 
 <div class="box" id="apportJour">
-    <h1>Apports détaillés d'aujourd'hui (par rapport aux recommendations de l'OMS)</h1>
+    <h1>Apports détaillés d'aujourd'hui (par rapport aux recommandations de l'OMS)</h1>
     <div id="affichageApports">
     </div>
 </div>
