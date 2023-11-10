@@ -190,6 +190,11 @@ $(document).ready(function () {
     //Informations sur la modification d'un entrée du journal
     //------------------------------------------------------------------------------------------------
     table.on('click', '#edit', function (e) {
+        function scrollToTop() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
+        scrollToTop();
         retourAjout();
         let row = table.row(e.target.closest('tr'));
         let id_journal = table.cell(row, 0).data()

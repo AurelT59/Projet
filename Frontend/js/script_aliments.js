@@ -292,6 +292,11 @@ $(document).ready(function () {
     //Informations sur la modification d'un aliment
     //------------------------------------------------------------------------------------------------
     table.on('click', '#edit', function (e) {
+        function scrollToTop() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
+        scrollToTop();
         retourAjout();
         let row = table.row(e.target.closest('tr'));
 
