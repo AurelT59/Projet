@@ -21,7 +21,10 @@
         <label class="form-label">Quantité (nombre de portions)</label>
         <input type="number" class="form-control" id="inputQuantite">
     </div>
+
     <button type="button" id="btnValider" class="btn btn-success body-button">Valider</button>
+    <p id="messageConfirmation"></p>
+
 
 
 </div>

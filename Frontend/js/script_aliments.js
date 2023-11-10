@@ -189,7 +189,7 @@ $(document).ready(function () {
 
 
 
-
+        $('#messageConfirmation').html("");
         var formData = {
             code: code,
             produit: nom,
@@ -218,6 +218,7 @@ $(document).ready(function () {
                         "Marque": formData.marque,
                         "Nutriscore": formData.nutriscore_grade
                     }).draw();
+                    $('#messageConfirmation').html("Ajout enregistré");
                 },
                 error: function (error) {
                     throwAlert('Erreur lors de l\'ajout des données : ' + error.status);
@@ -253,6 +254,7 @@ $(document).ready(function () {
                         "Marque": formData.marque,
                         "Nutriscore": formData.nutriscore_grade
                     }).draw();
+                    $('#messageConfirmation').html("Changements enregistrés");
                 },
                 error: function (error) {
                     throwAlert('Erreur lors de l\'ajout des données : ' + error.status);

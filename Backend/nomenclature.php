@@ -19,7 +19,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $request_categories->execute();
 
             $request_nutriments = $pdo->prepare("SELECT * 
-                                             FROM nutriments ORDER BY nom ASC");
+                                             FROM nutriments");
             $request_nutriments->execute();
         } catch (PDOException $e) {
             http_response_code(500);

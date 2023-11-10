@@ -71,6 +71,7 @@
             <input type="button" class="btn btn-primary btn-ajout-ligne" id="inputAjoutNut" onclick="ajouterLigneNutriment('','','','')" value="Ajouter une ligne">
         </div>
         <button type="button" id="btnValider" class="btn btn-success body-button">Valider</button>
+        <p id="messageConfirmation"></p>
     </form>
 </div>
 
