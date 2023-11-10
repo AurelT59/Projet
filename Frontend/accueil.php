@@ -1,5 +1,5 @@
 <div class="box">
-    <h1 class="flexbox">Statistiques du <input type="date" id="selectDebut" class="form-control input-taille"> au <input type="date" id="selectFin" class="form-control input-taille"> sur <select id="selectNut" class="form-select input-taille">
+    <h1 class="flexbox" id="choix">Statistiques du <input type="date" id="selectDebut" class="form-control input-taille"> au <input type="date" id="selectFin" class="form-control input-taille"> sur <select id="selectNut" class="form-select input-taille">
         </select></h1>
     <div id="container"></div>
 </div>

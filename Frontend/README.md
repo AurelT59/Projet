@@ -18,7 +18,12 @@ Toutes les pages de notre site sont factorisées via la page index, voici le con
 - aliments : possibilité de renseigner un nouvel aliment ainsi que toutes ses caractéristiques et de 
              consulter la liste de tous les aliments déjà enregistrés
 
+Comptes utilisateurs :
+    identifiant : MangeurSain
+    mdp : 1234
 
-Utilisateurs par défaut : 
+    identifiant : MangeurMoyen
+    mdp : 1234
 
-1) id : ; mdp :
+    identifiant : GrosMangeur
+    mdp : 1234

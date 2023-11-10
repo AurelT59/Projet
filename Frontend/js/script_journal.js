@@ -51,7 +51,6 @@ $(document).ready(function () {
             }
         },
         error: function (error) {
-            throwAlert('Erreur lors de la récupération des données : ', error.status);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
@@ -76,7 +75,6 @@ $(document).ready(function () {
 
         },
         error: function (error) {
-            throwAlert('Erreur lors de la récupération des données : ', error.status);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
@@ -89,6 +87,7 @@ $(document).ready(function () {
         let date = $("#inputDate").val();
         let code = $("#selectAliment").val();
         let produit = $("#selectAliment option[value=" + code + "]").text();
+        $('#messageConfirmation').html("");
 
         let quantite = $("#inputQuantite").val();
 
@@ -116,6 +115,7 @@ $(document).ready(function () {
                         "quantite": formData.quantite,
                         "id_journal": data.id_journal
                     }).draw();
+                    $('#messageConfirmation').html("Ajout enregistré");
                 },
                 error: function (error) {
                     throwAlert('Erreur lors de l\'ajout des données : ' + error.status);
@@ -149,6 +149,7 @@ $(document).ready(function () {
                         "quantite": formData.quantite,
                         "id_journal": formData.id_journal
                     }).draw();
+                    $('#messageConfirmation').html("Changements enregistrés");
                 },
                 error: function (error) {
                     throwAlert('Erreur lors de l\'ajout des données : ' + error.status);
