@@ -92,9 +92,6 @@ function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, uni
         .attr("stroke-width", 2); // Épaisseur de la ligne
 
 
-
-
-
     //Gestion des légendes 
     //Axe x
     svg.append("text")
@@ -102,7 +99,6 @@ function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, uni
         .attr("y", height - 20)
         .style("text-anchor", "middle")
         .text("Jours");
-
 
     //Axe y
     svg.append("text")
@@ -340,6 +336,8 @@ $("#selectFin").on("input", function (e) {
 })
 
 
+// Remplissage barres d'avancement journée
+
 $.ajax({
     url: URL_START + 'Backend/journal.php?date1=' + stringdateActuelle + '&date2=' + stringdateActuelle + '&identifiant=' + valeurDuCookie.IDENTIFIANT,
     method: 'GET',
@@ -390,9 +388,10 @@ $.ajax({
 
 
         const resultats = calculerNutriments(data);
+        console.log("resultats");
         console.log(resultats);
 
-        //Insertion des données dans le graphe
+        //Insertion des données dans les barres
         //----------------------------------------------------------------------------------------------
 
         $.ajax({
@@ -411,19 +410,38 @@ $.ajax({
 
                         //Initialisation de la nomenclature des nutriments
                         let tab_nutriments = data.nutriments;
+                        let conso = resultats[0].nutriments;
 
-                        function calculRatio(nutriment) {
-
-                            return calculRatio;
-                        }
-
+                        console.log("nutriments");
                         console.log(tab_nutriments);
 
-
                         let contenu_apport_jour = "";
-                        for (i in tab_reco) {
-                            for (j in resultats) {
-                                contenu_apport_jour += "<label class='form-label'>" + tab_nutriments[i].NOM + "</label><div class='progress' role='progressbar' aria-valuemin='0' aria-valuemax='100'> <div class='progress-bar' style='width: " + "0%'></div></div>";
+                        for (let i = 0; i < tab_reco.length; i++) {
+                            let found = false;
+                            let unit = "g";
+                            for (j in conso) {
+                                if ((conso[j].valeur != undefined) && (tab_nutriments[i].NOM == conso[j].nom)) {
+
+                                    if (tab_nutriments[i].NOM == "Énergie") {
+                                        unit = "kcal";
+                                    }
+
+                                    let quantite_recommandee = Number(tab_reco[i].QUANTITE);
+                                    ratio = 100 * (conso[j].valeur / quantite_recommandee);
+
+                                    if (ratio <= 100) {
+                                        contenu_apport_jour += "<label class='form-label bar-and-title'>" + tab_nutriments[i].NOM + " : " + conso[j].valeur.toFixed(2) + " / " + tab_reco[i].QUANTITE + unit + "</label><div class='progress' role='progressbar' aria-valuemin='0' aria-valuemax='100'> <div class='progress-bar' style='width: " + ratio + "%'>" + ratio.toFixed(0) + "%</div></div>";
+                                    } else {
+                                        contenu_apport_jour += "<label class='form-label bar-and-title'>" + tab_nutriments[i].NOM + " : " + conso[j].valeur.toFixed(2) + " / " + tab_reco[i].QUANTITE + unit + "</label><div class='progress' role='progressbar' aria-valuemin='0' aria-valuemax='100'> <div class='progress-bar bg-danger' style='width: " + ratio + "%'>" + ratio.toFixed(0) + "%</div></div>";
+
+                                    }
+                                    found = true;
+                                }
+                            }
+
+                            if (found == false) {
+                                contenu_apport_jour += "<label class='form-label bar-and-title'>" + tab_nutriments[i].NOM + " : 0 / " + tab_reco[i].QUANTITE + unit + "</label><div class='progress' role='progressbar' aria-valuemin='0' aria-valuemax='100'> <div class='progress-bar' style='width: 0%'>0%</div></div>";
+
                             }
                         }
 

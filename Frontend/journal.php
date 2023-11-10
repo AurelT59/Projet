@@ -37,7 +37,7 @@
                 <th scope="col">Date</th>
                 <th scope="col">Aliment</th>
                 <th scope="col">Quantité</th>
-                <th scope="col">CRUD</th>
+                <th scope="col">Modification</th>
             </tr>
         </thead>
         <tbody id="table_journal_body">

@@ -89,7 +89,7 @@
                 <th scope="col">Portion</th>
                 <th scope="col">Marque</th>
                 <th scope="col">Nutriscore</th>
-                <th scope="col">CRUD</th>
+                <th scope="col">Modification</th>
             </tr>
         </thead>
         <tbody id="table_journal_body">

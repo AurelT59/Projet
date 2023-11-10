@@ -180,3 +180,8 @@ h1 {
     position: relative;
     bottom: 15px;
 }
+
+.bar-and-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
