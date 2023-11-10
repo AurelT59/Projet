@@ -1,3 +1,9 @@
-TODO : 
-- rajouter un input pour les catégoris dans la page aliment
-- rajouter un input quantité dans la page journal
+Comptes utilisateurs :
+    identifiant : MangeurSain
+    mdp : 1234
+
+    identifiant : MangeurMoyen
+    mdp : 1234
+
+    identifiant : GrosMangeur
+    mdp : 1234

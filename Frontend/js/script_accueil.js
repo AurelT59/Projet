@@ -300,7 +300,7 @@ function create_graph_with_date(debut, fin) {
         error: function (error) {
             if (error.status == 404) {
                 console.error('Vous n\'avez pas de données dans le journal');
-                $("#selectNut").hide();
+                //$("#choix").hide();
                 $("#container").html("Vous n\'avez pas d'historique pour l'instant");
             }
             else {

@@ -51,7 +51,6 @@ $(document).ready(function () {
             }
         },
         error: function (error) {
-            throwAlert('Erreur lors de la récupération des données : ', error.status);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
@@ -76,7 +75,6 @@ $(document).ready(function () {
 
         },
         error: function (error) {
-            throwAlert('Erreur lors de la récupération des données : ', error.status);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
