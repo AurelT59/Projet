@@ -1,3 +1,9 @@
+//Fonction pour lancer une erreur
+function throwAlert(text) {
+    alert(text);
+}
+
+
 //Fonction de création du graphe
 //----------------------------------------------------------------------------------------------
 function create_graph(donnees, nutriment, val_recommendation, nom_nutriment, unite, debut, fin) {
@@ -277,11 +283,13 @@ function create_graph_with_date(debut, fin) {
                             })
                         },
                         error: function (error) {
+                            throwAlert('Erreur lors de l\'importation des données de nomenclature : ', error.status);
                             console.error('Erreur lors de l\'importation des données de nomenclature : ', error);
                         }
                     })
                 },
                 error: function (error) {
+                    throwAlert('Erreur lors de l\'importation des données de recommendations : ', error.status);
                     console.error('Erreur lors de l\'importation des données de recommendations : ', error);
                 }
             })
@@ -296,6 +304,7 @@ function create_graph_with_date(debut, fin) {
                 $("#container").html("Vous n\'avez pas d'historique pour l'instant");
             }
             else {
+                throwAlert('Erreur lors de l\'importation des données du journal : ', error.status);
                 console.error('Erreur lors de l\'importation des données du journal : ', error);
             }
         }
@@ -449,11 +458,13 @@ $.ajax({
 
                     },
                     error: function (error) {
+                        throwAlert('Erreur lors de l\'importation des données de nomenclature : ', error.status);
                         console.error('Erreur lors de l\'importation des données de nomenclature : ', error);
                     }
                 })
             },
             error: function (error) {
+                throwAlert('Erreur lors de l\'importation des données de recommendations : ', error.status);
                 console.error('Erreur lors de l\'importation des données de recommendations : ', error);
             }
         })
@@ -468,6 +479,7 @@ $.ajax({
             $("#affichageApports").html("Vous n\'avez encore rentré aucune consommation aujourd'hui");
         }
         else {
+            throwAlert('Erreur lors de l\'importation des données du journal : ', error.status);
             console.error('Erreur lors de l\'importation des données du journal : ', error);
         }
     }

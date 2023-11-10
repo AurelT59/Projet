@@ -11,29 +11,33 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if (isset($_GET['date1']) && isset($_GET['date2']) && (isset($_GET['identifiant']))) {
             $data = "";
 
-            $request = $pdo->prepare("SELECT journal.*, aliments.produit FROM journal 
+            try {
+                $request = $pdo->prepare("SELECT journal.*, aliments.produit FROM journal 
             JOIN aliments ON aliments.CODE=journal.code 
             WHERE journal.IDENTIFIANT = '" . $_GET['identifiant'] . "' 
             AND journal.DATE >= '" . $_GET['date1'] . "' 
             AND journal.DATE <= '" . $_GET['date2'] . "'");
-            $request->execute();
-            $tab_journal = $request->fetchAll(PDO::FETCH_OBJ);
+                $request->execute();
+                $tab_journal = $request->fetchAll(PDO::FETCH_OBJ);
 
-            $result = array();
+                $result = array();
 
-            for ($i = 0; $i < count($tab_journal); $i++) {
-                $code = $tab_journal[$i]->CODE;
-                $request_bis = $pdo->prepare("SELECT composition_nutritive.*,nutriments.NOM FROM composition_nutritive 
+                for ($i = 0; $i < count($tab_journal); $i++) {
+                    $code = $tab_journal[$i]->CODE;
+                    $request_bis = $pdo->prepare("SELECT composition_nutritive.*,nutriments.NOM FROM composition_nutritive 
             JOIN nutriments ON nutriments.ID_NUTRIMENT=composition_nutritive.ID_NUTRIMENT 
             WHERE CODE = '" . $code . "'");
-                $request_bis->execute();
-                $elem = $request_bis->fetchAll(PDO::FETCH_OBJ);
-                array_push($result, [
-                    'journal' => $tab_journal[$i],
-                    'nutriments' => $elem
-                ]);
+                    $request_bis->execute();
+                    $elem = $request_bis->fetchAll(PDO::FETCH_OBJ);
+                    array_push($result, [
+                        'journal' => $tab_journal[$i],
+                        'nutriments' => $elem
+                    ]);
+                }
+            } catch (PDOException $e) {
+                http_response_code(500);
+                echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
             }
-
             //print_r($result);
 
             checkAndResponse($request, $data, $result);
@@ -41,20 +45,30 @@ switch ($_SERVER['REQUEST_METHOD']) {
         } else if (isset($_GET['identifiant'])) {
             $data = "";
 
-            $request = $pdo->prepare("SELECT journal.*, aliments.produit FROM journal 
+            try {
+                $request = $pdo->prepare("SELECT journal.*, aliments.produit FROM journal 
             JOIN aliments ON aliments.CODE=journal.code 
             WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "'");
-            $request->execute();
-            $result = $request->fetchAll(PDO::FETCH_OBJ);
+                $request->execute();
+                $result = $request->fetchAll(PDO::FETCH_OBJ);
+            } catch (PDOException $e) {
+                http_response_code(500);
+                echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+            }
 
             checkAndResponse($request, $data, $result);
             break;
         } else if (isset($_GET['id_journal'])) {
             $data = "";
 
-            $request = $pdo->prepare("SELECT journal.*, aliments.produit FROM journal JOIN aliments ON aliments.CODE=journal.code WHERE ID_JOURNAL = '" . $_GET['id_journal'] . "'");
-            $request->execute();
-            $result = $request->fetchAll(PDO::FETCH_OBJ);
+            try {
+                $request = $pdo->prepare("SELECT journal.*, aliments.produit FROM journal JOIN aliments ON aliments.CODE=journal.code WHERE ID_JOURNAL = '" . $_GET['id_journal'] . "'");
+                $request->execute();
+                $result = $request->fetchAll(PDO::FETCH_OBJ);
+            } catch (PDOException $e) {
+                http_response_code(500);
+                echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+            }
 
             checkAndResponse($request, $data, $result);
             break;
@@ -64,15 +78,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->exec(
-            "INSERT INTO `journal` (`code`, `identifiant`, `quantite`, `date`)
+        try {
+            $request = $pdo->exec(
+                "INSERT INTO `journal` (`code`, `identifiant`, `quantite`, `date`)
             VALUES ('" . $data['code'] . "','" . $data['identifiant'] . "','" . $data['quantite'] . "','" . $data['date'] . "')"
-        );
+            );
 
-        $req = $pdo->prepare('SELECT MAX(id_journal) AS id FROM journal');
-        $req->execute();
-        $res = $req->fetchAll(PDO::FETCH_OBJ);
-        $data['id_journal'] = $res[0]->id;
+            $req = $pdo->prepare('SELECT MAX(id_journal) AS id FROM journal');
+            $req->execute();
+            $res = $req->fetchAll(PDO::FETCH_OBJ);
+            $data['id_journal'] = $res[0]->id;
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+        }
 
         checkAndResponse($request, $data);
         break;
@@ -80,14 +99,25 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'PUT':
 
         $data = json_decode(file_get_contents("php://input"), true);
-        $request = $pdo->exec("UPDATE journal SET code = '" . $data['code'] . "', quantite = " . $data['quantite'] . ", date = '" . $data['date'] . "' WHERE id_journal = '" . $data['id_journal'] . "'");
+        try {
+            $request = $pdo->exec("UPDATE journal SET code = '" . $data['code'] . "', quantite = " . $data['quantite'] . ", date = '" . $data['date'] . "' WHERE id_journal = '" . $data['id_journal'] . "'");
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+        }
+
         checkAndResponse($request, $data);
         break;
 
     case 'DELETE':
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $request = $pdo->exec("DELETE FROM `journal` WHERE `id_journal` = '" . $data['id_journal'] . "'");
+        try {
+            $request = $pdo->exec("DELETE FROM `journal` WHERE `id_journal` = '" . $data['id_journal'] . "'");
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+        }
 
         checkAndResponse($request, $data);
         break;

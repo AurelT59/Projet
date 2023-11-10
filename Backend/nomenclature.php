@@ -8,18 +8,23 @@ require_once('init_pdo.php');
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
 
-        $request_ingredients = $pdo->prepare("SELECT * 
-                                              FROM ingredients");
-        $request_ingredients->execute();
+        try {
+            $request_ingredients = $pdo->prepare("SELECT * 
+                                              FROM ingredients ORDER BY nom ASC");
+            $request_ingredients->execute();
 
 
-        $request_categories = $pdo->prepare("SELECT * 
-                                             FROM categories");
-        $request_categories->execute();
+            $request_categories = $pdo->prepare("SELECT * 
+                                             FROM categories ORDER BY nom ASC");
+            $request_categories->execute();
 
-        $request_nutriments = $pdo->prepare("SELECT * 
-                                             FROM nutriments");
-        $request_nutriments->execute();
+            $request_nutriments = $pdo->prepare("SELECT * 
+                                             FROM nutriments ORDER BY nom ASC");
+            $request_nutriments->execute();
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+        }
 
         if ($request_ingredients == false || $request_categories == false || $request_nutriments == false) {
 

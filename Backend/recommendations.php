@@ -10,8 +10,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = "";
 
-        $request = $pdo->prepare("SELECT recommendations.*, nutriments.nom FROM recommendations JOIN nutriments ON nutriments.ID_NUTRIMENT=recommendations.ID_NUTRIMENT WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "'");
-        $request->execute();
+        try {
+            $request = $pdo->prepare("SELECT recommendations.*, nutriments.nom FROM recommendations JOIN nutriments ON nutriments.ID_NUTRIMENT=recommendations.ID_NUTRIMENT WHERE IDENTIFIANT = '" . $_GET['identifiant'] . "'");
+            $request->execute();
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(array('message' => "Une erreur est survenue dans la base de données."));
+        }
 
         checkAndResponse($request, $data);
         break;

@@ -1,5 +1,10 @@
 $(document).ready(function () {
 
+    //Fonction pour lancer une erreur
+    function throwAlert(text) {
+        alert(text);
+    }
+
     //Récupérer les valeurs de sexe et pratique sportive dans le cookie
     function getCookieValue(cookieName) {
         var cookies = document.cookie.split(";");
@@ -54,7 +59,7 @@ $(document).ready(function () {
 
         },
         error: function (error) {
-            throwAlert('Erreur lors de la récupération des données : ', error);
+            throwAlert('Erreur lors de la récupération des données : ', error.status);
             console.error('Erreur lors de la récupération des données : ', error);
         }
     })
@@ -109,7 +114,8 @@ $(document).ready(function () {
                     $('#iduser').html(identifiant);
                 },
                 error: function (error) {
-                    console.error('Erreur lors de l\'ajout des données : ', error);
+                    throwAlert('Erreur lors de la modification des données : ', error.status);
+                    console.error('Erreur lors de la modification des données : ', error);
                 }
             })
         }
